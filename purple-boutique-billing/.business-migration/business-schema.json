@@ -1,0 +1,11 @@
+{
+  "business": {
+    "name": "JJ Signature",
+    "currency": "INR",
+    "tax": { "enabled": false, "rate": 0 },
+    "invoicePrefix": "JJ"
+  },
+  "requiredTables": ["profiles", "categories", "products", "product_variants", "coupons", "orders", "order_items", "advance_orders"],
+  "seedPolicy": "target-categories-only",
+  "sourceDatabaseAllowed": false
+}

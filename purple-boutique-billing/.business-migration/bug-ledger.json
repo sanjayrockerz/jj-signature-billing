@@ -1,0 +1,13 @@
+{
+  "bugs": [
+    {
+      "id": "BLOCK-001",
+      "description": "New Supabase project cannot be created with current account permissions/free-project limit.",
+      "severity": "critical",
+      "rootCause": "Sanjay organization has reached its active free-project limit; other visible organizations deny project-creation privileges.",
+      "fix": "None; requires an available Supabase project slot or organization-owner action.",
+      "regressionTest": "supabase projects create",
+      "status": "blocked"
+    }
+  ]
+}

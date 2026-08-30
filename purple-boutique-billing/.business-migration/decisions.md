@@ -1,0 +1,5 @@
+- Target repository: `sanjayrockerz/jj-signature-billing`.
+- Target Supabase must be newly created; existing SpecsOn (`npcozxf...`) is forbidden.
+- Target catalog starts with categories Sarees, Salwar, and Nighty; no products are seeded.
+- Currency is INR and target contact details are configured without copying customer data.
+- Logo remains a replaceable path because no JJ Signature logo was supplied.

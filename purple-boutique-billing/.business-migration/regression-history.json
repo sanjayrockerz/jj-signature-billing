@@ -1,0 +1,5 @@
+{
+  "iterations": [
+    { "iteration": 1, "checks": 3, "passed": 3, "failed": 0, "criticalFailures": 1, "notes": "npm ci, npm run build, and npm run lint pass; Supabase creation blocked externally." }
+  ]
+}
