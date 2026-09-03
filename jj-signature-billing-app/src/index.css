@@ -392,6 +392,12 @@
   .admin-shell .btn-primary, .admin-shell .btn-secondary { min-height: 44px; padding-left: 0.875rem; padding-right: 0.875rem; }
 }
 
+@media (max-width: 767px) {
+  /* Advance Orders uses readable cards on phones; the full table remains for tablet/desktop. */
+  .advance-orders-content > .overflow-hidden { display: none; }
+  .advance-orders-content > .hidden.space-y-3 { display: block; }
+}
+
 
 /* ── PRINT STYLES — A4 invoice ─────────────────────────── */
 @media print {

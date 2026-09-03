@@ -136,11 +136,11 @@ export const Invoice: React.FC<InvoiceProps> = ({
 
       {/* ── ITEMS TABLE ──────────────────────────────────────────── */}
       <div className="w-full overflow-x-auto">
-        <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 320 }}>
+        <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 0, tableLayout: 'fixed' }}>
           <thead>
             <tr style={{ background: '#F3EBDD', borderRadius: 8 }}>
               <th style={{ padding: '8px 10px', textAlign: 'left', fontSize: 10, fontWeight: 800, color: '#111111', textTransform: 'uppercase', letterSpacing: 0.8, width: 28 }}>#</th>
-              <th style={{ padding: '8px 10px', textAlign: 'left', fontSize: 10, fontWeight: 800, color: '#111111', textTransform: 'uppercase', letterSpacing: 0.8 }}>Product</th>
+              <th style={{ padding: '8px 10px', textAlign: 'left', fontSize: 10, fontWeight: 800, color: '#111111', textTransform: 'uppercase', letterSpacing: 0.8, width: 'auto' }}>Product</th>
               <th style={{ padding: '8px 10px', textAlign: 'center', fontSize: 10, fontWeight: 800, color: '#111111', textTransform: 'uppercase', letterSpacing: 0.8, width: 45 }}>Qty</th>
               <th style={{ padding: '8px 10px', textAlign: 'right', fontSize: 10, fontWeight: 800, color: '#111111', textTransform: 'uppercase', letterSpacing: 0.8, width: 75 }}>Rate</th>
               <th style={{ padding: '8px 10px', textAlign: 'right', fontSize: 10, fontWeight: 800, color: '#111111', textTransform: 'uppercase', letterSpacing: 0.8, width: 85 }}>Amount</th>

@@ -4,7 +4,7 @@ import { supabase, isSupabaseConfigured } from '../lib/supabase'
 import { Invoice } from '../components/Invoice'
 import { Printer, ArrowLeft, MessageCircle } from 'lucide-react'
 import { printThermalReceipt } from '../lib/thermalPrint'
-import { invoicePdfFile, invoicePdfFileFromElement } from '../lib/invoicePdf'
+import { invoicePdfFile } from '../lib/invoicePdf'
 import { uploadInvoicePdf } from '../lib/storage'
 import { isUuid, normalizeStructuredOrderItem, formatInvoiceNo } from '../lib/retail'
 import { buildProfessionalWhatsAppMessage } from '../lib/whatsappMessageUtf8'
@@ -115,9 +115,25 @@ const invoiceItems = (Array.isArray(invoice.items) ? invoice.items : [])
     .map((item: Record<string, unknown>) => normalizeStructuredOrderItem(item))
   const subtotal = invoiceItems.reduce((sum: number, item: ReturnType<typeof normalizeStructuredOrderItem>) => sum + item.line_total, 0)
 
+  const buildInvoiceFile = () => invoicePdfFile({
+    invoiceNo: invoice.invoice_no,
+    date: invoice.created_at,
+    customerName: invoice.customer_name,
+    phone: invoice.phone,
+    address: invoice.address,
+    items: invoiceItems as unknown as Array<Record<string, unknown>>,
+    subtotal,
+    shipping: Number(invoice.delivery_charge || 0),
+    total: Number(invoice.total || 0),
+    discountAmount: Number(invoice.discount_amount || 0),
+    manualDiscountAmount: Number(invoice.manual_discount_amount || 0),
+    gstAmount: Number(invoice.total_gst || invoice.gst_amount || 0),
+    couponCode: invoice.coupon_code || undefined,
+    paymentMode: invoice.payment_mode || invoice.payment_method || undefined,
+  })
+
   const downloadPdf = async () => {
-    if (!invoiceElementRef.current) return
-    const file = await invoicePdfFileFromElement(invoiceElementRef.current, invoice.invoice_no)
+    const file = await buildInvoiceFile()
     const url = URL.createObjectURL(file)
     const link = document.createElement('a')
     link.href = url
@@ -150,24 +166,7 @@ const invoiceItems = (Array.isArray(invoice.items) ? invoice.items : [])
       paymentMode: invoice.payment_mode || invoice.payment_method,
     })
 
-    const file = invoiceElementRef.current
-      ? await invoicePdfFileFromElement(invoiceElementRef.current, invoice.invoice_no)
-      : await invoicePdfFile({
-      invoiceNo: invoice.invoice_no,
-      date: invoice.created_at,
-      customerName: invoice.customer_name,
-      phone: invoice.phone,
-      address: invoice.address,
-      items: invoiceItems as unknown as Array<Record<string, unknown>>,
-      subtotal,
-      shipping: Number(invoice.delivery_charge || 0),
-      total: Number(invoice.total || 0),
-      discountAmount: Number(invoice.discount_amount || 0),
-      manualDiscountAmount: Number(invoice.manual_discount_amount || 0),
-      gstAmount: Number(invoice.total_gst || invoice.gst_amount || 0),
-      couponCode: invoice.coupon_code || undefined,
-      paymentMode: invoice.payment_mode || invoice.payment_method || undefined,
-      })
+    const file = await buildInvoiceFile()
 
     let downloadLink = ''
     try {
@@ -221,20 +220,20 @@ const invoiceItems = (Array.isArray(invoice.items) ? invoice.items : [])
   return (
     <div className="h-full overflow-y-auto bg-[#f9faf6] font-sans pb-12 print:bg-white print:pb-0">
       {/* Top action bar */}
-      <div className="bg-[#f9faf6] p-4 sticky top-0 z-50 print:hidden flex items-center justify-between max-w-4xl mx-auto">
+      <div className="bg-[#f9faf6] p-3 sm:p-4 sticky top-0 z-50 print:hidden flex flex-wrap items-center justify-between gap-2 max-w-4xl mx-auto">
         <Link to="/" className="flex items-center gap-2 text-sageDark hover:text-[#2d5a27] font-semibold text-sm transition-colors bg-white border border-sand/40 px-4 py-2 rounded-full shadow-sm">
           <ArrowLeft size={16} /> Back
         </Link>
-<div className="flex items-center gap-2">
+<div className="flex w-full items-center gap-2 sm:w-auto">
           <button
             onClick={downloadPdf}
-            className="flex items-center gap-2 bg-[#CBB89D] text-[#111111] px-5 py-2 rounded-full font-bold text-sm shadow-md hover:bg-[#B7A487] transition-colors"
+            className="flex min-h-11 flex-1 items-center justify-center gap-2 rounded-full bg-[#CBB89D] px-4 py-2 text-xs font-bold text-[#111111] shadow-md transition-colors hover:bg-[#B7A487] sm:flex-none sm:px-5 sm:text-sm"
           >
             <Printer size={16} /> PDF
           </button>
           <button
             onClick={shareViaWhatsApp}
-            className="flex items-center gap-2 bg-green-500 text-white px-5 py-2 rounded-full font-bold text-sm shadow-md hover:bg-green-600 transition-colors"
+            className="flex min-h-11 flex-1 items-center justify-center gap-2 rounded-full bg-green-500 px-4 py-2 text-xs font-bold text-white shadow-md transition-colors hover:bg-green-600 sm:flex-none sm:px-5 sm:text-sm"
           >
             <MessageCircle size={16} /> WhatsApp
           </button>

@@ -39,5 +39,18 @@ export function printAdvanceReceipt(order: AdvanceOrder) {
   setTimeout(() => { frame.contentWindow?.focus(); frame.contentWindow?.print(); setTimeout(() => frame.remove(), 1000) }, 250)
 }
 
-export function downloadFile(file: File | Promise<File>) { void Promise.resolve(file).then((resolved) => { const url = URL.createObjectURL(resolved); const link = document.createElement('a'); link.href = url; link.download = resolved.name; link.click(); setTimeout(() => URL.revokeObjectURL(url), 500) }) }
+export function downloadFile(file: File | Promise<File>) {
+  void Promise.resolve(file).then((resolved) => {
+    const url = URL.createObjectURL(resolved)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = resolved.name
+    link.rel = 'noopener'
+    link.style.display = 'none'
+    document.body.appendChild(link)
+    link.click()
+    link.remove()
+    setTimeout(() => URL.revokeObjectURL(url), 1000)
+  })
+}
 

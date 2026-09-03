@@ -186,8 +186,9 @@ export async function invoicePdfFileFromElement(
     scale: 2,
     useCORS: true,
     logging: false,
-    windowWidth: element.scrollWidth,
-    windowHeight: element.scrollHeight,
+    width: element.clientWidth,
+    windowWidth: element.clientWidth,
+    windowHeight: element.clientHeight,
   })
 
   const doc = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' })

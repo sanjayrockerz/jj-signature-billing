@@ -829,8 +829,13 @@ export default function Pos(props: PosProps = {}) {
       {/* Main Content Split */}
       <div className="flex flex-col lg:flex-row gap-5 md:gap-6 px-4 md:px-6 pb-6 lg:h-[calc(100vh-120px)] lg:overflow-hidden">
 
+        <div className="grid grid-cols-2 gap-2 lg:hidden">
+          <button type="button" onClick={() => setMobilePanelView('catalogue')} className={`min-h-11 rounded-xl px-3 py-2 text-xs font-black uppercase tracking-wide ${mobilePanelView === 'catalogue' ? 'bg-[#CBB89D] text-[#111111]' : 'border border-borderLight bg-cardBg text-textMuted'}`}>Catalogue</button>
+          <button type="button" onClick={() => setMobilePanelView('bill')} className={`min-h-11 rounded-xl px-3 py-2 text-xs font-black uppercase tracking-wide ${mobilePanelView === 'bill' ? 'bg-[#CBB89D] text-[#111111]' : 'border border-borderLight bg-cardBg text-textMuted'}`}>Current Bill{items.length > 0 ? ` (${items.length})` : ''}</button>
+        </div>
+
         {/* LEFT COLUMN (approx 68%) */}
-        <div className="flex-[2.1] flex flex-col gap-6 lg:overflow-y-auto lg:pb-4 hide-scrollbar">
+        <div className={`${mobilePanelView === 'bill' ? 'hidden lg:flex' : 'flex'} min-w-0 w-full flex-[2.1] flex-col gap-6 lg:overflow-y-auto lg:pb-4 hide-scrollbar`}>
 
           {/* Customer Details Card */}
           <div className="bg-cardBg rounded-2xl border border-borderLight shadow-soft p-4 md:p-5">
@@ -1108,7 +1113,7 @@ export default function Pos(props: PosProps = {}) {
         </div>
 
         {/* RIGHT COLUMN (approx 32%) */}
-        <div className="flex-[1] flex min-h-0 flex-col gap-6 lg:sticky lg:top-4 lg:h-[calc(100vh-140px)] lg:max-h-[calc(100vh-140px)]">
+        <div className={`${mobilePanelView === 'catalogue' ? 'hidden lg:flex' : 'flex'} min-w-0 w-full flex-[1] min-h-0 flex-col gap-6 lg:sticky lg:top-4 lg:h-[calc(100vh-140px)] lg:max-h-[calc(100vh-140px)]`}>
           <div className="flex min-h-0 h-full max-h-full flex-col overflow-hidden rounded-2xl border border-[#D1FAE5]/60 bg-[#FAF9F6] shadow-sm">
 
             {/* Header */}
