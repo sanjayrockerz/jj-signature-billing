@@ -7,8 +7,8 @@ dist/
 # The repository contains only the JJ Signature app.
 /naatu-shop/
 /purple-boutique-billing/
-/package.json
-/vercel.json
+# Deployment configuration lives at the repository root so Vercel can load it
+# even when the app source is kept in a subdirectory.
 jj-signature-billing-app/.business-migration/
 jj-signature-billing-app/.vercel/
 jj-signature-billing-app/dist/
