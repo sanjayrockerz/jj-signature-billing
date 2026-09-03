@@ -3,7 +3,7 @@ import {
   BarChart2, Trash2, Edit2, List, ShoppingCart, LayoutDashboard,
   Box, AlertCircle, ArrowUp, ArrowDown, Power, Download, TrendingUp,
   Package, Search, RefreshCw, ShieldCheck, ShieldOff, Trophy,
-  MessageCircle, ChevronDown, Eye, FileText, Printer, MoreVertical, X, ReceiptIndianRupee, Boxes,
+  MessageCircle, ChevronDown, Eye, FileText, Printer, MoreVertical, X, Menu, ReceiptIndianRupee, Boxes,
 } from 'lucide-react'
 
 // Indian Rupee icon — replaces the generic dollar-sign icon
@@ -230,6 +230,7 @@ export default function Dashboard() {
       return false
     }
   })
+  const [mobileNavOpen, setMobileNavOpen] = useState(false)
 
   // Categories are a master list. Products reference this list through
   // category_id; product text is only a legacy display fallback.
@@ -1348,13 +1349,18 @@ export default function Dashboard() {
     { id: 'expenses',     icon: <ReceiptIndianRupee size={20} />, label: 'Expense Tracker', route: '/expenses' },
   ]
   const navItems = allNavItems.filter(item => role === 'admin' || (item.id !== 'pos_analytics' && item.id !== 'coupons'))
+  const handleMobileNav = (item: AdminNavItem) => {
+    setMobileNavOpen(false)
+    if (item.route) navigate(item.route)
+    else handleTabClick(item.id as TabKey)
+  }
 
   return (
     <div className="admin-shell min-h-screen bg-bgMain flex flex-col lg:flex-row">
       {/* Sidebar */}
       <aside
         className={[
-          'w-full bg-maroon-dark text-white border-b lg:border-b-0 lg:border-r border-maroon-dark flex flex-col shrink-0 lg:sticky lg:top-0 lg:h-screen',
+          'hidden w-full bg-maroon-dark text-white border-b lg:border-b-0 lg:border-r border-maroon-dark lg:flex flex-col shrink-0 lg:sticky lg:top-0 lg:h-screen',
           'transition-[width] duration-300 ease-in-out',
           sidebarCollapsed ? 'lg:w-[88px]' : 'lg:w-[260px]',
         ].join(' ')}
@@ -1437,8 +1443,38 @@ export default function Dashboard() {
 
       </aside>
 
+      {/* Mobile navigation matches the drawer used by the other admin modules. */}
+      {mobileNavOpen && (
+        <div className="fixed inset-0 z-[120] lg:hidden" role="dialog" aria-label="Navigation">
+          <button type="button" aria-label="Close navigation" onClick={() => setMobileNavOpen(false)} className="absolute inset-0 bg-black/35" />
+          <div className="relative flex h-full w-[min(86vw,320px)] flex-col bg-[#E5D4B8] p-4 text-[#171717] shadow-2xl">
+            <div className="flex items-center justify-between border-b border-borderLight pb-4">
+              <Link to="/pos" title="Go to Billing Panel" onClick={() => setMobileNavOpen(false)} className="flex min-w-0 items-center gap-3">
+                <img src={BRAND_LOGO} alt={`${BRAND_EN} logo`} className="h-10 w-10 rounded-xl bg-[#FFFDF8] object-contain p-1" />
+                <span className="truncate text-lg font-black">{BRAND_EN}</span>
+              </Link>
+              <button type="button" onClick={() => setMobileNavOpen(false)} aria-label="Close navigation" className="touch-target inline-flex items-center justify-center rounded-xl"><X size={20} /></button>
+            </div>
+            <nav className="mt-4 flex flex-col gap-2">
+              {navItems.map(item => {
+                const active = item.route ? location.pathname === item.route : tab === item.id
+                return <button type="button" key={item.id} onClick={() => handleMobileNav(item)} className={`flex min-h-12 items-center gap-3 rounded-xl px-4 text-left text-sm font-bold ${active ? 'bg-[#CBB89D]' : 'hover:bg-[#FFFDF8]'}`}><span className="shrink-0">{item.icon}</span>{item.label}</button>
+              })}
+            </nav>
+            <button type="button" onClick={() => { setMobileNavOpen(false); useAdminAuthStore.getState().logout(); navigate('/admin-login', { replace: true }) }} className="mt-auto flex min-h-12 items-center gap-3 rounded-xl px-4 text-left text-sm font-bold hover:bg-[#FFFDF8]"><Power size={20} />Logout</button>
+          </div>
+        </div>
+      )}
+
       {/* Main */}
       <main className="flex-grow flex min-w-0 flex-col">
+        <div className="flex items-center gap-3 border-b border-borderLight bg-cardBg px-4 py-3 lg:hidden">
+          <button type="button" onClick={() => setMobileNavOpen(true)} aria-label="Open navigation" className="touch-target inline-flex items-center justify-center rounded-xl border border-borderLight bg-[#FFFDF8]"><Menu size={20} /></button>
+          <Link to="/pos" onClick={() => setMobileNavOpen(false)} className="flex min-w-0 items-center gap-2">
+            <img src={BRAND_LOGO} alt="" className="h-8 w-8 rounded-lg object-contain" />
+            <span className="truncate text-base font-black text-[#171717]">{BRAND_EN}</span>
+          </Link>
+        </div>
         <div className="flex-1 min-w-0 p-4 sm:p-6 lg:p-8 overflow-x-hidden">
 
         {/* ΓöÇΓöÇ ANALYTICS TAB ΓöÇΓöÇ */}
