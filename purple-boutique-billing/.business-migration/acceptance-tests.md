@@ -1,5 +1,0 @@
-- [x] Separate GitHub repository and source commit cloned.
-- [x] Target build and lint pass.
-- [ ] New Supabase project created and linked.
-- [ ] Schema, RPCs, RLS, storage, catalog CRUD, sale, invoice, and isolation tests.
-- [ ] Separate Vercel project deployed with target Supabase variables.

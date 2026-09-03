@@ -1,3 +1,0 @@
-export const BUSINESS_PHONE = "916379048966"
-export const BUSINESS_PHONE_DISPLAY = "+91 63790 48966"
-export const BUSINESS_WHATSAPP_LINK = `https://wa.me/${BUSINESS_PHONE}`

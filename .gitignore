@@ -2,3 +2,18 @@ node_modules/
 dist/
 .env
 *.local
+.vercel
+
+# The repository contains only the JJ Signature app.
+/naatu-shop/
+/purple-boutique-billing/
+/package.json
+/vercel.json
+jj-signature-billing-app/.business-migration/
+jj-signature-billing-app/.vercel/
+jj-signature-billing-app/dist/
+jj-signature-billing-app/node_modules/
+jj-signature-billing-app/supabase/.temp/
+jj-signature-billing-app/qa-*.png
+jj-signature-billing-app/test-fetch.js
+jj-signature-billing-app/test-rpc.js

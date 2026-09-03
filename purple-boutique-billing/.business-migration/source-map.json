@@ -1,8 +1,0 @@
-{
-  "project": { "source": "cenexasystems/purple-botique@75bc092", "target": "sanjayrockerz/jj-signature-billing", "auditedAt": "2026-08-30" },
-  "features": [
-    { "name": "POS and billing", "files": ["src/pages/Pos.tsx", "src/services/orderService.ts"], "tables": ["orders", "order_items"], "classification": "reusable", "businessDependencies": [], "knownProblems": [] },
-    { "name": "Catalog and pricing", "files": ["src/pages/Dashboard.tsx", "src/services/productService.ts"], "tables": ["categories", "products", "product_variants", "coupons"], "classification": "reusable", "businessDependencies": [], "knownProblems": [] },
-    { "name": "Branding and contacts", "files": ["src/lib/brand.ts", "src/constants/business.ts", "index.html"], "tables": ["store_settings"], "classification": "configurable", "businessDependencies": ["JJ Signature"], "knownProblems": ["client logo not supplied"] }
-  ]
-}

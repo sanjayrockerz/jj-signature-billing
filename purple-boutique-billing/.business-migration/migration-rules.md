@@ -1,5 +1,0 @@
-- Preserve reusable billing, catalog, customer, order, invoice, receipt, and analytics behavior.
-- Never copy source production records or credentials.
-- Apply the target Supabase migrations only to the separate JJ Signature project.
-- Archive source-specific seed categories in the target database and seed only Sarees, Salwar, and Nighty.
-- Replace the logo only when the client supplies it.
