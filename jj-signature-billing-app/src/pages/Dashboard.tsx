@@ -2025,7 +2025,8 @@ export default function Dashboard() {
               <div className="space-y-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
                   {[
-                    { label: 'TOTAL REVENUE',    helper: 'POS + manual combined', value: formatCurrency(analytics.totalCompletedRevenue), icon: <RupeeIcon size={16} />, color: 'text-emerald-500', bg: 'bg-emerald-50' },
+                    { label: 'NET REVENUE',      helper: 'Selling revenue − expenses', value: formatCurrency(analytics.totalCompletedRevenue), icon: <RupeeIcon size={16} />, color: 'text-emerald-500', bg: 'bg-emerald-50' },
+                    { label: 'TOTAL EXPENSES',    helper: 'Recorded operating expenses', value: formatCurrency(analytics.totalExpenses), icon: <ReceiptIndianRupee size={16} />, color: 'text-[#8A3B32]', bg: 'bg-[#F8F3E8]' },
                     { label: 'COMPLETED BILLS',  helper: 'POS + manual bills',    value: analytics.completedOrders,                       icon: <Trophy size={16} />,      color: 'text-emerald-500', bg: 'bg-emerald-50' },
                     { label: 'OFFLINE BILLS',    helper: 'Walk-in POS sales',     value: formatCurrency(analytics.posRevenue),            icon: <RupeeIcon size={16} />, color: 'text-cyan-500',    bg: 'bg-cyan-50' },
                     { label: 'ONLINE BILLS',     helper: 'Online POS sales',      value: formatCurrency(analytics.onlinePosRevenue),      icon: <RupeeIcon size={16} />, color: 'text-indigo-500',  bg: 'bg-indigo-50' },
