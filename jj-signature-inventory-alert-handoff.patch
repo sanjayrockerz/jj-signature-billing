@@ -1,0 +1,1573 @@
+﻿From 25f6f2fc7726ba18dcedc13653a306867d2d2272 Mon Sep 17 00:00:00 2001
+From: sanjayrockerz <myteamcreations09@gmail.com>
+Date: Fri, 4 Sep 2026 18:03:44 +0530
+Subject: [PATCH 1/6] Fix custom POS items and segmented controls
+
+---
+ jj-signature-billing-app/src/index.css     | 29 ++++++++++++++++++++++
+ jj-signature-billing-app/src/pages/Pos.tsx | 19 +++++++-------
+ 2 files changed, 39 insertions(+), 9 deletions(-)
+
+diff --git a/jj-signature-billing-app/src/index.css b/jj-signature-billing-app/src/index.css
+index d8518fa..5ed8387 100644
+--- a/jj-signature-billing-app/src/index.css
++++ b/jj-signature-billing-app/src/index.css
+@@ -401,6 +401,35 @@
+   [role="dialog"] { padding-bottom: env(safe-area-inset-bottom); }
+ }
+ 
++/* One clipped boundary for every two-way POS segmented control. */
++.segmented-control {
++  min-width: 0;
++  overflow: hidden;
++  border: 1px solid var(--jj-border, #e7ded0);
++  border-radius: 0.75rem;
++  background: var(--jj-surface, #fffdf8);
++  box-sizing: border-box;
++}
++
++.segmented-control-tab {
++  min-width: 0;
++  flex: 1 1 0%;
++  border: 0;
++  border-radius: 0;
++  box-sizing: border-box;
++}
++
++.segmented-control-tab + .segmented-control-tab {
++  border-left: 1px solid var(--jj-border, #e7ded0);
++}
++
++.segmented-control-tab:focus-visible {
++  position: relative;
++  z-index: 1;
++  outline: 2px solid #111111;
++  outline-offset: -3px;
++}
++
+ @media (max-width: 479px) {
+   .admin-shell main > div:first-child h1 { font-size: clamp(1.35rem, 6vw, 1.75rem); }
+   .admin-shell main > div:last-child { padding-left: 0.875rem; padding-right: 0.875rem; }
+diff --git a/jj-signature-billing-app/src/pages/Pos.tsx b/jj-signature-billing-app/src/pages/Pos.tsx
+index c9a9247..2b96e09 100644
+--- a/jj-signature-billing-app/src/pages/Pos.tsx
++++ b/jj-signature-billing-app/src/pages/Pos.tsx
+@@ -72,7 +72,8 @@ type InvoiceSnap = {
+ 
+ // ── Helpers ────────────────────────────────────────────────────────────────
+ const toProductId = (v: string | number): string | null => {
+-  const s = String(v ?? '').trim(); return s || null
++  const s = String(v ?? '').trim()
++  return /^\d+$/.test(s) ? s : null
+ }
+ 
+ const makePosItem = (p: Product, qty?: number): PosItem => {
+@@ -458,7 +459,7 @@ export default function Pos(props: PosProps = {}) {
+           : Math.max(0, Math.round((allocationBase > 0 ? total * item.lineTotal / allocationBase : total / items.length) * 100) / 100)
+         allocated += lineTotal
+         return {
+-          product_id: item.parentProductId || toProductId(item.id), variant_id: item.variantId || null,
++          product_id: toProductId(item.parentProductId || item.id), variant_id: item.variantId || null,
+           variant_name: item.variantName || null, name: item.name, category: item.category,
+           description: item.note || '', quantity: item.qty, unit: item.selectedUnit, unit_type: item.unitType,
+           base_quantity: item.baseQuantity, base_price: Number(item.basePrice) || 0, line_total: lineTotal,
+@@ -503,7 +504,7 @@ export default function Pos(props: PosProps = {}) {
+         phone: normalizedPhone,
+         address: customer.address.trim() || 'POS Counter',
+         items: items.map(item => buildStructuredOrderItem({
+-          productId:    item.parentProductId ? item.parentProductId : toProductId(item.id),
++          productId:    toProductId(item.parentProductId || item.id),
+           variantId:    item.variantId   ?? null,
+           variantName:  item.variantName ?? null,
+           name: item.name,
+@@ -812,16 +813,16 @@ export default function Pos(props: PosProps = {}) {
+ 
+         {/* Online/Offline Toggle & Logout */}
+         <div className="flex gap-2 w-full min-[480px]:w-auto">
+-          <div className="grid grid-cols-2 bg-white rounded-xl border border-[#D1FAE5]/60 p-1 shadow-sm flex-1 min-[480px]:flex-none">
++          <div className="segmented-control flex flex-1 min-[480px]:flex-none">
+             <button
+               onClick={() => setOrderMode('offline')}
+-              className={`min-h-[44px] px-4 py-2 rounded-lg text-sm md:text-sm font-black tracking-wider uppercase transition-colors ${orderMode === 'offline' ? 'bg-[#CBB89D] text-[#111111] shadow-sm' : 'text-[#111111] hover:bg-[#EDE4D4]'}`}
++              className={`segmented-control-tab min-h-[44px] px-4 py-2 text-sm font-black tracking-wider uppercase transition-colors ${orderMode === 'offline' ? 'bg-[#CBB89D] text-[#111111] shadow-sm' : 'text-[#111111] hover:bg-[#EDE4D4]'}`}
+             >
+               Offline
+             </button>
+             <button
+               onClick={() => setOrderMode('online')}
+-              className={`min-h-[44px] px-4 py-2 rounded-lg text-sm md:text-sm font-black tracking-wider uppercase transition-colors ${orderMode === 'online' ? 'bg-[#CBB89D] text-[#111111] shadow-sm' : 'text-[#111111] hover:bg-[#EDE4D4]'}`}
++              className={`segmented-control-tab min-h-[44px] px-4 py-2 text-sm font-black tracking-wider uppercase transition-colors ${orderMode === 'online' ? 'bg-[#CBB89D] text-[#111111] shadow-sm' : 'text-[#111111] hover:bg-[#EDE4D4]'}`}
+             >
+               Online
+             </button>
+@@ -849,9 +850,9 @@ export default function Pos(props: PosProps = {}) {
+       {/* Main Content Split */}
+       <div className="flex w-full min-w-0 max-w-full flex-col gap-5 px-4 pb-6 md:gap-6 md:px-6 lg:h-[calc(100vh-120px)] lg:flex-row lg:overflow-hidden">
+ 
+-        <div className="grid grid-cols-2 gap-2 lg:hidden">
+-          <button type="button" onClick={() => setMobilePanelView('catalogue')} className={`min-h-11 rounded-xl px-3 py-2 text-xs font-black uppercase tracking-wide ${mobilePanelView === 'catalogue' ? 'bg-[#CBB89D] text-[#111111]' : 'border border-borderLight bg-cardBg text-textMuted'}`}>Catalogue</button>
+-          <button type="button" onClick={() => setMobilePanelView('bill')} className={`min-h-11 rounded-xl px-3 py-2 text-xs font-black uppercase tracking-wide ${mobilePanelView === 'bill' ? 'bg-[#CBB89D] text-[#111111]' : 'border border-borderLight bg-cardBg text-textMuted'}`}>Current Bill{items.length > 0 ? ` (${items.length})` : ''}</button>
++        <div className="segmented-control flex lg:hidden">
++          <button type="button" onClick={() => setMobilePanelView('catalogue')} className={`segmented-control-tab min-h-11 px-3 py-2 text-xs font-black uppercase tracking-wide ${mobilePanelView === 'catalogue' ? 'bg-[#CBB89D] text-[#111111]' : 'bg-cardBg text-textMuted hover:bg-[#EDE4D4]'}`}>Catalogue</button>
++          <button type="button" onClick={() => setMobilePanelView('bill')} className={`segmented-control-tab min-h-11 px-3 py-2 text-xs font-black uppercase tracking-wide ${mobilePanelView === 'bill' ? 'bg-[#CBB89D] text-[#111111]' : 'bg-cardBg text-textMuted hover:bg-[#EDE4D4]'}`}>Current Bill{items.length > 0 ? ` (${items.length})` : ''}</button>
+         </div>
+ 
+         {/* LEFT COLUMN (approx 68%) */}
+-- 
+2.46.1.windows.1
+
+
+From 5e1bb6fe37763ea469b03ce185ed7bcfd5b5d696 Mon Sep 17 00:00:00 2001
+From: sanjayrockerz <myteamcreations09@gmail.com>
+Date: Fri, 4 Sep 2026 18:54:49 +0530
+Subject: [PATCH 2/6] feat: add database-backed inventory stock alerts
+
+---
+ .../src/components/AdminModuleShell.tsx       |  5 +-
+ .../InventoryNotificationCenter.tsx           | 95 ++++++++++++++++++
+ .../src/pages/InventoryProducts.tsx           | 15 ++-
+ .../src/services/inventoryAlertService.ts     | 38 +++++++
+ .../src/services/inventoryAlertSound.ts       | 43 ++++++++
+ .../20260904_0006_inventory_alerts.sql        | 98 +++++++++++++++++++
+ 6 files changed, 287 insertions(+), 7 deletions(-)
+ create mode 100644 jj-signature-billing-app/src/components/InventoryNotificationCenter.tsx
+ create mode 100644 jj-signature-billing-app/src/services/inventoryAlertService.ts
+ create mode 100644 jj-signature-billing-app/src/services/inventoryAlertSound.ts
+ create mode 100644 jj-signature-billing-app/supabase/migrations/20260904_0006_inventory_alerts.sql
+
+diff --git a/jj-signature-billing-app/src/components/AdminModuleShell.tsx b/jj-signature-billing-app/src/components/AdminModuleShell.tsx
+index ac0f510..2b68882 100644
+--- a/jj-signature-billing-app/src/components/AdminModuleShell.tsx
++++ b/jj-signature-billing-app/src/components/AdminModuleShell.tsx
+@@ -4,6 +4,7 @@ import { BarChart3, Boxes, Box, FileText, List, LogOut, Menu, Package, ReceiptIn
+ import { useState } from 'react'
+ import { BRAND_EN, BRAND_LOGO } from '../lib/brand'
+ import { useAdminAuthStore } from '../store/store'
++import { InventoryNotificationCenter } from './InventoryNotificationCenter'
+ 
+ const links = [
+   { href: '/pos', label: 'Billing Panel', icon: ShoppingCart },
+@@ -43,9 +44,9 @@ export function AdminModuleShell({ title, subtitle, children }: { title: string;
+       </aside>
+       <main className="min-w-0 flex-1 lg:min-h-0 lg:overflow-y-auto lg:overscroll-contain">
+         <div className="border-b border-borderLight bg-cardBg px-4 py-4 sm:px-8 sm:py-5">
+-          <div className="mx-auto flex max-w-7xl items-start gap-3">
++          <div className="mx-auto flex max-w-7xl items-start gap-2 sm:gap-3">
+             <button type="button" onClick={() => setMobileNavOpen(true)} aria-label="Open navigation" className="touch-target mt-0.5 inline-flex items-center justify-center rounded-xl border border-borderLight bg-[#FFFDF8] lg:hidden"><Menu size={20} /></button>
+-            <div className="min-w-0"><div className="mb-1 flex items-center gap-2 text-xs font-black uppercase tracking-[.2em] text-textMuted lg:hidden"><img src={BRAND_LOGO} alt="" className="h-7 w-7 rounded-lg object-contain" />{BRAND_EN}</div><h1 className="text-2xl font-black tracking-tight text-[#171717] sm:text-3xl">{title}</h1><p className="mt-1 text-sm text-textMuted">{subtitle}</p></div>
++            <div className="min-w-0 flex-1"><div className="mb-1 flex items-center gap-2 text-xs font-black uppercase tracking-[.2em] text-textMuted lg:hidden"><img src={BRAND_LOGO} alt="" className="h-7 w-7 rounded-lg object-contain" />{BRAND_EN}</div><h1 className="text-2xl font-black tracking-tight text-[#171717] sm:text-3xl">{title}</h1><p className="mt-1 text-sm text-textMuted">{subtitle}</p></div><InventoryNotificationCenter />
+           </div>
+         </div>
+         <div className="mx-auto max-w-7xl px-4 py-5 sm:px-8 sm:py-8">{children}</div>
+diff --git a/jj-signature-billing-app/src/components/InventoryNotificationCenter.tsx b/jj-signature-billing-app/src/components/InventoryNotificationCenter.tsx
+new file mode 100644
+index 0000000..71412ae
+--- /dev/null
++++ b/jj-signature-billing-app/src/components/InventoryNotificationCenter.tsx
+@@ -0,0 +1,95 @@
++import { useEffect, useRef, useState } from 'react'
++import { Bell, Check, ExternalLink, Volume2, VolumeX, X } from 'lucide-react'
++import { supabase } from '../lib/supabase'
++import { isSupabaseConfigured } from '../lib/supabase'
++import { listInventoryAlerts, markAllInventoryAlertsRead, markInventoryAlertRead, type InventoryAlert } from '../services/inventoryAlertService'
++import { isInventorySoundEnabled, playInventoryAlertSound, setInventorySoundEnabled, unlockInventoryAlertSound } from '../services/inventoryAlertSound'
++import { useNavigate } from 'react-router-dom'
++
++const productName = (alert: InventoryAlert) => alert.product?.name || 'Inventory product'
++const formatAlertTime = (value: string) => new Intl.DateTimeFormat(undefined, { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(value))
++
++export function InventoryNotificationCenter() {
++  const navigate = useNavigate()
++  const [alerts, setAlerts] = useState<InventoryAlert[]>([])
++  const [open, setOpen] = useState(false)
++  const [toast, setToast] = useState<InventoryAlert | null>(null)
++  const [soundsEnabled, setSoundsEnabled] = useState(() => isInventorySoundEnabled())
++  const [permission, setPermission] = useState<NotificationPermission | 'unsupported'>(() => typeof Notification === 'undefined' ? 'unsupported' : Notification.permission)
++  const seenIds = useRef(new Set<string>())
++
++  const refresh = async () => {
++    if (!isSupabaseConfigured) return
++    const result = await listInventoryAlerts()
++    if (!result.error) setAlerts((result.data || []) as unknown as InventoryAlert[])
++  }
++
++  useEffect(() => {
++    const initialRefresh = window.setTimeout(() => { void refresh() }, 0)
++    if (!isSupabaseConfigured) return
++    const channel = supabase.channel('admin-inventory-alerts')
++      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'inventory_alerts' }, async payload => {
++        const newAlert = payload.new as InventoryAlert
++        if (seenIds.current.has(newAlert.id)) return
++        seenIds.current.add(newAlert.id)
++        const detail = await supabase.from('inventory_alerts').select('id, product_id, alert_type, stock_quantity, threshold, message, is_read, created_at, read_at, products(name)').eq('id', newAlert.id).single()
++        const alert = (detail.data || newAlert) as unknown as InventoryAlert
++        await refresh()
++        setToast(alert)
++        void playInventoryAlertSound(alert.alert_type)
++        if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
++          new Notification(alert.alert_type === 'OUT_OF_STOCK' ? `Out of Stock: ${productName(alert)}` : `Low Stock: ${productName(alert)}`, {
++            body: alert.alert_type === 'OUT_OF_STOCK' ? 'The product is now out of stock.' : alert.message || `Current stock: ${alert.stock_quantity}.`,
++            tag: `inventory-alert-${alert.id}`,
++          })
++        }
++        window.setTimeout(() => setToast(current => current?.id === alert.id ? null : current), 6500)
++      })
++      .subscribe()
++    return () => { window.clearTimeout(initialRefresh); void supabase.removeChannel(channel) }
++  }, [])
++
++  useEffect(() => {
++    if (!soundsEnabled) return
++    const unlock = () => { void unlockInventoryAlertSound() }
++    window.addEventListener('pointerdown', unlock, { once: true })
++    return () => window.removeEventListener('pointerdown', unlock)
++  }, [soundsEnabled])
++
++  const unreadCount = alerts.filter(alert => !alert.is_read).length
++  const toggleSounds = async () => {
++    const enabled = !soundsEnabled
++    setSoundsEnabled(enabled)
++    setInventorySoundEnabled(enabled)
++    if (enabled) { await unlockInventoryAlertSound(); void playInventoryAlertSound('LOW_STOCK') }
++  }
++  const enableBrowserNotifications = async () => {
++    if (typeof Notification === 'undefined') return
++    const result = await Notification.requestPermission()
++    setPermission(result)
++  }
++  const markRead = async (id: string) => {
++    const result = await markInventoryAlertRead(id)
++    if (!result.error) setAlerts(current => current.map(alert => alert.id === id ? { ...alert, is_read: true, read_at: new Date().toISOString() } : alert))
++  }
++  const goToProduct = (alert: InventoryAlert) => { setOpen(false); setToast(null); navigate(`/inventory?product=${alert.product_id}`) }
++
++  return <>
++    <div className="relative z-10 shrink-0">
++      <button type="button" onClick={() => setOpen(value => !value)} aria-expanded={open} aria-label={`${unreadCount} unread inventory alerts`} className="touch-target relative inline-flex items-center justify-center rounded-xl border border-borderLight bg-[#FFFDF8] hover:bg-[#EDE4D4]">
++        <Bell size={19} />
++        {unreadCount > 0 && <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-[#171717] px-1 text-[10px] font-black text-white">{unreadCount > 99 ? '99+' : unreadCount}</span>}
++      </button>
++      {open && <div className="absolute right-0 top-[calc(100%+0.75rem)] z-[100] w-[min(92vw,390px)] max-w-[calc(100vw-1.5rem)] overflow-hidden rounded-2xl border border-borderLight bg-[#FFFDF8] shadow-2xl">
++        <div className="flex items-center justify-between border-b border-borderLight px-4 py-3"><div><p className="text-sm font-black">Inventory alerts</p><p className="text-xs text-textMuted">{unreadCount} unread</p></div><button type="button" onClick={() => setOpen(false)} aria-label="Close alerts" className="touch-target inline-flex items-center justify-center rounded-lg"><X size={17} /></button></div>
++        <div className="max-h-[min(65vh,480px)] overflow-y-auto p-2">
++          {alerts.length === 0 ? <p className="px-3 py-8 text-center text-sm text-textMuted">No inventory alerts yet.</p> : alerts.map(alert => <article key={alert.id} className={`rounded-xl p-3 ${alert.is_read ? 'opacity-65' : 'bg-[#F3EBDD]'}`}>
++            <div className="flex items-start gap-3"><div className={`mt-0.5 rounded-full p-2 ${alert.alert_type === 'OUT_OF_STOCK' ? 'bg-[#171717] text-white' : 'bg-[#CBB89D]'}`}><Bell size={14} /></div><div className="min-w-0 flex-1"><div className="flex items-start justify-between gap-2"><p className="text-[11px] font-black uppercase tracking-[.14em]">{alert.alert_type === 'OUT_OF_STOCK' ? 'Out of stock' : 'Low stock'}</p>{!alert.is_read && <span className="h-2 w-2 shrink-0 rounded-full bg-[#171717]" aria-label="Unread" />}</div><p className="mt-1 break-words font-black">{productName(alert)}</p><p className="mt-1 text-xs text-textMuted">Stock: {alert.stock_quantity}{alert.threshold !== null && ` · Alert at: ${alert.threshold}`}</p><p className="mt-1 text-[11px] text-textMuted">{formatAlertTime(alert.created_at)}</p><div className="mt-2 flex flex-wrap gap-2"><button type="button" onClick={() => goToProduct(alert)} className="inline-flex min-h-9 items-center gap-1 rounded-lg border border-borderLight px-2.5 text-[11px] font-black"><ExternalLink size={13} />View product</button>{!alert.is_read && <button type="button" onClick={() => void markRead(alert.id)} className="inline-flex min-h-9 items-center gap-1 rounded-lg border border-borderLight px-2.5 text-[11px] font-black"><Check size={13} />Mark read</button>}</div></div></div>
++          </article>)}
++        </div>
++        <div className="border-t border-borderLight p-3"><div className="flex flex-wrap gap-2"><button type="button" onClick={() => void toggleSounds()} className="inline-flex min-h-10 flex-1 items-center justify-center gap-2 rounded-xl border border-borderLight px-3 text-xs font-black">{soundsEnabled ? <Volume2 size={15} /> : <VolumeX size={15} />}{soundsEnabled ? 'Sounds enabled' : 'Enable sounds'}</button>{permission === 'default' && <button type="button" onClick={() => void enableBrowserNotifications()} className="min-h-10 flex-1 rounded-xl border border-borderLight px-3 text-xs font-black">Enable browser alerts</button>}</div>{unreadCount > 0 && <button type="button" onClick={async () => { const result = await markAllInventoryAlertsRead(); if (!result.error) setAlerts(current => current.map(alert => ({ ...alert, is_read: true, read_at: new Date().toISOString() }))) }} className="mt-2 inline-flex min-h-9 w-full items-center justify-center gap-2 rounded-xl text-xs font-black text-textMuted"><Check size={14} />Mark all as read</button>}</div>
++      </div>}
++    </div>
++    {toast && <div role="status" className="fixed bottom-4 right-4 z-[130] w-[min(calc(100vw-2rem),390px)] rounded-2xl border border-borderLight bg-[#FFFDF8] p-4 shadow-2xl"><button type="button" onClick={() => setToast(null)} aria-label="Dismiss notification" className="absolute right-2 top-2 rounded-lg p-2"><X size={15} /></button><p className="text-[11px] font-black uppercase tracking-[.16em]">{toast.alert_type === 'OUT_OF_STOCK' ? '⚠ Out of stock' : 'Low stock'}</p><p className="mt-2 font-black">{productName(toast)}</p><p className="mt-1 text-sm text-textMuted">{toast.alert_type === 'OUT_OF_STOCK' ? 'Current stock: 0' : toast.message || `Current stock: ${toast.stock_quantity}.`}</p><button type="button" onClick={() => goToProduct(toast)} className="mt-3 min-h-10 rounded-xl border border-borderLight px-3 text-xs font-black">View product</button></div>}
++  </>
++}
+diff --git a/jj-signature-billing-app/src/pages/InventoryProducts.tsx b/jj-signature-billing-app/src/pages/InventoryProducts.tsx
+index 2036187..aec80e2 100644
+--- a/jj-signature-billing-app/src/pages/InventoryProducts.tsx
++++ b/jj-signature-billing-app/src/pages/InventoryProducts.tsx
+@@ -1,5 +1,6 @@
+ import { useCallback, useEffect, useMemo, useState } from 'react'
+-import { BarChart3, Boxes, Download, Edit3, Plus, Power, RefreshCw, SlidersHorizontal, X } from 'lucide-react'
++import { useNavigate } from 'react-router-dom'
++import { AlertTriangle, BarChart3, Boxes, Download, Edit3, Plus, Power, RefreshCw, SlidersHorizontal, X } from 'lucide-react'
+ import { AdminModuleShell } from '../components/AdminModuleShell'
+ import { useProductStore, type Product } from '../store/store'
+ import { supabase } from '../lib/supabase'
+@@ -7,6 +8,7 @@ import { adjustProductStock, listStockMovements, type StockMovement } from '../s
+ import { downloadXlsx } from '../lib/xlsxExport'
+ import { formatCurrency } from '../lib/retail'
+ import { StatCard, StatGrid } from '../components/common/StatCard'
++import { listInventoryAlerts, type InventoryAlert } from '../services/inventoryAlertService'
+ 
+ type Category = { id: number; name_en: string; is_active: boolean }
+ type InventoryTab = 'stock' | 'products' | 'categories' | 'analytics'
+@@ -17,6 +19,7 @@ const date = () => new Date().toISOString().slice(0, 10)
+ const startOfWeek = () => { const d = new Date(); const day = d.getDay(); d.setDate(d.getDate() - (day === 0 ? 6 : day - 1)); return d.toISOString().slice(0, 10) }
+ 
+ export default function InventoryProducts() {
++  const navigate = useNavigate()
+   const products = useProductStore(state => state.products)
+   const fetchProducts = useProductStore(state => state.fetchProducts)
+   const [tab, setTab] = useState<InventoryTab>('stock')
+@@ -36,12 +39,14 @@ export default function InventoryProducts() {
+   const [editingCategory, setEditingCategory] = useState<Category | null>(null)
+   const [notice, setNotice] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
+   const [loading, setLoading] = useState(true)
++  const [recentAlerts, setRecentAlerts] = useState<InventoryAlert[]>([])
+ 
+   const refresh = useCallback(async () => {
+     setLoading(true)
+-    const [catResult, movementResult] = await Promise.all([supabase.from('categories').select('id, name_en, is_active').order('sort_order'), listStockMovements()])
++    const [catResult, movementResult, alertResult] = await Promise.all([supabase.from('categories').select('id, name_en, is_active').order('sort_order'), listStockMovements(), listInventoryAlerts(8)])
+     if (catResult.error) setNotice({ type: 'error', text: catResult.error.message }); else setCategories((catResult.data || []) as Category[])
+     if (movementResult.error) setNotice({ type: 'error', text: movementResult.error.message }); else setMovements((movementResult.data || []) as StockMovement[])
++    if (!alertResult.error) setRecentAlerts((alertResult.data || []) as unknown as InventoryAlert[])
+     await fetchProducts(true); setLoading(false)
+   }, [fetchProducts])
+   useEffect(() => { const timer = window.setTimeout(() => { void refresh() }, 0); return () => window.clearTimeout(timer) }, [refresh])
+@@ -78,7 +83,7 @@ export default function InventoryProducts() {
+     {tab === 'analytics' && <div className="mb-5 flex flex-wrap items-end gap-2 rounded-2xl border border-borderLight bg-cardBg p-3">{(['all', 'today', 'week', 'month', 'custom'] as const).map(value => <button key={value} onClick={() => setReportFilter(value)} className={`rounded-lg px-3 py-2 text-xs font-black capitalize ${reportFilter === value ? 'bg-[#CBB89D]' : 'border border-borderLight hover:bg-[#EDE4D4]'}`}>{value === 'all' ? 'All Time' : value === 'today' ? 'Today' : value === 'week' ? 'This Week' : value === 'month' ? 'This Month' : 'Custom'}</button>)}{reportFilter === 'custom' && <><label className="text-sm font-bold text-textMuted">From<input type="date" className={`${inputClass} mt-1`} value={reportFrom} onChange={e => setReportFrom(e.target.value)} /></label><label className="text-sm font-bold text-textMuted">To<input type="date" className={`${inputClass} mt-1`} value={reportTo} onChange={e => setReportTo(e.target.value)} /></label></>}<button onClick={exportReport} className="btn-secondary ml-auto inline-flex items-center gap-2"><Download size={16} />Export Report XLSX</button></div>}
+     <div className="mb-5 flex flex-wrap items-center justify-between gap-3"><div className="flex flex-wrap rounded-xl border border-borderLight bg-cardBg p-1">{([['stock', 'Stock Management'], ['products', 'Add / Edit Products'], ['categories', 'Categories'], ['analytics', 'Analytics & Reports']] as [InventoryTab, string][]).map(([value, label]) => <button key={value} onClick={() => setTab(value)} className={`rounded-lg px-3 py-2 text-xs font-black sm:px-4 sm:text-sm ${tab === value ? 'bg-[#CBB89D] text-[#171717]' : 'text-textMuted hover:bg-[#EDE4D4]'}`}>{label}</button>)}</div><div className="flex flex-wrap gap-2">{tab === 'stock' && <button onClick={exportInventory} className="btn-secondary inline-flex items-center gap-2"><Download size={16} />Export XLSX</button>}<button onClick={() => void refresh()} className="rounded-xl border border-borderLight bg-cardBg p-3 hover:bg-[#EDE4D4]" title="Refresh"><RefreshCw size={16} /></button></div></div>
+     {notice && <div className={`mb-5 rounded-xl border px-4 py-3 text-sm font-bold ${notice.type === 'error' ? 'border-red-200 bg-red-50 text-red-700' : 'border-borderLight bg-[#EDE4D4]'}`}>{notice.text}</div>}
+-    {tab === 'stock' && <><StatGrid className="mb-5">{[['Total Products', metrics.total], ['Low Stock', metrics.low], ['Out of Stock', metrics.out], ['Stock Value', formatCurrency(metrics.value)]].map(([label, value]) => <StatCard key={String(label)} label={label} value={value} className="bg-cardBg shadow-soft" labelClassName="text-textMuted" valueClassName="text-xl" />)}</StatGrid><div className="mb-4 flex flex-wrap gap-2"><div className="relative min-w-[220px] flex-1"><SlidersHorizontal className="absolute left-3 top-1/2 -translate-y-1/2 text-textMuted" size={16} /><input className={`${inputClass} pl-9`} placeholder="Search products" value={search} onChange={e => setSearch(e.target.value)} /></div>{(['all', 'low', 'out'] as StockFilter[]).map(value => <button key={value} onClick={() => setFilter(value)} className={`rounded-xl px-4 py-2 text-xs font-black uppercase ${filter === value ? 'bg-[#CBB89D]' : 'border border-borderLight bg-cardBg hover:bg-[#EDE4D4]'}`}>{value}</button>)}</div><ProductTable products={filteredProducts} loading={loading} onEdit={openProduct} onAdjust={setStockModal} /></>}
++    {tab === 'stock' && <><StatGrid className="mb-5"><StatCard label="Total Products" value={metrics.total} className="bg-cardBg shadow-soft" labelClassName="text-textMuted" valueClassName="text-xl" /><StatCard label="LOW STOCK" value={`${metrics.low} products`} className="bg-cardBg shadow-soft" labelClassName="text-textMuted" valueClassName="text-xl" /><StatCard label="OUT OF STOCK" value={`${metrics.out} products`} className="bg-cardBg shadow-soft" labelClassName="text-textMuted" valueClassName="text-xl" /><StatCard label="Stock Value" value={formatCurrency(metrics.value)} className="bg-cardBg shadow-soft" labelClassName="text-textMuted" valueClassName="text-xl" /></StatGrid><div className="mb-5 grid gap-5 lg:grid-cols-[1.3fr_.7fr]"><div className="rounded-2xl border border-borderLight bg-cardBg p-5 shadow-soft"><div className="flex items-center justify-between gap-3"><div><p className="text-xs font-black uppercase tracking-[.16em] text-textMuted">Recent alerts</p><h2 className="mt-1 text-lg font-black">Threshold activity</h2></div><AlertTriangle size={19} /></div><div className="mt-3 divide-y divide-borderLight">{recentAlerts.length === 0 ? <p className="py-4 text-sm text-textMuted">No threshold crossings recorded yet.</p> : recentAlerts.slice(0, 4).map(alert => <button type="button" key={alert.id} onClick={() => navigate(`/inventory?product=${alert.product_id}`)} className="flex min-h-14 w-full items-center justify-between gap-3 py-3 text-left"><span className="min-w-0"><span className="block truncate text-sm font-black">{alert.product?.name || 'Inventory product'}</span><span className="block text-xs text-textMuted">{alert.alert_type === 'OUT_OF_STOCK' ? 'OUT OF STOCK' : `LOW STOCK · ${alert.stock_quantity} units`}</span></span><span className="shrink-0 text-xs font-bold text-textMuted">{new Date(alert.created_at).toLocaleDateString()}</span></button>)}</div></div><div className="rounded-2xl border border-borderLight bg-cardBg p-5 shadow-soft"><p className="text-xs font-black uppercase tracking-[.16em] text-textMuted">Inventory health</p><div className="mt-4 space-y-4"><div><div className="flex justify-between text-sm font-bold"><span>In stock</span><span>{Math.max(metrics.total - metrics.low - metrics.out, 0)}</span></div><div className="mt-2 h-2 rounded-full bg-[#E5D4B8]"><div className="h-full rounded-full bg-[#171717]" style={{ width: `${metrics.total ? Math.max(metrics.total - metrics.low - metrics.out, 0) / metrics.total * 100 : 0}%` }} /></div></div><div className="flex justify-between text-sm font-bold"><span>Unread alerts</span><span>{recentAlerts.filter(alert => !alert.is_read).length}</span></div></div></div></div><div className="mb-4 flex flex-wrap gap-2"><div className="relative min-w-[220px] flex-1"><SlidersHorizontal className="absolute left-3 top-1/2 -translate-y-1/2 text-textMuted" size={16} /><input className={`${inputClass} pl-9`} placeholder="Search products" value={search} onChange={e => setSearch(e.target.value)} /></div>{(['all', 'low', 'out'] as StockFilter[]).map(value => <button key={value} onClick={() => setFilter(value)} className={`rounded-xl px-4 py-2 text-xs font-black uppercase ${filter === value ? 'bg-[#CBB89D]' : 'border border-borderLight bg-cardBg hover:bg-[#EDE4D4]'}`}>{value}</button>)}</div><ProductTable products={filteredProducts} loading={loading} onEdit={openProduct} onAdjust={setStockModal} /></>}
+     {tab === 'products' && <div className="rounded-2xl border border-borderLight bg-cardBg p-5 shadow-soft"><div className="flex items-center justify-between"><div><h2 className="flex items-center gap-2 text-lg font-black"><Boxes size={19} />Product Management</h2><p className="mt-1 text-sm text-textMuted">Create or edit products used immediately by the Billing Catalog.</p></div><button onClick={() => openProduct()} className="btn-primary inline-flex items-center gap-2"><Plus size={16} />Add Product</button></div><div className="mt-5"><ProductTable products={products.filter(p => !search || `${p.name} ${p.category}`.toLowerCase().includes(search.toLowerCase()))} loading={loading} onEdit={openProduct} onAdjust={setStockModal} /></div></div>}
+     {tab === 'categories' && <div className="rounded-2xl border border-borderLight bg-cardBg shadow-soft"><div className="flex items-center justify-between border-b border-borderLight p-4"><h2 className="text-lg font-black">Catalog Categories</h2><button onClick={() => { setEditingCategory(null); setCategoryName('') }} className="btn-primary inline-flex items-center gap-2"><Plus size={16} />Add Category</button></div><form onSubmit={saveCategory} className="flex gap-2 border-b border-borderLight p-4"><input className={inputClass} placeholder="New category name" value={categoryName} onChange={e => setCategoryName(e.target.value)} /><button className="btn-primary shrink-0" type="submit">{editingCategory ? 'Rename' : 'Add'}</button></form><div className="divide-y divide-borderLight">{categories.map(category => <div key={category.id} className="flex items-center justify-between px-4 py-3"><span className={category.is_active ? 'font-bold' : 'font-bold text-textMuted line-through'}>{category.name_en}</span><div><button onClick={() => { setEditingCategory(category); setCategoryName(category.name_en) }} className="mr-1 rounded-lg border border-borderLight p-2 hover:bg-[#EDE4D4]"><Edit3 size={15} /></button><button onClick={async () => { const result = await supabase.from('categories').update({ is_active: !category.is_active }).eq('id', category.id); if (result.error) setNotice({ type: 'error', text: result.error.message }); else await refresh() }} className="mr-1 rounded-lg border border-borderLight p-2 hover:bg-[#EDE4D4]"><Power size={15} /></button><button onClick={() => void removeCategory(category)} className="rounded-lg border border-borderLight px-2 py-1 text-xs font-black hover:bg-[#EDE4D4]">Delete</button></div></div>)}</div></div>}
+     {tab === 'analytics' && <div className="grid gap-5 md:grid-cols-3"><div className="rounded-2xl border border-borderLight bg-cardBg p-5 shadow-soft"><BarChart3 size={19} /><p className="mt-4 text-xs font-black uppercase tracking-wider text-textMuted">Units Restocked · This Week</p><p className="mt-2 text-2xl font-black">{analytics.restocked}</p></div><div className="rounded-2xl border border-borderLight bg-cardBg p-5 shadow-soft"><BarChart3 size={19} /><p className="mt-4 text-xs font-black uppercase tracking-wider text-textMuted">Units Sold · This Week</p><p className="mt-2 text-2xl font-black">{analytics.sold}</p></div><div className="rounded-2xl border border-borderLight bg-cardBg p-5 shadow-soft"><BarChart3 size={19} /><p className="mt-4 text-xs font-black uppercase tracking-wider text-textMuted">Lost / Damaged · This Week</p><p className="mt-2 text-2xl font-black">{analytics.lost}</p></div><div className="rounded-2xl border border-borderLight bg-cardBg p-5 shadow-soft md:col-span-2"><h2 className="text-lg font-black">Highest Stock Value</h2><div className="mt-3 divide-y divide-borderLight">{[...physicalProducts].sort((a, b) => b.stock * b.price - a.stock * a.price).slice(0, 10).map(p => <div key={String(p.id)} className="flex justify-between py-3 text-sm"><span className="font-bold">{p.name}<span className="ml-2 text-textMuted">{p.stock} units × {formatCurrency(p.price)}</span></span><b>{formatCurrency(p.stock * p.price)}</b></div>)}</div></div><div className="rounded-2xl border border-borderLight bg-cardBg p-5 shadow-soft"><h2 className="text-lg font-black">Stock by Category</h2><div className="mt-3 divide-y divide-borderLight">{categories.map(c => <div key={c.id} className="flex justify-between py-3 text-sm"><span className="font-bold">{c.name_en}</span><b>{physicalProducts.filter(p => p.categoryId === c.id || p.category === c.name_en).length}</b></div>)}</div></div></div>}
+@@ -90,7 +95,7 @@ export default function InventoryProducts() {
+ function ProductTable({ products, loading, onEdit, onAdjust }: { products: Product[]; loading: boolean; onEdit: (product: Product) => void; onAdjust: (product: Product) => void }) {
+   if (loading) return <div className="rounded-xl border border-borderLight p-8 text-center text-sm text-textMuted">Loading products…</div>
+   return <div className="rounded-xl border border-borderLight">
+-    <div className="hidden overflow-x-auto md:block"><table className="min-w-full text-left text-sm"><thead className="bg-[#EDE4D4] text-xs font-black uppercase tracking-wider"><tr>{['Product', 'Category', 'Stock', 'Alert At', 'Status', 'Price', 'Actions'].map(h => <th key={h} className="px-4 py-3">{h}</th>)}</tr></thead><tbody className="divide-y divide-borderLight">{products.map(product => { const low = product.stock > 0 && product.stock <= (product.lowStockAlert ?? 5); const out = product.stock <= 0; return <tr key={String(product.id)} className="hover:bg-[#EDE4D4]/40"><td className="px-4 py-3 font-black">{product.name}<p className="text-xs font-normal text-textMuted">{product.trackInventory ? 'Product' : 'Service'}</p></td><td className="px-4 py-3">{product.category || '—'}</td><td className="px-4 py-3 font-black">{product.trackInventory ? product.stock : '—'}</td><td className="px-4 py-3">{product.trackInventory ? product.lowStockAlert ?? 5 : '—'}</td><td className="px-4 py-3 font-black">{out ? 'OUT OF STOCK' : low ? 'LOW STOCK' : 'IN STOCK'}</td><td className="px-4 py-3 font-black">{formatCurrency(product.price)}</td><td className="whitespace-nowrap px-4 py-3"><button onClick={() => onEdit(product)} className="touch-target mr-1 rounded-lg border border-borderLight p-2 hover:bg-[#EDE4D4]" title="Edit"><Edit3 size={15} /></button>{product.trackInventory && <button onClick={() => onAdjust(product)} className="touch-target rounded-lg border border-borderLight p-2 hover:bg-[#EDE4D4]" title="Adjust Stock"><SlidersHorizontal size={15} /></button>}</td></tr> })}</tbody></table></div>
+-    <div className="space-y-3 p-3 md:hidden">{products.length === 0 ? <p className="p-5 text-center text-sm text-textMuted">No products match this view.</p> : products.map(product => { const low = product.stock > 0 && product.stock <= (product.lowStockAlert ?? 5); const out = product.stock <= 0; return <article key={String(product.id)} className="rounded-xl border border-borderLight bg-[#FFFDF8] p-4"><div className="flex items-start justify-between gap-3"><div className="min-w-0"><h3 className="break-words font-black">{product.name}</h3><p className="mt-0.5 text-xs text-textMuted">{product.category || 'Uncategorised'} · {product.trackInventory ? 'Product' : 'Service'}</p></div><p className="shrink-0 font-black">{formatCurrency(product.price)}</p></div><div className="mt-3 grid grid-cols-3 gap-2 border-y border-borderLight py-3 text-center"><div><p className="text-xs font-black uppercase text-textMuted">Stock</p><p className="font-black">{product.trackInventory ? product.stock : '—'}</p></div><div><p className="text-xs font-black uppercase text-textMuted">Alert</p><p className="font-black">{product.trackInventory ? product.lowStockAlert ?? 5 : '—'}</p></div><div><p className="text-xs font-black uppercase text-textMuted">Status</p><p className="break-words text-sm font-black">{out ? 'OUT' : low ? 'LOW' : 'IN STOCK'}</p></div></div><div className="mt-3 flex gap-2"><button onClick={() => onEdit(product)} className="touch-target inline-flex flex-1 items-center justify-center gap-2 rounded-lg border border-borderLight text-xs font-black"><Edit3 size={15} />Edit</button>{product.trackInventory && <button onClick={() => onAdjust(product)} className="touch-target inline-flex flex-1 items-center justify-center gap-2 rounded-lg border border-borderLight text-xs font-black"><SlidersHorizontal size={15} />Adjust</button>}</div></article> })}</div>
++    <div className="hidden overflow-x-auto md:block"><table className="min-w-full text-left text-sm"><thead className="bg-[#EDE4D4] text-xs font-black uppercase tracking-wider"><tr>{['Product', 'Category', 'Stock', 'Alert At', 'Status', 'Price', 'Actions'].map(h => <th key={h} className="px-4 py-3">{h}</th>)}</tr></thead><tbody className="divide-y divide-borderLight">{products.map(product => { const low = product.trackInventory && product.stock > 0 && product.stock <= (product.lowStockAlert ?? 5); const out = product.trackInventory && product.stock <= 0; return <tr key={String(product.id)} className="hover:bg-[#EDE4D4]/40"><td className="px-4 py-3 font-black">{product.name}<p className="text-xs font-normal text-textMuted">{product.trackInventory ? 'Product' : 'Service'}</p></td><td className="px-4 py-3">{product.category || '—'}</td><td className="px-4 py-3 font-black">{product.trackInventory ? product.stock : '—'}</td><td className="px-4 py-3">{product.trackInventory ? product.lowStockAlert ?? 5 : '—'}</td><td className="px-4 py-3 font-black">{out ? 'OUT OF STOCK' : low ? 'LOW STOCK' : 'IN STOCK'}</td><td className="px-4 py-3 font-black">{formatCurrency(product.price)}</td><td className="whitespace-nowrap px-4 py-3"><button onClick={() => onEdit(product)} className="touch-target mr-1 rounded-lg border border-borderLight p-2 hover:bg-[#EDE4D4]" title="Edit"><Edit3 size={15} /></button>{product.trackInventory && <button onClick={() => onAdjust(product)} className="touch-target rounded-lg border border-borderLight p-2 hover:bg-[#EDE4D4]" title="Adjust Stock"><SlidersHorizontal size={15} /></button>}</td></tr> })}</tbody></table></div>
++    <div className="space-y-3 p-3 md:hidden">{products.length === 0 ? <p className="p-5 text-center text-sm text-textMuted">No products match this view.</p> : products.map(product => { const low = product.trackInventory && product.stock > 0 && product.stock <= (product.lowStockAlert ?? 5); const out = product.trackInventory && product.stock <= 0; return <article key={String(product.id)} className="rounded-xl border border-borderLight bg-[#FFFDF8] p-4"><div className="flex items-start justify-between gap-3"><div className="min-w-0"><h3 className="break-words font-black">{product.name}</h3><p className="mt-0.5 text-xs text-textMuted">{product.category || 'Uncategorised'} · {product.trackInventory ? 'Product' : 'Service'}</p></div><p className="shrink-0 font-black">{formatCurrency(product.price)}</p></div><div className="mt-3 grid grid-cols-3 gap-2 border-y border-borderLight py-3 text-center"><div><p className="text-xs font-black uppercase text-textMuted">Stock</p><p className="font-black">{product.trackInventory ? product.stock : '—'}</p></div><div><p className="text-xs font-black uppercase text-textMuted">Alert</p><p className="font-black">{product.trackInventory ? product.lowStockAlert ?? 5 : '—'}</p></div><div><p className="text-xs font-black uppercase text-textMuted">Status</p><p className="break-words text-sm font-black">{out ? 'OUT' : low ? 'LOW' : 'IN STOCK'}</p></div></div><div className="mt-3 flex gap-2"><button onClick={() => onEdit(product)} className="touch-target inline-flex flex-1 items-center justify-center gap-2 rounded-lg border border-borderLight text-xs font-black"><Edit3 size={15} />Edit</button>{product.trackInventory && <button onClick={() => onAdjust(product)} className="touch-target inline-flex flex-1 items-center justify-center gap-2 rounded-lg border border-borderLight text-xs font-black"><SlidersHorizontal size={15} />Adjust</button>}</div></article> })}</div>
+   </div>
+ }
+diff --git a/jj-signature-billing-app/src/services/inventoryAlertService.ts b/jj-signature-billing-app/src/services/inventoryAlertService.ts
+new file mode 100644
+index 0000000..4b58074
+--- /dev/null
++++ b/jj-signature-billing-app/src/services/inventoryAlertService.ts
+@@ -0,0 +1,38 @@
++import { supabase } from '../lib/supabase'
++
++export type InventoryAlertType = 'LOW_STOCK' | 'OUT_OF_STOCK'
++
++export type InventoryAlert = {
++  id: string
++  product_id: string | number
++  alert_type: InventoryAlertType
++  stock_quantity: number
++  threshold: number | null
++  message: string | null
++  is_read: boolean
++  created_at: string
++  read_at: string | null
++  product?: { name?: string | null } | null
++}
++
++export async function listInventoryAlerts(limit = 30) {
++  return supabase
++    .from('inventory_alerts')
++    .select('id, product_id, alert_type, stock_quantity, threshold, message, is_read, created_at, read_at, products(name)')
++    .order('created_at', { ascending: false })
++    .limit(limit)
++}
++
++export async function markInventoryAlertRead(id: string) {
++  return supabase
++    .from('inventory_alerts')
++    .update({ is_read: true, read_at: new Date().toISOString() })
++    .eq('id', id)
++}
++
++export async function markAllInventoryAlertsRead() {
++  return supabase
++    .from('inventory_alerts')
++    .update({ is_read: true, read_at: new Date().toISOString() })
++    .eq('is_read', false)
++}
+diff --git a/jj-signature-billing-app/src/services/inventoryAlertSound.ts b/jj-signature-billing-app/src/services/inventoryAlertSound.ts
+new file mode 100644
+index 0000000..f4a262a
+--- /dev/null
++++ b/jj-signature-billing-app/src/services/inventoryAlertSound.ts
+@@ -0,0 +1,43 @@
++const STORAGE_KEY = 'jj-signature-inventory-sounds-enabled'
++let audioContext: AudioContext | null = null
++let lastPlayedAt = 0
++
++export function isInventorySoundEnabled() {
++  try { return localStorage.getItem(STORAGE_KEY) === 'true' } catch { return false }
++}
++
++export function setInventorySoundEnabled(enabled: boolean) {
++  try { localStorage.setItem(STORAGE_KEY, String(enabled)) } catch { /* preference storage is optional */ }
++}
++
++export async function unlockInventoryAlertSound() {
++  if (!audioContext) {
++    const AudioContextConstructor = window.AudioContext
++    if (!AudioContextConstructor) return
++    audioContext = new AudioContextConstructor()
++  }
++  if (audioContext.state === 'suspended') await audioContext.resume()
++}
++
++export async function playInventoryAlertSound(type: 'LOW_STOCK' | 'OUT_OF_STOCK') {
++  if (!isInventorySoundEnabled() || Date.now() - lastPlayedAt < 1800) return
++  try {
++    await unlockInventoryAlertSound()
++    if (!audioContext) return
++    const now = audioContext.currentTime
++    const oscillator = audioContext.createOscillator()
++    const gain = audioContext.createGain()
++    oscillator.type = 'sine'
++    oscillator.frequency.setValueAtTime(type === 'OUT_OF_STOCK' ? 520 : 660, now)
++    oscillator.frequency.exponentialRampToValueAtTime(type === 'OUT_OF_STOCK' ? 360 : 480, now + 0.18)
++    gain.gain.setValueAtTime(0.0001, now)
++    gain.gain.exponentialRampToValueAtTime(type === 'OUT_OF_STOCK' ? 0.12 : 0.08, now + 0.015)
++    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.22)
++    oscillator.connect(gain).connect(audioContext.destination)
++    oscillator.start(now)
++    oscillator.stop(now + 0.24)
++    lastPlayedAt = Date.now()
++  } catch {
++    // Browser autoplay policy or unavailable audio must never affect billing.
++  }
++}
+diff --git a/jj-signature-billing-app/supabase/migrations/20260904_0006_inventory_alerts.sql b/jj-signature-billing-app/supabase/migrations/20260904_0006_inventory_alerts.sql
+new file mode 100644
+index 0000000..f01a872
+--- /dev/null
++++ b/jj-signature-billing-app/supabase/migrations/20260904_0006_inventory_alerts.sql
+@@ -0,0 +1,98 @@
++-- J.J Signature: server-authoritative inventory alert lifecycle.
++-- No backfill is performed: alerts represent new threshold transitions only.
++
++CREATE TABLE IF NOT EXISTS public.inventory_alerts (
++  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
++  product_id BIGINT NOT NULL REFERENCES public.products(id) ON DELETE CASCADE,
++  alert_type TEXT NOT NULL CHECK (alert_type IN ('LOW_STOCK', 'OUT_OF_STOCK')),
++  stock_quantity INTEGER NOT NULL CHECK (stock_quantity >= 0),
++  threshold INTEGER CHECK (threshold IS NULL OR threshold >= 0),
++  message TEXT,
++  is_read BOOLEAN NOT NULL DEFAULT FALSE,
++  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
++  read_at TIMESTAMPTZ
++);
++
++CREATE INDEX IF NOT EXISTS inventory_alerts_product_idx
++  ON public.inventory_alerts (product_id);
++CREATE INDEX IF NOT EXISTS inventory_alerts_read_idx
++  ON public.inventory_alerts (is_read);
++CREATE INDEX IF NOT EXISTS inventory_alerts_created_idx
++  ON public.inventory_alerts (created_at DESC);
++CREATE INDEX IF NOT EXISTS inventory_alerts_unread_created_idx
++  ON public.inventory_alerts (created_at DESC)
++  WHERE is_read = FALSE;
++
++CREATE OR REPLACE FUNCTION public.create_inventory_alert_on_stock_transition()
++RETURNS TRIGGER
++LANGUAGE plpgsql
++SECURITY DEFINER
++SET search_path = public
++AS $$
++DECLARE
++  v_stock NUMERIC := COALESCE(NEW.stock_quantity, NEW.stock, 0);
++  v_old_stock NUMERIC := COALESCE(OLD.stock_quantity, OLD.stock, 0);
++  v_threshold NUMERIC := COALESCE(NEW.low_stock_alert, 0);
++  v_alert_type TEXT;
++  v_message TEXT;
++BEGIN
++  IF NOT COALESCE(NEW.track_inventory, TRUE)
++     OR v_stock IS NOT DISTINCT FROM v_old_stock THEN
++    RETURN NEW;
++  END IF;
++
++  -- Row updates are already serialized by PostgreSQL. This transaction lock
++  -- additionally makes the transition decision safe if multiple stock paths
++  -- are introduced later and prevents duplicate event inserts in one cycle.
++  PERFORM pg_advisory_xact_lock(hashtextextended('inventory-alert:' || NEW.id::TEXT, 0));
++
++  IF v_stock <= 0 AND v_old_stock > 0 THEN
++    v_alert_type := 'OUT_OF_STOCK';
++    v_message := 'The product is now out of stock.';
++  ELSIF v_stock > 0 AND v_stock <= v_threshold AND v_old_stock > v_threshold THEN
++    v_alert_type := 'LOW_STOCK';
++    v_message := format('Stock has reached the configured threshold (%s). Current stock: %s.', v_threshold, v_stock);
++  ELSE
++    -- This includes recovery above the threshold. The next crossing is
++    -- naturally re-armed because the trigger compares OLD and NEW values.
++    RETURN NEW;
++  END IF;
++
++  INSERT INTO public.inventory_alerts (product_id, alert_type, stock_quantity, threshold, message)
++  VALUES (NEW.id, v_alert_type, GREATEST(TRUNC(v_stock), 0)::INTEGER,
++          CASE WHEN v_alert_type = 'LOW_STOCK' THEN GREATEST(TRUNC(v_threshold), 0)::INTEGER ELSE NULL END,
++          v_message);
++  RETURN NEW;
++END;
++$$;
++
++DROP TRIGGER IF EXISTS products_inventory_alert_transition ON public.products;
++CREATE TRIGGER products_inventory_alert_transition
++AFTER UPDATE OF stock_quantity, stock ON public.products
++FOR EACH ROW
++EXECUTE FUNCTION public.create_inventory_alert_on_stock_transition();
++
++ALTER TABLE public.inventory_alerts ENABLE ROW LEVEL SECURITY;
++
++DROP POLICY IF EXISTS inventory_alerts_admin_select ON public.inventory_alerts;
++CREATE POLICY inventory_alerts_admin_select ON public.inventory_alerts
++  FOR SELECT TO authenticated USING (public.is_admin());
++
++DROP POLICY IF EXISTS inventory_alerts_admin_update ON public.inventory_alerts;
++CREATE POLICY inventory_alerts_admin_update ON public.inventory_alerts
++  FOR UPDATE TO authenticated
++  USING (public.is_admin())
++  WITH CHECK (public.is_admin());
++
++REVOKE INSERT, DELETE ON public.inventory_alerts FROM anon, authenticated;
++GRANT SELECT, UPDATE ON public.inventory_alerts TO authenticated;
++
++DO $$
++BEGIN
++  ALTER PUBLICATION supabase_realtime ADD TABLE public.inventory_alerts;
++EXCEPTION WHEN duplicate_object THEN
++  NULL;
++END;
++$$;
++
++NOTIFY pgrst, 'reload schema';
+-- 
+2.46.1.windows.1
+
+
+From 6f11c7eb40e706d7dd66baf4e825572e50d779cf Mon Sep 17 00:00:00 2001
+From: sanjayrockerz <myteamcreations09@gmail.com>
+Date: Fri, 4 Sep 2026 18:56:11 +0530
+Subject: [PATCH 3/6] fix: polish mobile responsive UI
+
+---
+ jj-signature-billing-app/src/index.css        | 169 ++++++++++++++++++
+ .../src/pages/AdminLogin.tsx                  |   2 +-
+ jj-signature-billing-app/src/pages/Login.tsx  |   2 +-
+ jj-signature-billing-app/src/pages/Pos.tsx    |  42 ++---
+ 4 files changed, 192 insertions(+), 23 deletions(-)
+
+diff --git a/jj-signature-billing-app/src/index.css b/jj-signature-billing-app/src/index.css
+index 5ed8387..cf22dbd 100644
+--- a/jj-signature-billing-app/src/index.css
++++ b/jj-signature-billing-app/src/index.css
+@@ -442,6 +442,175 @@
+   .advance-orders-content > .hidden.space-y-3 { display: block; }
+ }
+ 
++/* -------------------------------------------------------------------------
++   J.J Signature mobile polish
++   Keep this contract below the utility compatibility layer so legacy utility
++   classes inherit the same compact mobile primitives without touching the
++   desktop/tablet composition.
++---------------------------------------------------------------------------- */
++@media (max-width: 767px) {
++  :root {
++    --jj-mobile-page-padding: 1rem;
++    --jj-mobile-card-padding: 1rem;
++    --jj-mobile-control-height: 3rem;
++    --jj-mobile-compact-height: 2.75rem;
++    --jj-mobile-radius: 1rem;
++  }
++
++  html, body, #root { width: 100%; max-width: 100%; overflow-x: hidden; }
++  body { font-size: 0.875rem; line-height: 1.45; }
++
++  /* Shared admin header/content rhythm. */
++  .admin-shell main > div:first-child {
++    padding: 0.75rem var(--jj-mobile-page-padding) 0.875rem !important;
++  }
++  .admin-shell main > div:first-child h1 {
++    font-size: clamp(1.625rem, 7vw, 1.875rem) !important;
++    line-height: 1.1 !important;
++  }
++  .admin-shell main > div:first-child p { margin-top: 0.25rem !important; font-size: 0.8125rem !important; }
++  .admin-shell main > div:first-child .touch-target { min-width: 2.75rem; min-height: 2.75rem; }
++  .admin-shell main > div:last-child {
++    padding: 1rem var(--jj-mobile-page-padding) calc(2rem + env(safe-area-inset-bottom)) !important;
++  }
++  .admin-shell main > div:last-child > * { max-width: 100%; min-width: 0; }
++
++  /* Consistent editable-field treatment across every admin module and modal. */
++  .admin-shell input:not([type="checkbox"]):not([type="radio"]),
++  .admin-shell select,
++  .admin-shell textarea,
++  .pos-billing-shell input:not([type="checkbox"]):not([type="radio"]),
++  .pos-billing-shell select,
++  .pos-billing-shell textarea,
++  [role="dialog"] input:not([type="checkbox"]):not([type="radio"]),
++  [role="dialog"] select,
++  [role="dialog"] textarea {
++    min-width: 0;
++    min-height: var(--jj-mobile-control-height);
++    height: var(--jj-mobile-control-height);
++    padding: 0.75rem 0.875rem !important;
++    border: 1px solid var(--jj-border) !important;
++    border-radius: 0.75rem !important;
++    background: var(--jj-surface) !important;
++    color: var(--jj-text) !important;
++    font-size: 0.9375rem !important;
++    line-height: 1.2;
++  }
++  .admin-shell textarea,
++  .pos-billing-shell textarea,
++  [role="dialog"] textarea { height: auto; min-height: 5.5rem; line-height: 1.4; }
++  .admin-shell label, .pos-billing-shell label { font-size: 0.75rem; line-height: 1.25; }
++
++  /* Shared card density. */
++  .admin-shell main .rounded-2xl,
++  .admin-shell main .rounded-3xl {
++    border-radius: var(--jj-mobile-radius) !important;
++  }
++  .admin-shell main .shadow-soft { box-shadow: 0 5px 16px rgba(17, 17, 17, 0.055); }
++  .admin-shell main .p-5 { padding: var(--jj-mobile-card-padding) !important; }
++  .admin-shell main .p-6 { padding: 1.125rem !important; }
++  .admin-shell main .p-8 { padding: 1.125rem !important; }
++  .admin-shell main .gap-5, .admin-shell main .gap-6 { gap: 0.875rem !important; }
++  .admin-shell main h2 { font-size: 1.125rem; line-height: 1.2; }
++  .admin-shell main h3 { font-size: 1rem; line-height: 1.25; }
++  .admin-shell main button, .admin-shell main a { font-size: 0.8125rem; }
++  .admin-shell main button:not(.touch-target), .admin-shell main .btn-primary, .admin-shell main .btn-secondary {
++    min-height: 2.75rem;
++    border-radius: 0.75rem;
++  }
++  .admin-shell main table { font-size: 0.8125rem; }
++
++  /* The desktop sidebar is already hidden by its lg breakpoint; the drawer
++     remains an overlay and is kept inside the viewport on narrow phones. */
++  .admin-shell > [role="dialog"] > div:last-child {
++    width: min(86vw, 320px) !important;
++    min-height: 100dvh;
++    padding: 1rem !important;
++  }
++
++  /* POS header and two equivalent segmented controls. */
++  .pos-billing-shell > div:first-child {
++    gap: 0.75rem;
++    padding: 0.875rem 1rem 0.75rem !important;
++  }
++  .pos-billing-shell > div:first-child h2 { font-size: clamp(1.625rem, 7vw, 1.875rem) !important; line-height: 1.08; }
++  .pos-billing-shell > div:first-child p { font-size: 0.8125rem !important; line-height: 1.35; }
++  .pos-billing-shell > div:first-child > div:last-child { gap: 0.5rem; }
++  .pos-billing-shell > div:nth-child(2) {
++    gap: 0.875rem !important;
++    padding: 0.75rem 1rem 1.5rem !important;
++  }
++  .pos-billing-shell .segmented-control { width: 100%; min-height: 2.875rem; border-radius: 0.75rem; }
++  .pos-billing-shell .segmented-control-tab {
++    min-height: 2.875rem !important;
++    padding: 0.625rem 0.75rem !important;
++    font-size: 0.75rem !important;
++    letter-spacing: 0.06em !important;
++  }
++
++  /* POS's stable columns become an intentional single-column flow. */
++  .pos-billing-shell > div:nth-child(2) > div:nth-child(2),
++  .pos-billing-shell > div:nth-child(2) > div:nth-child(3) { width: 100%; min-width: 0; gap: 0.875rem !important; }
++  .pos-billing-shell > div:nth-child(2) > div:nth-child(3) { height: auto !important; max-height: none !important; }
++  .pos-billing-shell > div:nth-child(2) > div:nth-child(2) > div:first-child,
++  .pos-billing-shell > div:nth-child(2) > div:nth-child(2) > div:nth-child(2),
++  .pos-billing-shell > div:nth-child(2) > div:nth-child(3) > div:first-child {
++    border-radius: var(--jj-mobile-radius) !important;
++    padding: var(--jj-mobile-card-padding) !important;
++    box-shadow: 0 5px 16px rgba(17, 17, 17, 0.055) !important;
++  }
++  .pos-billing-shell > div:nth-child(2) > div:nth-child(2) > div:first-child h3,
++  .pos-billing-shell > div:nth-child(2) > div:nth-child(2) > div:nth-child(2) h3,
++  .pos-billing-shell > div:nth-child(2) > div:nth-child(3) h3 { font-size: 1.125rem !important; }
++  .pos-billing-shell > div:nth-child(2) > div:nth-child(2) > div:first-child .grid { gap: 0.75rem !important; }
++  .pos-billing-shell > div:nth-child(2) > div:nth-child(2) > div:nth-child(2) { min-height: 0 !important; }
++  .pos-billing-shell > div:nth-child(2) > div:nth-child(2) > div:nth-child(2) > div:first-child { gap: 0.75rem; padding-bottom: 0.875rem; }
++  .pos-billing-shell > div:nth-child(2) > div:nth-child(2) > div:nth-child(2) > div:first-child > div { gap: 0.5rem; }
++  .pos-billing-shell .text-sm { font-size: 0.8125rem; }
++  .pos-billing-shell .text-lg { font-size: 1rem; }
++  .pos-billing-shell .text-xl { font-size: 1.125rem; }
++  .pos-billing-shell .text-2xl { font-size: 1.375rem; }
++  .pos-billing-shell button { min-height: 2.75rem; border-radius: 0.75rem; font-size: 0.8125rem !important; }
++  .pos-billing-shell button.w-9.h-5 { min-height: 1.25rem; height: 1.25rem; }
++  .pos-billing-shell .h-8, .pos-billing-shell .h-9, .pos-billing-shell .h-10, .pos-billing-shell .h-11, .pos-billing-shell .h-12 { min-height: var(--jj-mobile-control-height); height: var(--jj-mobile-control-height); }
++  .pos-billing-shell .h-5 { min-height: 1.25rem; height: 1.25rem; }
++  .pos-billing-shell .p-4 { padding: 1rem !important; }
++  .pos-billing-shell .p-5 { padding: 1rem !important; }
++  .pos-billing-shell .gap-4, .pos-billing-shell .gap-5, .pos-billing-shell .gap-6 { gap: 0.875rem !important; }
++  .pos-billing-shell [class*="grid-cols-[48px_1fr_48px]"] { grid-template-columns: 2.75rem minmax(0, 1fr) 2.75rem; }
++  .pos-billing-shell [class*="grid-cols-[48px_1fr_48px]"] button { min-height: 2.75rem; }
++
++  /* Dialogs: viewport-safe, scrollable, and consistent with the fields. */
++  .pos-billing-shell > .fixed,
++  .admin-shell main > .fixed { padding: 0.75rem !important; align-items: center; }
++  .pos-billing-shell > .fixed > form,
++  .pos-billing-shell > .fixed > div,
++  .admin-shell main > .fixed > form {
++    width: min(100%, 32rem) !important;
++    max-width: calc(100vw - 1.5rem) !important;
++    max-height: calc(100dvh - 1.5rem) !important;
++    overflow-y: auto;
++    border-radius: 1rem !important;
++    padding: 1rem !important;
++  }
++
++  .admin-login-shell { padding: 1rem !important; align-items: flex-start; }
++  .admin-login-shell > div.relative.grid {
++    margin: 0 auto;
++    border-radius: 1rem !important;
++  }
++  .admin-login-shell > div.relative.grid > div:last-child { padding: 1.25rem !important; }
++  .admin-login-shell .mb-8 { margin-bottom: 1.25rem !important; }
++  .admin-login-shell h1 { font-size: 1.75rem !important; line-height: 1.1; }
++  .admin-login-shell form { gap: 0.875rem; }
++  .admin-login-shell label { font-size: 0.75rem; }
++  .admin-login-shell input { min-height: 3rem; height: 3rem; border-radius: 0.75rem !important; font-size: 0.9375rem !important; }
++  .admin-login-shell form > button { min-height: 2.875rem; padding-block: 0.75rem; border-radius: 0.75rem; font-size: 0.8125rem; }
++  .customer-login-shell > div { padding: 1.25rem !important; border-radius: 1rem !important; }
++  .customer-login-shell form input { min-height: 3rem; height: 3rem; font-size: 0.9375rem; }
++  .customer-login-shell form button { min-height: 2.875rem; padding-block: 0.75rem; font-size: 0.8125rem; }
++}
++
+ 
+ /* ── PRINT STYLES — A4 invoice ─────────────────────────── */
+ @media print {
+diff --git a/jj-signature-billing-app/src/pages/AdminLogin.tsx b/jj-signature-billing-app/src/pages/AdminLogin.tsx
+index d80ead5..5c7b72e 100644
+--- a/jj-signature-billing-app/src/pages/AdminLogin.tsx
++++ b/jj-signature-billing-app/src/pages/AdminLogin.tsx
+@@ -37,7 +37,7 @@ export default function AdminLogin() {
+   }
+ 
+   return (
+-    <div className="relative min-h-screen overflow-hidden bg-[#F8F3E8] px-4 py-8 font-sans text-[#111111] sm:px-6 lg:flex lg:items-center lg:justify-center">
++    <div className="admin-login-shell relative min-h-screen overflow-hidden bg-[#F8F3E8] px-4 py-8 font-sans text-[#111111] sm:px-6 lg:flex lg:items-center lg:justify-center">
+       <div className="pointer-events-none absolute -left-32 -top-32 h-80 w-80 rounded-full bg-[#EDE4D4]/70 blur-3xl" />
+       <div className="pointer-events-none absolute -bottom-40 -right-24 h-96 w-96 rounded-full bg-[#CBB89D]/30 blur-3xl" />
+       <div className="relative grid w-full max-w-5xl overflow-hidden rounded-[32px] border border-[#D8CBB7] bg-[#FFFDF8] shadow-[0_24px_80px_rgba(17,17,17,0.14)] lg:grid-cols-[0.9fr_1.1fr]">
+diff --git a/jj-signature-billing-app/src/pages/Login.tsx b/jj-signature-billing-app/src/pages/Login.tsx
+index fad092c..c0c0dd4 100644
+--- a/jj-signature-billing-app/src/pages/Login.tsx
++++ b/jj-signature-billing-app/src/pages/Login.tsx
+@@ -35,7 +35,7 @@ export default function Login() {
+   }
+ 
+   return (
+-    <div className="bg-gradient-to-br from-[#eaf2e5] to-[#F9FAFB] min-h-screen flex items-center justify-center p-4">
++    <div className="customer-login-shell bg-gradient-to-br from-[#eaf2e5] to-[#F9FAFB] min-h-screen flex items-center justify-center p-4">
+       <div className="bg-white p-6 sm:p-8 rounded-3xl shadow-xl border border-sand/40 w-full max-w-md">
+         <div className="flex flex-col items-center mb-8">
+           <div className="mb-4 inline-flex items-center justify-center rounded-2xl bg-white border border-gray-200 p-2 shadow-md">
+diff --git a/jj-signature-billing-app/src/pages/Pos.tsx b/jj-signature-billing-app/src/pages/Pos.tsx
+index 2b96e09..e8cfc89 100644
+--- a/jj-signature-billing-app/src/pages/Pos.tsx
++++ b/jj-signature-billing-app/src/pages/Pos.tsx
+@@ -806,7 +806,7 @@ export default function Pos(props: PosProps = {}) {
+         <div className="flex min-w-0 items-start gap-2">
+           <div className="mt-1 h-6 w-1.5 shrink-0 rounded-full bg-[#CBB89D]"></div>
+           <div className="min-w-0">
+-            <h2 className="text-2xl font-black leading-tight text-[#111111] md:text-3xl">POS Billing Panel</h2>
++            <h2 className="text-xl font-black leading-tight text-[#111111] md:text-3xl">POS Billing Panel</h2>
+             <p className="mt-1 pr-2 text-sm font-medium text-gray-500 md:text-base">Quick Invoice generator & database synced checkout</p>
+           </div>
+         </div>
+@@ -860,58 +860,58 @@ export default function Pos(props: PosProps = {}) {
+ 
+           {/* Customer Details Card */}
+           <div className="bg-cardBg rounded-2xl border border-borderLight shadow-soft p-4 md:p-5">
+-            <h3 className="text-xl md:text-base font-black text-[#111111] flex items-center gap-2 mb-4">
++            <h3 className="text-lg md:text-base font-black text-[#111111] flex items-center gap-2 mb-4">
+               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-[#111111]"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+               Customer Details
+             </h3>
+             <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
+               <div>
+-                <label className="block text-base md:text-xs font-black text-[#374151] tracking-wider uppercase mb-1.5">Customer Name</label>
++                <label className="block text-sm md:text-xs font-black text-[#374151] tracking-wider uppercase mb-1.5">Customer Name</label>
+                 <input
+                   type="text"
+                   value={customer.name}
+                   onChange={e => setCustomer({...customer, name: e.target.value})}
+                   placeholder="Enter name"
+-                  className="w-full h-12 px-4 bg-white border border-[#D1FAE5]/60 rounded-xl focus:outline-none focus:border-[#047857] text-lg md:text-base font-bold text-[#111111] placeholder:text-gray-400 placeholder:font-medium"
++                  className="w-full h-12 px-4 bg-white border border-[#D1FAE5]/60 rounded-xl focus:outline-none focus:border-[#047857] text-base md:text-base font-bold text-[#111111] placeholder:text-gray-400 placeholder:font-medium"
+                 />
+               </div>
+               <div>
+-                <label className="block text-base md:text-xs font-black text-[#374151] tracking-wider uppercase mb-1.5">Mobile Number (WhatsApp)</label>
++                <label className="block text-sm md:text-xs font-black text-[#374151] tracking-wider uppercase mb-1.5">Mobile Number (WhatsApp)</label>
+                 <input
+                   type="text"
+                   value={customer.phone}
+                   onChange={e => setCustomer({...customer, phone: e.target.value})}
+                   placeholder="Enter WhatsApp number"
+-                  className="w-full h-12 px-4 bg-white border border-[#D1FAE5]/60 rounded-xl focus:outline-none focus:border-[#047857] text-lg md:text-base font-bold text-[#111111] placeholder:text-gray-400 placeholder:font-medium"
++                  className="w-full h-12 px-4 bg-white border border-[#D1FAE5]/60 rounded-xl focus:outline-none focus:border-[#047857] text-base md:text-base font-bold text-[#111111] placeholder:text-gray-400 placeholder:font-medium"
+                 />
+               </div>
+               <div>
+-                <label className="block text-base md:text-xs font-black text-[#374151] tracking-wider uppercase mb-1.5">Remarks (Internal)</label>
++                <label className="block text-sm md:text-xs font-black text-[#374151] tracking-wider uppercase mb-1.5">Remarks (Internal)</label>
+                 <input
+                   type="text"
+                   value={remarks}
+                   onChange={e => setRemarks(e.target.value)}
+                   placeholder="Optional remarks"
+-                  className="w-full h-12 px-4 bg-white border border-[#D1FAE5]/60 rounded-xl focus:outline-none focus:border-[#047857] text-lg md:text-base font-bold text-[#111111] placeholder:text-gray-400 placeholder:font-medium"
++                  className="w-full h-12 px-4 bg-white border border-[#D1FAE5]/60 rounded-xl focus:outline-none focus:border-[#047857] text-base md:text-base font-bold text-[#111111] placeholder:text-gray-400 placeholder:font-medium"
+                 />
+               </div>
+               <div>
+-                <label className="block text-base md:text-xs font-black text-[#374151] tracking-wider uppercase mb-1.5">Reference Number</label>
++                <label className="block text-sm md:text-xs font-black text-[#374151] tracking-wider uppercase mb-1.5">Reference Number</label>
+                 <input
+                   type="text"
+                   value={referenceNumber}
+                   onChange={e => setReferenceNumber(e.target.value)}
+                   placeholder="Optional ref no."
+-                  className="w-full h-12 px-4 bg-white border border-[#D1FAE5]/60 rounded-xl focus:outline-none focus:border-[#047857] text-lg md:text-base font-bold text-[#111111] placeholder:text-gray-400 placeholder:font-medium"
++                  className="w-full h-12 px-4 bg-white border border-[#D1FAE5]/60 rounded-xl focus:outline-none focus:border-[#047857] text-base md:text-base font-bold text-[#111111] placeholder:text-gray-400 placeholder:font-medium"
+                 />
+               </div>
+               <div>
+-                <label className="block text-base md:text-xs font-black text-[#374151] tracking-wider uppercase mb-1.5">Billing Date <span className="normal-case font-semibold text-[#6B7280]">(Optional)</span></label>
++                <label className="block text-sm md:text-xs font-black text-[#374151] tracking-wider uppercase mb-1.5">Billing Date <span className="normal-case font-semibold text-[#6B7280]">(Optional)</span></label>
+                 <input
+                   type="date"
+                   value={billingDate}
+                   onChange={e => setBillingDate(e.target.value)}
+-                  className="w-full h-12 px-4 bg-white border border-[#D1FAE5]/60 rounded-xl focus:outline-none focus:border-[#047857] text-lg md:text-base font-bold text-[#111111] placeholder:text-gray-400 placeholder:font-medium"
++                  className="w-full h-12 px-4 bg-white border border-[#D1FAE5]/60 rounded-xl focus:outline-none focus:border-[#047857] text-base md:text-base font-bold text-[#111111] placeholder:text-gray-400 placeholder:font-medium"
+                 />
+                 {!billingDate && <p className="text-xs text-[#9CA3AF] mt-1">Leave blank to use today's date &amp; time</p>}
+               </div>
+@@ -922,7 +922,7 @@ export default function Pos(props: PosProps = {}) {
+           <div className="bg-white rounded-2xl border border-[#D1FAE5]/40 shadow-sm flex-1 flex flex-col min-h-[400px]">
+             {/* Card Header */}
+             <div className="flex flex-col gap-4 p-4 md:p-5 border-b border-[#D1FAE5]/40">
+-              <h3 className="text-xl md:text-base font-black text-[#111111] flex items-center gap-2">
++              <h3 className="text-lg md:text-base font-black text-[#111111] flex items-center gap-2">
+                 <Receipt size={16} className="text-[#047857]" />
+                 Order Items
+               </h3>
+@@ -1005,18 +1005,18 @@ export default function Pos(props: PosProps = {}) {
+                   <div className="md:hidden border border-[#D1FAE5]/30 rounded-2xl p-4 bg-[#FFFDFC] space-y-3">
+                     <div className="flex items-start justify-between gap-3">
+                       <div className="min-w-0 flex-1">
+-                        <p className="text-base font-black uppercase tracking-wider text-[#374151] mb-1">Product Name</p>
++                        <p className="text-sm font-black uppercase tracking-wider text-[#374151] mb-1">Product Name</p>
+                         {item.source === 'manual' ? (
+                           <input
+                             type="text"
+                             value={item.name}
+                             onChange={e => updateItem(item.id, 'name', e.target.value)}
+                             placeholder="Item name"
+-                            className="w-full h-12 px-3 bg-[#FAFAFA] border border-[#D1FAE5]/40 rounded-xl text-lg font-bold text-[#111111] focus:outline-none focus:border-[#047857]"
++                            className="w-full h-12 px-3 bg-white border border-[#D1FAE5]/40 rounded-xl text-base font-bold text-[#111111] focus:outline-none focus:border-[#047857]"
+                           />
+                         ) : (
+                           <div className="rounded-xl border border-[#D1FAE5]/30 bg-white px-3 py-3">
+-                            <p className="text-lg font-bold text-[#111111] break-words">{item.name} {item.variantName ? `- ${item.variantName}` : ''}</p>
++                            <p className="text-base font-bold text-[#111111] break-words">{item.name} {item.variantName ? `- ${item.variantName}` : ''}</p>
+                           </div>
+                         )}
+                       </div>
+@@ -1031,7 +1031,7 @@ export default function Pos(props: PosProps = {}) {
+ 
+                     <div className="grid grid-cols-2 gap-3">
+                       <div>
+-                        <p className="text-base font-black uppercase tracking-wider text-[#374151] mb-1">Price</p>
++                        <p className="text-sm font-black uppercase tracking-wider text-[#374151] mb-1">Price</p>
+                         <input
+                           type="number" onWheel={(e) => (e.target as HTMLInputElement).blur()}
+                           value={item.basePrice === 0 ? '' : item.basePrice}
+@@ -1045,7 +1045,7 @@ export default function Pos(props: PosProps = {}) {
+                         />
+                       </div>
+                       <div>
+-                        <p className="text-base font-black uppercase tracking-wider text-[#374151] mb-1">Total</p>
++                        <p className="text-sm font-black uppercase tracking-wider text-[#374151] mb-1">Total</p>
+                         <div className="h-12 rounded-xl border border-[#D1FAE5]/30 bg-white px-3 flex items-center justify-end text-lg font-black text-[#047857]">
+                           {formatCurrency(item.lineTotal)}
+                         </div>
+@@ -1053,7 +1053,7 @@ export default function Pos(props: PosProps = {}) {
+                     </div>
+ 
+                     <div>
+-                      <p className="text-base font-black uppercase tracking-wider text-[#374151] mb-1">Quantity</p>
++                        <p className="text-sm font-black uppercase tracking-wider text-[#374151] mb-1">Quantity</p>
+                       <div className="grid grid-cols-[48px_1fr_48px] items-center gap-2 border border-[#D1FAE5]/60 rounded-xl px-2 py-2 bg-white">
+                         <button
+                           onClick={() => bumpQty(item.id, -1)}
+@@ -1139,7 +1139,7 @@ export default function Pos(props: PosProps = {}) {
+ 
+             {/* Header */}
+             <div className="flex items-center justify-between p-3 border-b border-[#D1FAE5]/60 bg-white shrink-0">
+-              <h3 className="text-xl md:text-base font-black text-[#111111] flex items-center gap-2">
++              <h3 className="text-lg md:text-base font-black text-[#111111] flex items-center gap-2">
+                 <Receipt size={16} className="text-[#047857]" />
+                 Current Order
+               </h3>
+@@ -1329,7 +1329,7 @@ export default function Pos(props: PosProps = {}) {
+                 {/* Grand Total */}
+                 <div className="flex items-center justify-between pt-0.5">
+                   <span className="text-sm font-black text-[#111111] uppercase tracking-wider">Grand Total</span>
+-                  <span className="text-2xl font-black text-[#111111] tracking-tight">{formatCurrency(total)}</span>
++                  <span className="text-xl font-black text-[#111111] tracking-tight md:text-2xl">{formatCurrency(total)}</span>
+                 </div>
+               </div>
+ 
+-- 
+2.46.1.windows.1
+
+
+From ddd7cc15bddd1886f69110d8623956b2455c0b87 Mon Sep 17 00:00:00 2001
+From: sanjayrockerz <myteamcreations09@gmail.com>
+Date: Fri, 4 Sep 2026 19:11:36 +0530
+Subject: [PATCH 4/6] fix: make POS responsive across mobile layouts
+
+---
+ jj-signature-billing-app/src/App.tsx          |  1 +
+ .../src/components/AdminModuleShell.tsx       |  5 +-
+ .../InventoryNotificationCenter.tsx           | 14 +++--
+ jj-signature-billing-app/src/index.css        | 33 ++++++----
+ jj-signature-billing-app/src/pages/Pos.tsx    | 60 +++++--------------
+ .../src/services/inventoryAlertService.ts     | 37 +++++++++---
+ .../src/services/inventoryAlertSound.ts       | 12 +++-
+ 7 files changed, 90 insertions(+), 72 deletions(-)
+
+diff --git a/jj-signature-billing-app/src/App.tsx b/jj-signature-billing-app/src/App.tsx
+index 225146f..137295b 100644
+--- a/jj-signature-billing-app/src/App.tsx
++++ b/jj-signature-billing-app/src/App.tsx
+@@ -149,6 +149,7 @@ function AppShell() {
+                   <AdminModuleShell
+                     title="Billing Panel"
+                     subtitle="Create bills, manage customers, and complete POS checkout."
++                    mobileBrandOnly
+                   >
+                     <Pos />
+                   </AdminModuleShell>
+diff --git a/jj-signature-billing-app/src/components/AdminModuleShell.tsx b/jj-signature-billing-app/src/components/AdminModuleShell.tsx
+index 2b68882..74baca3 100644
+--- a/jj-signature-billing-app/src/components/AdminModuleShell.tsx
++++ b/jj-signature-billing-app/src/components/AdminModuleShell.tsx
+@@ -17,7 +17,7 @@ const links = [
+   { href: '/expenses', label: 'Expense Tracker', icon: ReceiptIndianRupee },
+ ]
+ 
+-export function AdminModuleShell({ title, subtitle, children }: { title: string; subtitle: string; children: ReactNode }) {
++export function AdminModuleShell({ title, subtitle, children, mobileBrandOnly = false }: { title: string; subtitle: string; children: ReactNode; mobileBrandOnly?: boolean }) {
+   const location = useLocation()
+   const navigate = useNavigate()
+   const logout = useAdminAuthStore(state => state.logout)
+@@ -46,7 +46,8 @@ export function AdminModuleShell({ title, subtitle, children }: { title: string;
+         <div className="border-b border-borderLight bg-cardBg px-4 py-4 sm:px-8 sm:py-5">
+           <div className="mx-auto flex max-w-7xl items-start gap-2 sm:gap-3">
+             <button type="button" onClick={() => setMobileNavOpen(true)} aria-label="Open navigation" className="touch-target mt-0.5 inline-flex items-center justify-center rounded-xl border border-borderLight bg-[#FFFDF8] lg:hidden"><Menu size={20} /></button>
+-            <div className="min-w-0 flex-1"><div className="mb-1 flex items-center gap-2 text-xs font-black uppercase tracking-[.2em] text-textMuted lg:hidden"><img src={BRAND_LOGO} alt="" className="h-7 w-7 rounded-lg object-contain" />{BRAND_EN}</div><h1 className="text-2xl font-black tracking-tight text-[#171717] sm:text-3xl">{title}</h1><p className="mt-1 text-sm text-textMuted">{subtitle}</p></div><InventoryNotificationCenter />
++            {mobileBrandOnly && <div className="flex min-w-0 flex-1 items-center gap-2 lg:hidden"><img src={BRAND_LOGO} alt={`${BRAND_EN} logo`} className="h-8 w-8 rounded-lg object-contain" /><span className="truncate text-xs font-black uppercase tracking-[.18em] text-textMain">{BRAND_EN}</span></div>}
++            <div className={`${mobileBrandOnly ? 'hidden lg:block' : ''} min-w-0 flex-1`}>{!mobileBrandOnly && <div className="mb-1 flex items-center gap-2 text-xs font-black uppercase tracking-[.2em] text-textMuted lg:hidden"><img src={BRAND_LOGO} alt="" className="h-7 w-7 rounded-lg object-contain" />{BRAND_EN}</div>}<h1 className="text-2xl font-black tracking-tight text-[#171717] sm:text-3xl">{title}</h1><p className="mt-1 text-sm text-textMuted">{subtitle}</p></div><InventoryNotificationCenter />
+           </div>
+         </div>
+         <div className="mx-auto max-w-7xl px-4 py-5 sm:px-8 sm:py-8">{children}</div>
+diff --git a/jj-signature-billing-app/src/components/InventoryNotificationCenter.tsx b/jj-signature-billing-app/src/components/InventoryNotificationCenter.tsx
+index 71412ae..a281096 100644
+--- a/jj-signature-billing-app/src/components/InventoryNotificationCenter.tsx
++++ b/jj-signature-billing-app/src/components/InventoryNotificationCenter.tsx
+@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
+ import { Bell, Check, ExternalLink, Volume2, VolumeX, X } from 'lucide-react'
+ import { supabase } from '../lib/supabase'
+ import { isSupabaseConfigured } from '../lib/supabase'
+-import { listInventoryAlerts, markAllInventoryAlertsRead, markInventoryAlertRead, type InventoryAlert } from '../services/inventoryAlertService'
++import { isInventoryAlertsTableMissing, listInventoryAlerts, markAllInventoryAlertsRead, markInventoryAlertRead, type InventoryAlert } from '../services/inventoryAlertService'
+ import { isInventorySoundEnabled, playInventoryAlertSound, setInventorySoundEnabled, unlockInventoryAlertSound } from '../services/inventoryAlertSound'
+ import { useNavigate } from 'react-router-dom'
+ 
+@@ -25,9 +25,13 @@ export function InventoryNotificationCenter() {
+   }
+ 
+   useEffect(() => {
+-    const initialRefresh = window.setTimeout(() => { void refresh() }, 0)
+     if (!isSupabaseConfigured) return
+-    const channel = supabase.channel('admin-inventory-alerts')
++    let channel: ReturnType<typeof supabase.channel> | null = null
++    let cancelled = false
++    const initialize = async () => {
++      await refresh()
++      if (cancelled || isInventoryAlertsTableMissing()) return
++      channel = supabase.channel('admin-inventory-alerts')
+       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'inventory_alerts' }, async payload => {
+         const newAlert = payload.new as InventoryAlert
+         if (seenIds.current.has(newAlert.id)) return
+@@ -46,7 +50,9 @@ export function InventoryNotificationCenter() {
+         window.setTimeout(() => setToast(current => current?.id === alert.id ? null : current), 6500)
+       })
+       .subscribe()
+-    return () => { window.clearTimeout(initialRefresh); void supabase.removeChannel(channel) }
++    }
++    void initialize()
++    return () => { cancelled = true; if (channel) void supabase.removeChannel(channel) }
+   }, [])
+ 
+   useEffect(() => {
+diff --git a/jj-signature-billing-app/src/index.css b/jj-signature-billing-app/src/index.css
+index cf22dbd..f2ca056 100644
+--- a/jj-signature-billing-app/src/index.css
++++ b/jj-signature-billing-app/src/index.css
+@@ -549,23 +549,22 @@
+   }
+ 
+   /* POS's stable columns become an intentional single-column flow. */
+-  .pos-billing-shell > div:nth-child(2) > div:nth-child(2),
+-  .pos-billing-shell > div:nth-child(2) > div:nth-child(3) { width: 100%; min-width: 0; gap: 0.875rem !important; }
+-  .pos-billing-shell > div:nth-child(2) > div:nth-child(3) { height: auto !important; max-height: none !important; }
+-  .pos-billing-shell > div:nth-child(2) > div:nth-child(2) > div:first-child,
+-  .pos-billing-shell > div:nth-child(2) > div:nth-child(2) > div:nth-child(2),
+-  .pos-billing-shell > div:nth-child(2) > div:nth-child(3) > div:first-child {
++  .pos-billing-shell .pos-catalogue-column,
++  .pos-billing-shell .pos-bill-column { width: 100%; min-width: 0; gap: 0.875rem !important; }
++  .pos-billing-shell .pos-bill-column { height: auto !important; max-height: none !important; }
++  .pos-billing-shell .pos-catalogue-column > div:first-child,
++  .pos-billing-shell .pos-catalogue-column > div:nth-child(2),
++  .pos-billing-shell .pos-bill-column > div:first-child {
+     border-radius: var(--jj-mobile-radius) !important;
+     padding: var(--jj-mobile-card-padding) !important;
+     box-shadow: 0 5px 16px rgba(17, 17, 17, 0.055) !important;
+   }
+-  .pos-billing-shell > div:nth-child(2) > div:nth-child(2) > div:first-child h3,
+-  .pos-billing-shell > div:nth-child(2) > div:nth-child(2) > div:nth-child(2) h3,
+-  .pos-billing-shell > div:nth-child(2) > div:nth-child(3) h3 { font-size: 1.125rem !important; }
+-  .pos-billing-shell > div:nth-child(2) > div:nth-child(2) > div:first-child .grid { gap: 0.75rem !important; }
+-  .pos-billing-shell > div:nth-child(2) > div:nth-child(2) > div:nth-child(2) { min-height: 0 !important; }
+-  .pos-billing-shell > div:nth-child(2) > div:nth-child(2) > div:nth-child(2) > div:first-child { gap: 0.75rem; padding-bottom: 0.875rem; }
+-  .pos-billing-shell > div:nth-child(2) > div:nth-child(2) > div:nth-child(2) > div:first-child > div { gap: 0.5rem; }
++  .pos-billing-shell .pos-catalogue-column h3,
++  .pos-billing-shell .pos-bill-column h3 { font-size: 1.125rem !important; }
++  .pos-billing-shell .pos-catalogue-column > div:first-child .grid { gap: 0.75rem !important; }
++  .pos-billing-shell .pos-catalogue-column > div:nth-child(2) { min-height: 0 !important; }
++  .pos-billing-shell .pos-catalogue-column > div:nth-child(2) > div:first-child { gap: 0.75rem; padding-bottom: 0.875rem; }
++  .pos-billing-shell .pos-catalogue-column > div:nth-child(2) > div:first-child > div { gap: 0.5rem; }
+   .pos-billing-shell .text-sm { font-size: 0.8125rem; }
+   .pos-billing-shell .text-lg { font-size: 1rem; }
+   .pos-billing-shell .text-xl { font-size: 1.125rem; }
+@@ -609,6 +608,14 @@
+   .customer-login-shell > div { padding: 1.25rem !important; border-radius: 1rem !important; }
+   .customer-login-shell form input { min-height: 3rem; height: 3rem; font-size: 0.9375rem; }
+   .customer-login-shell form button { min-height: 2.875rem; padding-block: 0.75rem; font-size: 0.8125rem; }
++
++  .admin-shell main > div:first-child [role="status"] {
++    left: 1rem; right: 1rem; bottom: calc(1rem + env(safe-area-inset-bottom));
++    width: auto; max-width: none;
++  }
++  .admin-shell main > div:first-child [class*="w-[min(92vw,390px)"] {
++    right: 0; width: min(calc(100vw - 2rem), 390px); max-width: calc(100vw - 2rem);
++  }
+ }
+ 
+ 
+diff --git a/jj-signature-billing-app/src/pages/Pos.tsx b/jj-signature-billing-app/src/pages/Pos.tsx
+index e8cfc89..ebf1663 100644
+--- a/jj-signature-billing-app/src/pages/Pos.tsx
++++ b/jj-signature-billing-app/src/pages/Pos.tsx
+@@ -1,11 +1,9 @@
+ import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react'
+-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+-import { Link, useNavigate } from 'react-router-dom'
+ import {
+   Search, Trash2, Plus, Receipt, Printer,
+   RefreshCw, ShoppingBag, MessageCircle,
+   // eslint-disable-next-line @typescript-eslint/no-unused-vars
+-  Wifi, WifiOff, Layers, X, ChevronDown, Power
++  Wifi, WifiOff, Layers, X, ChevronDown
+ } from 'lucide-react'
+ import { isSupabaseConfigured, supabase } from '../lib/supabase'
+ import { useProductStore, useVariantStore, useAdminAuthStore, type Product } from '../store/store'
+@@ -108,8 +106,7 @@ export default function Pos(props: PosProps = {}) {
+   const { getVariants, fetchVariants } = useVariantStore()
+   const { lang } = useLangStore()
+   const l = (en: string, ta: string) => lang === 'ta' ? ta : en
+-  const navigate = useNavigate()
+-  const { logout, role } = useAdminAuthStore()
++  const { role } = useAdminAuthStore()
+   const embeddedMode = Boolean(props.isEmbedded)
+   // eslint-disable-next-line @typescript-eslint/no-unused-vars
+   const [billingAdjOpen, setBillingAdjOpen] = useState(false)
+@@ -802,7 +799,7 @@ export default function Pos(props: PosProps = {}) {
+   return (
+     <div data-embedded={embeddedMode} data-panel={mobilePanelView} className="pos-billing-shell flex min-h-screen h-auto w-full min-w-0 max-w-full flex-col bg-bgMain print:hidden overflow-x-hidden">
+       {/* Header */}
+-      <div className="px-4 pt-4 pb-3 md:px-6 md:pt-6 md:pb-4 shrink-0 flex flex-col gap-4 min-[480px]:flex-row min-[480px]:items-start min-[480px]:justify-between">
++      <div className="shrink-0 px-4 pb-3 pt-4 md:px-6 md:pb-4 md:pt-6">
+         <div className="flex min-w-0 items-start gap-2">
+           <div className="mt-1 h-6 w-1.5 shrink-0 rounded-full bg-[#CBB89D]"></div>
+           <div className="min-w-0">
+@@ -811,52 +808,24 @@ export default function Pos(props: PosProps = {}) {
+           </div>
+         </div>
+ 
+-        {/* Online/Offline Toggle & Logout */}
+-        <div className="flex gap-2 w-full min-[480px]:w-auto">
+-          <div className="segmented-control flex flex-1 min-[480px]:flex-none">
+-            <button
+-              onClick={() => setOrderMode('offline')}
+-              className={`segmented-control-tab min-h-[44px] px-4 py-2 text-sm font-black tracking-wider uppercase transition-colors ${orderMode === 'offline' ? 'bg-[#CBB89D] text-[#111111] shadow-sm' : 'text-[#111111] hover:bg-[#EDE4D4]'}`}
+-            >
+-              Offline
+-            </button>
+-            <button
+-              onClick={() => setOrderMode('online')}
+-              className={`segmented-control-tab min-h-[44px] px-4 py-2 text-sm font-black tracking-wider uppercase transition-colors ${orderMode === 'online' ? 'bg-[#CBB89D] text-[#111111] shadow-sm' : 'text-[#111111] hover:bg-[#EDE4D4]'}`}
+-            >
+-              Online
+-            </button>
+-          </div>
+-          {!embeddedMode && (
+-            <>
+-              <button
+-                onClick={() => navigate('/dashboard')}
+-                className="flex items-center justify-center min-h-[44px] px-4 rounded-xl bg-[#CBB89D] text-[#111111] hover:bg-[#B8A384] transition-colors text-sm font-black tracking-wider uppercase shadow-sm"
+-              >
+-                Dashboard
+-              </button>
+-              <button
+-                onClick={() => { logout(); navigate('/admin-login', { replace: true }) }}
+-                title="Logout"
+-                className="flex items-center justify-center min-h-[44px] px-4 rounded-xl border border-red-200 bg-red-50 text-red-600 hover:bg-red-100 transition-colors"
+-              >
+-                <Power size={18} />
+-              </button>
+-            </>
+-          )}
+-        </div>
+       </div>
+ 
+       {/* Main Content Split */}
+-      <div className="flex w-full min-w-0 max-w-full flex-col gap-5 px-4 pb-6 md:gap-6 md:px-6 lg:h-[calc(100vh-120px)] lg:flex-row lg:overflow-hidden">
+-
+-        <div className="segmented-control flex lg:hidden">
++      <div className="flex w-full min-w-0 max-w-full flex-col gap-5 px-4 pb-6 md:gap-6 md:px-6 lg:h-[calc(100vh-120px)] lg:overflow-hidden">
++        <div className="pos-mode-controls grid w-full min-w-0 gap-3 lg:grid-cols-2">
++        <div className="segmented-control grid grid-cols-2">
++          <button type="button" onClick={() => setOrderMode('offline')} className={`segmented-control-tab min-h-11 px-3 py-2 text-xs font-black uppercase tracking-wide ${orderMode === 'offline' ? 'bg-[#CBB89D] text-[#111111]' : 'bg-cardBg text-textMuted hover:bg-[#EDE4D4]'}`}>Offline</button>
++          <button type="button" onClick={() => setOrderMode('online')} className={`segmented-control-tab min-h-11 px-3 py-2 text-xs font-black uppercase tracking-wide ${orderMode === 'online' ? 'bg-[#CBB89D] text-[#111111]' : 'bg-cardBg text-textMuted hover:bg-[#EDE4D4]'}`}>Online</button>
++        </div>
++        <div className="segmented-control grid grid-cols-2">
+           <button type="button" onClick={() => setMobilePanelView('catalogue')} className={`segmented-control-tab min-h-11 px-3 py-2 text-xs font-black uppercase tracking-wide ${mobilePanelView === 'catalogue' ? 'bg-[#CBB89D] text-[#111111]' : 'bg-cardBg text-textMuted hover:bg-[#EDE4D4]'}`}>Catalogue</button>
+           <button type="button" onClick={() => setMobilePanelView('bill')} className={`segmented-control-tab min-h-11 px-3 py-2 text-xs font-black uppercase tracking-wide ${mobilePanelView === 'bill' ? 'bg-[#CBB89D] text-[#111111]' : 'bg-cardBg text-textMuted hover:bg-[#EDE4D4]'}`}>Current Bill{items.length > 0 ? ` (${items.length})` : ''}</button>
+         </div>
++        </div>
+ 
++        <div className="pos-layout flex min-w-0 w-full flex-col gap-5 lg:min-h-0 lg:flex-1 lg:flex-row lg:gap-6 lg:overflow-hidden">
+         {/* LEFT COLUMN (approx 68%) */}
+-        <div className={`${mobilePanelView === 'bill' ? 'hidden lg:flex' : 'flex'} min-w-0 w-full flex-[2.1] flex-col gap-6 lg:overflow-y-auto lg:pb-4 hide-scrollbar`}>
++        <div className={`pos-catalogue-column ${mobilePanelView === 'bill' ? 'hidden lg:flex' : 'flex'} min-w-0 w-full flex-[2.1] flex-col gap-6 lg:overflow-y-auto lg:pb-4 hide-scrollbar`}>
+ 
+           {/* Customer Details Card */}
+           <div className="bg-cardBg rounded-2xl border border-borderLight shadow-soft p-4 md:p-5">
+@@ -1134,7 +1103,7 @@ export default function Pos(props: PosProps = {}) {
+         </div>
+ 
+         {/* RIGHT COLUMN (approx 32%) */}
+-        <div className={`${mobilePanelView === 'catalogue' ? 'hidden lg:flex' : 'flex'} min-w-0 w-full flex-[1] min-h-0 flex-col gap-6 h-[calc(100dvh-11rem)] max-h-[calc(100dvh-11rem)] lg:sticky lg:top-4 lg:h-[calc(100vh-140px)] lg:max-h-[calc(100vh-140px)]`}>
++        <div className={`pos-bill-column ${mobilePanelView === 'catalogue' ? 'hidden lg:flex' : 'flex'} min-w-0 w-full flex-[1] min-h-0 flex-col gap-6 h-[calc(100dvh-11rem)] max-h-[calc(100dvh-11rem)] lg:sticky lg:top-4 lg:h-[calc(100vh-140px)] lg:max-h-[calc(100vh-140px)]`}>
+           <div className="flex min-h-0 h-full max-h-full flex-col overflow-hidden rounded-2xl border border-[#D1FAE5]/60 bg-[#FAF9F6] shadow-sm">
+ 
+             {/* Header */}
+@@ -1409,6 +1378,7 @@ export default function Pos(props: PosProps = {}) {
+             </div>
+           </div>
+         </div>
++        </div>
+ 
+       </div>
+ 
+diff --git a/jj-signature-billing-app/src/services/inventoryAlertService.ts b/jj-signature-billing-app/src/services/inventoryAlertService.ts
+index 4b58074..5f5f9af 100644
+--- a/jj-signature-billing-app/src/services/inventoryAlertService.ts
++++ b/jj-signature-billing-app/src/services/inventoryAlertService.ts
+@@ -1,5 +1,24 @@
+ import { supabase } from '../lib/supabase'
+ 
++let inventoryAlertsTableMissing = false
++
++const isMissingRelation = (error: { code?: string; status?: number } | null | undefined) =>
++  error?.status === 404 || error?.code === 'PGRST205' || error?.code === '42P01'
++
++export const isInventoryAlertsTableMissing = () => inventoryAlertsTableMissing
++
++const requestInventoryAlerts = async (limit: number) => {
++  const result = await supabase
++    .from('inventory_alerts')
++    .select('id, product_id, alert_type, stock_quantity, threshold, message, is_read, created_at, read_at, products(name)')
++    .order('created_at', { ascending: false })
++    .limit(limit)
++  if (isMissingRelation(result.error)) inventoryAlertsTableMissing = true
++  return result
++}
++
++let inventoryAlertsRequest: ReturnType<typeof requestInventoryAlerts> | null = null
++
+ export type InventoryAlertType = 'LOW_STOCK' | 'OUT_OF_STOCK'
+ 
+ export type InventoryAlert = {
+@@ -16,23 +35,27 @@ export type InventoryAlert = {
+ }
+ 
+ export async function listInventoryAlerts(limit = 30) {
+-  return supabase
+-    .from('inventory_alerts')
+-    .select('id, product_id, alert_type, stock_quantity, threshold, message, is_read, created_at, read_at, products(name)')
+-    .order('created_at', { ascending: false })
+-    .limit(limit)
++  if (inventoryAlertsTableMissing) return { data: [], error: null }
++  inventoryAlertsRequest ??= requestInventoryAlerts(limit)
++  try { return await inventoryAlertsRequest } finally { inventoryAlertsRequest = null }
+ }
+ 
+ export async function markInventoryAlertRead(id: string) {
+-  return supabase
++  if (inventoryAlertsTableMissing) return { data: null, error: null }
++  const result = await supabase
+     .from('inventory_alerts')
+     .update({ is_read: true, read_at: new Date().toISOString() })
+     .eq('id', id)
++  if (isMissingRelation(result.error)) inventoryAlertsTableMissing = true
++  return result
+ }
+ 
+ export async function markAllInventoryAlertsRead() {
+-  return supabase
++  if (inventoryAlertsTableMissing) return { data: null, error: null }
++  const result = await supabase
+     .from('inventory_alerts')
+     .update({ is_read: true, read_at: new Date().toISOString() })
+     .eq('is_read', false)
++  if (isMissingRelation(result.error)) inventoryAlertsTableMissing = true
++  return result
+ }
+diff --git a/jj-signature-billing-app/src/services/inventoryAlertSound.ts b/jj-signature-billing-app/src/services/inventoryAlertSound.ts
+index f4a262a..2070909 100644
+--- a/jj-signature-billing-app/src/services/inventoryAlertSound.ts
++++ b/jj-signature-billing-app/src/services/inventoryAlertSound.ts
+@@ -1,5 +1,6 @@
+ const STORAGE_KEY = 'jj-signature-inventory-sounds-enabled'
+ let audioContext: AudioContext | null = null
++let resumePromise: Promise<void> | null = null
+ let lastPlayedAt = 0
+ 
+ export function isInventorySoundEnabled() {
+@@ -16,7 +17,16 @@ export async function unlockInventoryAlertSound() {
+     if (!AudioContextConstructor) return
+     audioContext = new AudioContextConstructor()
+   }
+-  if (audioContext.state === 'suspended') await audioContext.resume()
++  if (audioContext.state === 'suspended') {
++    // Browsers reject overlapping resume/pause requests with AbortError. Keep
++    // one in-flight resume operation and treat autoplay races as harmless.
++    resumePromise ??= audioContext.resume().then(() => undefined).finally(() => { resumePromise = null })
++    try {
++      await resumePromise
++    } catch {
++      resumePromise = null
++    }
++  }
+ }
+ 
+ export async function playInventoryAlertSound(type: 'LOW_STOCK' | 'OUT_OF_STOCK') {
+-- 
+2.46.1.windows.1
+
+
+From a7d1bb6f3f55f30c189e98e367e9b597aa221e84 Mon Sep 17 00:00:00 2001
+From: sanjayrockerz <myteamcreations09@gmail.com>
+Date: Fri, 4 Sep 2026 19:23:30 +0530
+Subject: [PATCH 5/6] fix: prevent inventory search icon overlap
+
+---
+ jj-signature-billing-app/src/index.css                   | 1 +
+ jj-signature-billing-app/src/pages/InventoryProducts.tsx | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/jj-signature-billing-app/src/index.css b/jj-signature-billing-app/src/index.css
+index f2ca056..b4ab8d6 100644
+--- a/jj-signature-billing-app/src/index.css
++++ b/jj-signature-billing-app/src/index.css
+@@ -499,6 +499,7 @@
+   .admin-shell textarea,
+   .pos-billing-shell textarea,
+   [role="dialog"] textarea { height: auto; min-height: 5.5rem; line-height: 1.4; }
++  .admin-shell main input.inventory-search-input:not([type="checkbox"]):not([type="radio"]) { padding-left: 2.75rem !important; }
+   .admin-shell label, .pos-billing-shell label { font-size: 0.75rem; line-height: 1.25; }
+ 
+   /* Shared card density. */
+diff --git a/jj-signature-billing-app/src/pages/InventoryProducts.tsx b/jj-signature-billing-app/src/pages/InventoryProducts.tsx
+index aec80e2..b904825 100644
+--- a/jj-signature-billing-app/src/pages/InventoryProducts.tsx
++++ b/jj-signature-billing-app/src/pages/InventoryProducts.tsx
+@@ -83,7 +83,7 @@ export default function InventoryProducts() {
+     {tab === 'analytics' && <div className="mb-5 flex flex-wrap items-end gap-2 rounded-2xl border border-borderLight bg-cardBg p-3">{(['all', 'today', 'week', 'month', 'custom'] as const).map(value => <button key={value} onClick={() => setReportFilter(value)} className={`rounded-lg px-3 py-2 text-xs font-black capitalize ${reportFilter === value ? 'bg-[#CBB89D]' : 'border border-borderLight hover:bg-[#EDE4D4]'}`}>{value === 'all' ? 'All Time' : value === 'today' ? 'Today' : value === 'week' ? 'This Week' : value === 'month' ? 'This Month' : 'Custom'}</button>)}{reportFilter === 'custom' && <><label className="text-sm font-bold text-textMuted">From<input type="date" className={`${inputClass} mt-1`} value={reportFrom} onChange={e => setReportFrom(e.target.value)} /></label><label className="text-sm font-bold text-textMuted">To<input type="date" className={`${inputClass} mt-1`} value={reportTo} onChange={e => setReportTo(e.target.value)} /></label></>}<button onClick={exportReport} className="btn-secondary ml-auto inline-flex items-center gap-2"><Download size={16} />Export Report XLSX</button></div>}
+     <div className="mb-5 flex flex-wrap items-center justify-between gap-3"><div className="flex flex-wrap rounded-xl border border-borderLight bg-cardBg p-1">{([['stock', 'Stock Management'], ['products', 'Add / Edit Products'], ['categories', 'Categories'], ['analytics', 'Analytics & Reports']] as [InventoryTab, string][]).map(([value, label]) => <button key={value} onClick={() => setTab(value)} className={`rounded-lg px-3 py-2 text-xs font-black sm:px-4 sm:text-sm ${tab === value ? 'bg-[#CBB89D] text-[#171717]' : 'text-textMuted hover:bg-[#EDE4D4]'}`}>{label}</button>)}</div><div className="flex flex-wrap gap-2">{tab === 'stock' && <button onClick={exportInventory} className="btn-secondary inline-flex items-center gap-2"><Download size={16} />Export XLSX</button>}<button onClick={() => void refresh()} className="rounded-xl border border-borderLight bg-cardBg p-3 hover:bg-[#EDE4D4]" title="Refresh"><RefreshCw size={16} /></button></div></div>
+     {notice && <div className={`mb-5 rounded-xl border px-4 py-3 text-sm font-bold ${notice.type === 'error' ? 'border-red-200 bg-red-50 text-red-700' : 'border-borderLight bg-[#EDE4D4]'}`}>{notice.text}</div>}
+-    {tab === 'stock' && <><StatGrid className="mb-5"><StatCard label="Total Products" value={metrics.total} className="bg-cardBg shadow-soft" labelClassName="text-textMuted" valueClassName="text-xl" /><StatCard label="LOW STOCK" value={`${metrics.low} products`} className="bg-cardBg shadow-soft" labelClassName="text-textMuted" valueClassName="text-xl" /><StatCard label="OUT OF STOCK" value={`${metrics.out} products`} className="bg-cardBg shadow-soft" labelClassName="text-textMuted" valueClassName="text-xl" /><StatCard label="Stock Value" value={formatCurrency(metrics.value)} className="bg-cardBg shadow-soft" labelClassName="text-textMuted" valueClassName="text-xl" /></StatGrid><div className="mb-5 grid gap-5 lg:grid-cols-[1.3fr_.7fr]"><div className="rounded-2xl border border-borderLight bg-cardBg p-5 shadow-soft"><div className="flex items-center justify-between gap-3"><div><p className="text-xs font-black uppercase tracking-[.16em] text-textMuted">Recent alerts</p><h2 className="mt-1 text-lg font-black">Threshold activity</h2></div><AlertTriangle size={19} /></div><div className="mt-3 divide-y divide-borderLight">{recentAlerts.length === 0 ? <p className="py-4 text-sm text-textMuted">No threshold crossings recorded yet.</p> : recentAlerts.slice(0, 4).map(alert => <button type="button" key={alert.id} onClick={() => navigate(`/inventory?product=${alert.product_id}`)} className="flex min-h-14 w-full items-center justify-between gap-3 py-3 text-left"><span className="min-w-0"><span className="block truncate text-sm font-black">{alert.product?.name || 'Inventory product'}</span><span className="block text-xs text-textMuted">{alert.alert_type === 'OUT_OF_STOCK' ? 'OUT OF STOCK' : `LOW STOCK · ${alert.stock_quantity} units`}</span></span><span className="shrink-0 text-xs font-bold text-textMuted">{new Date(alert.created_at).toLocaleDateString()}</span></button>)}</div></div><div className="rounded-2xl border border-borderLight bg-cardBg p-5 shadow-soft"><p className="text-xs font-black uppercase tracking-[.16em] text-textMuted">Inventory health</p><div className="mt-4 space-y-4"><div><div className="flex justify-between text-sm font-bold"><span>In stock</span><span>{Math.max(metrics.total - metrics.low - metrics.out, 0)}</span></div><div className="mt-2 h-2 rounded-full bg-[#E5D4B8]"><div className="h-full rounded-full bg-[#171717]" style={{ width: `${metrics.total ? Math.max(metrics.total - metrics.low - metrics.out, 0) / metrics.total * 100 : 0}%` }} /></div></div><div className="flex justify-between text-sm font-bold"><span>Unread alerts</span><span>{recentAlerts.filter(alert => !alert.is_read).length}</span></div></div></div></div><div className="mb-4 flex flex-wrap gap-2"><div className="relative min-w-[220px] flex-1"><SlidersHorizontal className="absolute left-3 top-1/2 -translate-y-1/2 text-textMuted" size={16} /><input className={`${inputClass} pl-9`} placeholder="Search products" value={search} onChange={e => setSearch(e.target.value)} /></div>{(['all', 'low', 'out'] as StockFilter[]).map(value => <button key={value} onClick={() => setFilter(value)} className={`rounded-xl px-4 py-2 text-xs font-black uppercase ${filter === value ? 'bg-[#CBB89D]' : 'border border-borderLight bg-cardBg hover:bg-[#EDE4D4]'}`}>{value}</button>)}</div><ProductTable products={filteredProducts} loading={loading} onEdit={openProduct} onAdjust={setStockModal} /></>}
++    {tab === 'stock' && <><StatGrid className="mb-5"><StatCard label="Total Products" value={metrics.total} className="bg-cardBg shadow-soft" labelClassName="text-textMuted" valueClassName="text-xl" /><StatCard label="LOW STOCK" value={`${metrics.low} products`} className="bg-cardBg shadow-soft" labelClassName="text-textMuted" valueClassName="text-xl" /><StatCard label="OUT OF STOCK" value={`${metrics.out} products`} className="bg-cardBg shadow-soft" labelClassName="text-textMuted" valueClassName="text-xl" /><StatCard label="Stock Value" value={formatCurrency(metrics.value)} className="bg-cardBg shadow-soft" labelClassName="text-textMuted" valueClassName="text-xl" /></StatGrid><div className="mb-5 grid gap-5 lg:grid-cols-[1.3fr_.7fr]"><div className="rounded-2xl border border-borderLight bg-cardBg p-5 shadow-soft"><div className="flex items-center justify-between gap-3"><div><p className="text-xs font-black uppercase tracking-[.16em] text-textMuted">Recent alerts</p><h2 className="mt-1 text-lg font-black">Threshold activity</h2></div><AlertTriangle size={19} /></div><div className="mt-3 divide-y divide-borderLight">{recentAlerts.length === 0 ? <p className="py-4 text-sm text-textMuted">No threshold crossings recorded yet.</p> : recentAlerts.slice(0, 4).map(alert => <button type="button" key={alert.id} onClick={() => navigate(`/inventory?product=${alert.product_id}`)} className="flex min-h-14 w-full items-center justify-between gap-3 py-3 text-left"><span className="min-w-0"><span className="block truncate text-sm font-black">{alert.product?.name || 'Inventory product'}</span><span className="block text-xs text-textMuted">{alert.alert_type === 'OUT_OF_STOCK' ? 'OUT OF STOCK' : `LOW STOCK · ${alert.stock_quantity} units`}</span></span><span className="shrink-0 text-xs font-bold text-textMuted">{new Date(alert.created_at).toLocaleDateString()}</span></button>)}</div></div><div className="rounded-2xl border border-borderLight bg-cardBg p-5 shadow-soft"><p className="text-xs font-black uppercase tracking-[.16em] text-textMuted">Inventory health</p><div className="mt-4 space-y-4"><div><div className="flex justify-between text-sm font-bold"><span>In stock</span><span>{Math.max(metrics.total - metrics.low - metrics.out, 0)}</span></div><div className="mt-2 h-2 rounded-full bg-[#E5D4B8]"><div className="h-full rounded-full bg-[#171717]" style={{ width: `${metrics.total ? Math.max(metrics.total - metrics.low - metrics.out, 0) / metrics.total * 100 : 0}%` }} /></div></div><div className="flex justify-between text-sm font-bold"><span>Unread alerts</span><span>{recentAlerts.filter(alert => !alert.is_read).length}</span></div></div></div></div><div className="mb-4 flex flex-wrap gap-2"><div className="relative min-w-[220px] flex-1"><SlidersHorizontal className="absolute left-3 top-1/2 -translate-y-1/2 text-textMuted" size={16} /><input className={`${inputClass} inventory-search-input`} placeholder="Search products" value={search} onChange={e => setSearch(e.target.value)} /></div>{(['all', 'low', 'out'] as StockFilter[]).map(value => <button key={value} onClick={() => setFilter(value)} className={`rounded-xl px-4 py-2 text-xs font-black uppercase ${filter === value ? 'bg-[#CBB89D]' : 'border border-borderLight bg-cardBg hover:bg-[#EDE4D4]'}`}>{value}</button>)}</div><ProductTable products={filteredProducts} loading={loading} onEdit={openProduct} onAdjust={setStockModal} /></>}
+     {tab === 'products' && <div className="rounded-2xl border border-borderLight bg-cardBg p-5 shadow-soft"><div className="flex items-center justify-between"><div><h2 className="flex items-center gap-2 text-lg font-black"><Boxes size={19} />Product Management</h2><p className="mt-1 text-sm text-textMuted">Create or edit products used immediately by the Billing Catalog.</p></div><button onClick={() => openProduct()} className="btn-primary inline-flex items-center gap-2"><Plus size={16} />Add Product</button></div><div className="mt-5"><ProductTable products={products.filter(p => !search || `${p.name} ${p.category}`.toLowerCase().includes(search.toLowerCase()))} loading={loading} onEdit={openProduct} onAdjust={setStockModal} /></div></div>}
+     {tab === 'categories' && <div className="rounded-2xl border border-borderLight bg-cardBg shadow-soft"><div className="flex items-center justify-between border-b border-borderLight p-4"><h2 className="text-lg font-black">Catalog Categories</h2><button onClick={() => { setEditingCategory(null); setCategoryName('') }} className="btn-primary inline-flex items-center gap-2"><Plus size={16} />Add Category</button></div><form onSubmit={saveCategory} className="flex gap-2 border-b border-borderLight p-4"><input className={inputClass} placeholder="New category name" value={categoryName} onChange={e => setCategoryName(e.target.value)} /><button className="btn-primary shrink-0" type="submit">{editingCategory ? 'Rename' : 'Add'}</button></form><div className="divide-y divide-borderLight">{categories.map(category => <div key={category.id} className="flex items-center justify-between px-4 py-3"><span className={category.is_active ? 'font-bold' : 'font-bold text-textMuted line-through'}>{category.name_en}</span><div><button onClick={() => { setEditingCategory(category); setCategoryName(category.name_en) }} className="mr-1 rounded-lg border border-borderLight p-2 hover:bg-[#EDE4D4]"><Edit3 size={15} /></button><button onClick={async () => { const result = await supabase.from('categories').update({ is_active: !category.is_active }).eq('id', category.id); if (result.error) setNotice({ type: 'error', text: result.error.message }); else await refresh() }} className="mr-1 rounded-lg border border-borderLight p-2 hover:bg-[#EDE4D4]"><Power size={15} /></button><button onClick={() => void removeCategory(category)} className="rounded-lg border border-borderLight px-2 py-1 text-xs font-black hover:bg-[#EDE4D4]">Delete</button></div></div>)}</div></div>}
+     {tab === 'analytics' && <div className="grid gap-5 md:grid-cols-3"><div className="rounded-2xl border border-borderLight bg-cardBg p-5 shadow-soft"><BarChart3 size={19} /><p className="mt-4 text-xs font-black uppercase tracking-wider text-textMuted">Units Restocked · This Week</p><p className="mt-2 text-2xl font-black">{analytics.restocked}</p></div><div className="rounded-2xl border border-borderLight bg-cardBg p-5 shadow-soft"><BarChart3 size={19} /><p className="mt-4 text-xs font-black uppercase tracking-wider text-textMuted">Units Sold · This Week</p><p className="mt-2 text-2xl font-black">{analytics.sold}</p></div><div className="rounded-2xl border border-borderLight bg-cardBg p-5 shadow-soft"><BarChart3 size={19} /><p className="mt-4 text-xs font-black uppercase tracking-wider text-textMuted">Lost / Damaged · This Week</p><p className="mt-2 text-2xl font-black">{analytics.lost}</p></div><div className="rounded-2xl border border-borderLight bg-cardBg p-5 shadow-soft md:col-span-2"><h2 className="text-lg font-black">Highest Stock Value</h2><div className="mt-3 divide-y divide-borderLight">{[...physicalProducts].sort((a, b) => b.stock * b.price - a.stock * a.price).slice(0, 10).map(p => <div key={String(p.id)} className="flex justify-between py-3 text-sm"><span className="font-bold">{p.name}<span className="ml-2 text-textMuted">{p.stock} units × {formatCurrency(p.price)}</span></span><b>{formatCurrency(p.stock * p.price)}</b></div>)}</div></div><div className="rounded-2xl border border-borderLight bg-cardBg p-5 shadow-soft"><h2 className="text-lg font-black">Stock by Category</h2><div className="mt-3 divide-y divide-borderLight">{categories.map(c => <div key={c.id} className="flex justify-between py-3 text-sm"><span className="font-bold">{c.name_en}</span><b>{physicalProducts.filter(p => p.categoryId === c.id || p.category === c.name_en).length}</b></div>)}</div></div></div>}
+-- 
+2.46.1.windows.1
+
+
+From ce0c39c364af1806f310b5c82d90f77500e9f8ce Mon Sep 17 00:00:00 2001
+From: sanjayrockerz <myteamcreations09@gmail.com>
+Date: Fri, 4 Sep 2026 19:46:43 +0530
+Subject: [PATCH 6/6] feat: complete inventory alert integration
+
+---
+ .../InventoryNotificationCenter.tsx           | 12 ++-
+ .../src/pages/Dashboard.tsx                   | 22 ++++-
+ .../src/pages/InventoryProducts.tsx           | 10 +-
+ ...010_inventory_alerts_access_and_repair.sql | 93 +++++++++++++++++++
+ 4 files changed, 129 insertions(+), 8 deletions(-)
+ create mode 100644 jj-signature-billing-app/supabase/migrations/20260904_0010_inventory_alerts_access_and_repair.sql
+
+diff --git a/jj-signature-billing-app/src/components/InventoryNotificationCenter.tsx b/jj-signature-billing-app/src/components/InventoryNotificationCenter.tsx
+index a281096..0f45ce4 100644
+--- a/jj-signature-billing-app/src/components/InventoryNotificationCenter.tsx
++++ b/jj-signature-billing-app/src/components/InventoryNotificationCenter.tsx
+@@ -15,6 +15,7 @@ export function InventoryNotificationCenter() {
+   const [open, setOpen] = useState(false)
+   const [toast, setToast] = useState<InventoryAlert | null>(null)
+   const [soundsEnabled, setSoundsEnabled] = useState(() => isInventorySoundEnabled())
++  const [soundFeedback, setSoundFeedback] = useState('')
+   const [permission, setPermission] = useState<NotificationPermission | 'unsupported'>(() => typeof Notification === 'undefined' ? 'unsupported' : Notification.permission)
+   const seenIds = useRef(new Set<string>())
+ 
+@@ -67,7 +68,14 @@ export function InventoryNotificationCenter() {
+     const enabled = !soundsEnabled
+     setSoundsEnabled(enabled)
+     setInventorySoundEnabled(enabled)
+-    if (enabled) { await unlockInventoryAlertSound(); void playInventoryAlertSound('LOW_STOCK') }
++    if (enabled) { await unlockInventoryAlertSound(); void playInventoryAlertSound('LOW_STOCK'); setSoundFeedback('Alert sound enabled') }
++    else setSoundFeedback('Click to enable alert sound')
++  }
++  const testAlertSound = async (type: 'LOW_STOCK' | 'OUT_OF_STOCK') => {
++    if (!soundsEnabled) { setSoundsEnabled(true); setInventorySoundEnabled(true) }
++    await unlockInventoryAlertSound()
++    void playInventoryAlertSound(type)
++    setSoundFeedback('Alert sound enabled')
+   }
+   const enableBrowserNotifications = async () => {
+     if (typeof Notification === 'undefined') return
+@@ -93,7 +101,7 @@ export function InventoryNotificationCenter() {
+             <div className="flex items-start gap-3"><div className={`mt-0.5 rounded-full p-2 ${alert.alert_type === 'OUT_OF_STOCK' ? 'bg-[#171717] text-white' : 'bg-[#CBB89D]'}`}><Bell size={14} /></div><div className="min-w-0 flex-1"><div className="flex items-start justify-between gap-2"><p className="text-[11px] font-black uppercase tracking-[.14em]">{alert.alert_type === 'OUT_OF_STOCK' ? 'Out of stock' : 'Low stock'}</p>{!alert.is_read && <span className="h-2 w-2 shrink-0 rounded-full bg-[#171717]" aria-label="Unread" />}</div><p className="mt-1 break-words font-black">{productName(alert)}</p><p className="mt-1 text-xs text-textMuted">Stock: {alert.stock_quantity}{alert.threshold !== null && ` · Alert at: ${alert.threshold}`}</p><p className="mt-1 text-[11px] text-textMuted">{formatAlertTime(alert.created_at)}</p><div className="mt-2 flex flex-wrap gap-2"><button type="button" onClick={() => goToProduct(alert)} className="inline-flex min-h-9 items-center gap-1 rounded-lg border border-borderLight px-2.5 text-[11px] font-black"><ExternalLink size={13} />View product</button>{!alert.is_read && <button type="button" onClick={() => void markRead(alert.id)} className="inline-flex min-h-9 items-center gap-1 rounded-lg border border-borderLight px-2.5 text-[11px] font-black"><Check size={13} />Mark read</button>}</div></div></div>
+           </article>)}
+         </div>
+-        <div className="border-t border-borderLight p-3"><div className="flex flex-wrap gap-2"><button type="button" onClick={() => void toggleSounds()} className="inline-flex min-h-10 flex-1 items-center justify-center gap-2 rounded-xl border border-borderLight px-3 text-xs font-black">{soundsEnabled ? <Volume2 size={15} /> : <VolumeX size={15} />}{soundsEnabled ? 'Sounds enabled' : 'Enable sounds'}</button>{permission === 'default' && <button type="button" onClick={() => void enableBrowserNotifications()} className="min-h-10 flex-1 rounded-xl border border-borderLight px-3 text-xs font-black">Enable browser alerts</button>}</div>{unreadCount > 0 && <button type="button" onClick={async () => { const result = await markAllInventoryAlertsRead(); if (!result.error) setAlerts(current => current.map(alert => ({ ...alert, is_read: true, read_at: new Date().toISOString() }))) }} className="mt-2 inline-flex min-h-9 w-full items-center justify-center gap-2 rounded-xl text-xs font-black text-textMuted"><Check size={14} />Mark all as read</button>}</div>
++        <div className="border-t border-borderLight p-3"><div className="flex flex-wrap gap-2"><button type="button" onClick={() => void toggleSounds()} className="inline-flex min-h-10 flex-1 items-center justify-center gap-2 rounded-xl border border-borderLight px-3 text-xs font-black">{soundsEnabled ? <Volume2 size={15} /> : <VolumeX size={15} />}{soundsEnabled ? 'Sounds enabled' : 'Enable sounds'}</button><button type="button" onClick={() => void testAlertSound('LOW_STOCK')} className="min-h-10 flex-1 rounded-xl border border-borderLight px-3 text-xs font-black">Test alert sound</button>{permission === 'default' && <button type="button" onClick={() => void enableBrowserNotifications()} className="min-h-10 flex-1 rounded-xl border border-borderLight px-3 text-xs font-black">Enable browser alerts</button>}</div>{soundFeedback && <p role="status" className="mt-2 text-center text-[11px] font-bold text-textMuted">{soundFeedback}</p>}{unreadCount > 0 && <button type="button" onClick={async () => { const result = await markAllInventoryAlertsRead(); if (!result.error) setAlerts(current => current.map(alert => ({ ...alert, is_read: true, read_at: new Date().toISOString() }))) }} className="mt-2 inline-flex min-h-9 w-full items-center justify-center gap-2 rounded-xl text-xs font-black text-textMuted"><Check size={14} />Mark all as read</button>}</div>
+       </div>}
+     </div>
+     {toast && <div role="status" className="fixed bottom-4 right-4 z-[130] w-[min(calc(100vw-2rem),390px)] rounded-2xl border border-borderLight bg-[#FFFDF8] p-4 shadow-2xl"><button type="button" onClick={() => setToast(null)} aria-label="Dismiss notification" className="absolute right-2 top-2 rounded-lg p-2"><X size={15} /></button><p className="text-[11px] font-black uppercase tracking-[.16em]">{toast.alert_type === 'OUT_OF_STOCK' ? '⚠ Out of stock' : 'Low stock'}</p><p className="mt-2 font-black">{productName(toast)}</p><p className="mt-1 text-sm text-textMuted">{toast.alert_type === 'OUT_OF_STOCK' ? 'Current stock: 0' : toast.message || `Current stock: ${toast.stock_quantity}.`}</p><button type="button" onClick={() => goToProduct(toast)} className="mt-3 min-h-10 rounded-xl border border-borderLight px-3 text-xs font-black">View product</button></div>}
+diff --git a/jj-signature-billing-app/src/pages/Dashboard.tsx b/jj-signature-billing-app/src/pages/Dashboard.tsx
+index 3a024e5..77b0633 100644
+--- a/jj-signature-billing-app/src/pages/Dashboard.tsx
++++ b/jj-signature-billing-app/src/pages/Dashboard.tsx
+@@ -47,6 +47,7 @@ import { getIndianPhoneParts } from '../lib/phone'
+ import { invoicePdfFile, invoicePdfFileFromElement } from '../lib/invoicePdf'
+ // toWhatsAppUrl removed - using direct link building in handlers
+ import { createVariant, updateVariant, deleteVariant, setDefaultVariant, type ProductVariant } from '../services/variantService'
++import { listInventoryAlerts, type InventoryAlert } from '../services/inventoryAlertService'
+ import { useVariantStore } from '../store/store'
+ import Pos from './Pos'
+ import AdvanceOrders from './AdvanceOrders'
+@@ -186,6 +187,7 @@ export default function Dashboard() {
+   const [orders, setOrders] = useState<DashboardOrder[]>([])
+   const [expenses, setExpenses] = useState<DashboardExpense[]>([])
+   const [orderItems, setOrderItems] = useState<DashboardOrderItem[]>([])
++  const [inventoryAlerts, setInventoryAlerts] = useState<InventoryAlert[]>([])
+   const [editingProd, setEditingProd] = useState<Product | null>(null)
+   const [prodForm, setProdForm] = useState(emptyForm)
+   const [newCat, setNewCat] = useState({ name_en: '', name_ta: '' })
+@@ -656,7 +658,7 @@ export default function Dashboard() {
+     setLoading(true)
+     try {
+       const productsPromise = fetchProducts(true)
+-      const [cRes, oRes, couponRes, expenseRes] = await Promise.all([
++      const [cRes, oRes, couponRes, expenseRes, alertRes] = await Promise.all([
+         supabase.from('categories').select('id, name_en, name_ta, is_active, sort_order').order('sort_order'),
+         supabase.from('orders')
+           .select('id, invoice_no, customer_name, phone, address, created_at, recorded_at, total, status, order_mode, order_type, user_id, items, coupon_code, discount_amount, manual_discount_amount, delivery_charge, total_gst, gst_amount, payment_mode, payment_method, invoice_pdf_url, remarks, reference_number')
+@@ -668,6 +670,7 @@ export default function Dashboard() {
+           .select('id, code, percentage, is_active, expiry_date, usage_limit, usage_count, min_order_value')
+           .order('created_at', { ascending: false }),
+         supabase.from('expenses').select('expense_date, amount').order('expense_date', { ascending: false }),
++        listInventoryAlerts(30),
+       ])
+       if (cRes.error) throw cRes.error
+       if (oRes.error) throw oRes.error
+@@ -677,6 +680,7 @@ export default function Dashboard() {
+       setSearchResults(mappedOrders.filter(o => normalizeOrderType(o.order_type) !== 'online_request').slice(0, 100))
+       setCoupons((couponRes.data || []) as DashboardCoupon[])
+       setExpenses((expenseRes.data || []).map(row => ({ expense_date: String(row.expense_date || '').slice(0, 10), amount: toNumber(row.amount, 0) })))
++      if (!alertRes.error) setInventoryAlerts((alertRes.data || []) as unknown as InventoryAlert[])
+ 
+       const orderIds = mappedOrders.map(o => o.id).filter(Boolean)
+       if (orderIds.length > 0) {
+@@ -1608,16 +1612,28 @@ export default function Dashboard() {
+                 <div className="bg-white rounded-2xl border border-[#D1FAE5]/30 p-5 shadow-sm">
+                   <h3 className="text-base font-black text-[#111111] mb-4">Low Stock Alerts</h3>
+                   <div className="space-y-3">
+-                    {products.filter(p => p.stock <= (p.lowStockAlert || 5)).slice(0, 10).map((p, i) => (
++                    {products.filter(p => p.trackInventory && p.stock <= (p.lowStockAlert || 5)).slice(0, 10).map((p, i) => (
+                       <div key={i} className="flex justify-between items-center bg-red-50 border border-red-100 p-3 rounded-xl">
+                         <p className="text-base font-bold text-red-900">{p.name}</p>
+                         <p className="text-base font-black text-red-700">{p.stock} left</p>
+                       </div>
+                     ))}
+-                    {products.filter(p => p.stock <= (p.lowStockAlert || 5)).length === 0 && (
++                    {products.filter(p => p.trackInventory && p.stock <= (p.lowStockAlert || 5)).length === 0 && (
+                       <p className="text-base text-[#374151]">No low stock alerts.</p>
+                     )}
+                   </div>
++                  <div className="mt-4 border-t border-borderLight pt-3">
++                    <div className="flex items-center justify-between gap-2">
++                      <p className="text-xs font-black uppercase tracking-wider text-textMuted">Unread inventory alerts</p>
++                      <p className="text-lg font-black">{inventoryAlerts.filter(alert => !alert.is_read).length}</p>
++                    </div>
++                    {inventoryAlerts.slice(0, 3).map(alert => (
++                      <div key={alert.id} className="mt-2 flex items-start justify-between gap-3 rounded-xl bg-[#F8F3E8] px-3 py-2 text-sm">
++                        <div className="min-w-0"><p className="font-black uppercase tracking-wide">{alert.alert_type === 'OUT_OF_STOCK' ? 'Out of stock' : 'Low stock'}</p><p className="truncate text-textMuted">{alert.message || `Stock: ${alert.stock_quantity}`}</p></div>
++                        <span className="shrink-0 font-black">{alert.stock_quantity}</span>
++                      </div>
++                    ))}
++                  </div>
+                 </div>
+                 <div className="bg-white rounded-2xl border border-[#D1FAE5]/30 p-5 shadow-sm">
+                   <h3 className="text-base font-black text-[#111111] mb-4">Total Inventory Value</h3>
+diff --git a/jj-signature-billing-app/src/pages/InventoryProducts.tsx b/jj-signature-billing-app/src/pages/InventoryProducts.tsx
+index b904825..7d1c06b 100644
+--- a/jj-signature-billing-app/src/pages/InventoryProducts.tsx
++++ b/jj-signature-billing-app/src/pages/InventoryProducts.tsx
+@@ -1,6 +1,6 @@
+ import { useCallback, useEffect, useMemo, useState } from 'react'
+ import { useNavigate } from 'react-router-dom'
+-import { AlertTriangle, BarChart3, Boxes, Download, Edit3, Plus, Power, RefreshCw, SlidersHorizontal, X } from 'lucide-react'
++import { AlertTriangle, BarChart3, Boxes, Check, Download, Edit3, Plus, Power, RefreshCw, SlidersHorizontal, X } from 'lucide-react'
+ import { AdminModuleShell } from '../components/AdminModuleShell'
+ import { useProductStore, type Product } from '../store/store'
+ import { supabase } from '../lib/supabase'
+@@ -8,7 +8,7 @@ import { adjustProductStock, listStockMovements, type StockMovement } from '../s
+ import { downloadXlsx } from '../lib/xlsxExport'
+ import { formatCurrency } from '../lib/retail'
+ import { StatCard, StatGrid } from '../components/common/StatCard'
+-import { listInventoryAlerts, type InventoryAlert } from '../services/inventoryAlertService'
++import { listInventoryAlerts, markInventoryAlertRead, type InventoryAlert } from '../services/inventoryAlertService'
+ 
+ type Category = { id: number; name_en: string; is_active: boolean }
+ type InventoryTab = 'stock' | 'products' | 'categories' | 'analytics'
+@@ -49,6 +49,10 @@ export default function InventoryProducts() {
+     if (!alertResult.error) setRecentAlerts((alertResult.data || []) as unknown as InventoryAlert[])
+     await fetchProducts(true); setLoading(false)
+   }, [fetchProducts])
++  const markAlertRead = async (id: string) => {
++    const result = await markInventoryAlertRead(id)
++    if (!result.error) setRecentAlerts(current => current.map(alert => alert.id === id ? { ...alert, is_read: true, read_at: new Date().toISOString() } : alert))
++  }
+   useEffect(() => { const timer = window.setTimeout(() => { void refresh() }, 0); return () => window.clearTimeout(timer) }, [refresh])
+ 
+   const physicalProducts = useMemo(() => products.filter(p => p.trackInventory), [products])
+@@ -83,7 +87,7 @@ export default function InventoryProducts() {
+     {tab === 'analytics' && <div className="mb-5 flex flex-wrap items-end gap-2 rounded-2xl border border-borderLight bg-cardBg p-3">{(['all', 'today', 'week', 'month', 'custom'] as const).map(value => <button key={value} onClick={() => setReportFilter(value)} className={`rounded-lg px-3 py-2 text-xs font-black capitalize ${reportFilter === value ? 'bg-[#CBB89D]' : 'border border-borderLight hover:bg-[#EDE4D4]'}`}>{value === 'all' ? 'All Time' : value === 'today' ? 'Today' : value === 'week' ? 'This Week' : value === 'month' ? 'This Month' : 'Custom'}</button>)}{reportFilter === 'custom' && <><label className="text-sm font-bold text-textMuted">From<input type="date" className={`${inputClass} mt-1`} value={reportFrom} onChange={e => setReportFrom(e.target.value)} /></label><label className="text-sm font-bold text-textMuted">To<input type="date" className={`${inputClass} mt-1`} value={reportTo} onChange={e => setReportTo(e.target.value)} /></label></>}<button onClick={exportReport} className="btn-secondary ml-auto inline-flex items-center gap-2"><Download size={16} />Export Report XLSX</button></div>}
+     <div className="mb-5 flex flex-wrap items-center justify-between gap-3"><div className="flex flex-wrap rounded-xl border border-borderLight bg-cardBg p-1">{([['stock', 'Stock Management'], ['products', 'Add / Edit Products'], ['categories', 'Categories'], ['analytics', 'Analytics & Reports']] as [InventoryTab, string][]).map(([value, label]) => <button key={value} onClick={() => setTab(value)} className={`rounded-lg px-3 py-2 text-xs font-black sm:px-4 sm:text-sm ${tab === value ? 'bg-[#CBB89D] text-[#171717]' : 'text-textMuted hover:bg-[#EDE4D4]'}`}>{label}</button>)}</div><div className="flex flex-wrap gap-2">{tab === 'stock' && <button onClick={exportInventory} className="btn-secondary inline-flex items-center gap-2"><Download size={16} />Export XLSX</button>}<button onClick={() => void refresh()} className="rounded-xl border border-borderLight bg-cardBg p-3 hover:bg-[#EDE4D4]" title="Refresh"><RefreshCw size={16} /></button></div></div>
+     {notice && <div className={`mb-5 rounded-xl border px-4 py-3 text-sm font-bold ${notice.type === 'error' ? 'border-red-200 bg-red-50 text-red-700' : 'border-borderLight bg-[#EDE4D4]'}`}>{notice.text}</div>}
+-    {tab === 'stock' && <><StatGrid className="mb-5"><StatCard label="Total Products" value={metrics.total} className="bg-cardBg shadow-soft" labelClassName="text-textMuted" valueClassName="text-xl" /><StatCard label="LOW STOCK" value={`${metrics.low} products`} className="bg-cardBg shadow-soft" labelClassName="text-textMuted" valueClassName="text-xl" /><StatCard label="OUT OF STOCK" value={`${metrics.out} products`} className="bg-cardBg shadow-soft" labelClassName="text-textMuted" valueClassName="text-xl" /><StatCard label="Stock Value" value={formatCurrency(metrics.value)} className="bg-cardBg shadow-soft" labelClassName="text-textMuted" valueClassName="text-xl" /></StatGrid><div className="mb-5 grid gap-5 lg:grid-cols-[1.3fr_.7fr]"><div className="rounded-2xl border border-borderLight bg-cardBg p-5 shadow-soft"><div className="flex items-center justify-between gap-3"><div><p className="text-xs font-black uppercase tracking-[.16em] text-textMuted">Recent alerts</p><h2 className="mt-1 text-lg font-black">Threshold activity</h2></div><AlertTriangle size={19} /></div><div className="mt-3 divide-y divide-borderLight">{recentAlerts.length === 0 ? <p className="py-4 text-sm text-textMuted">No threshold crossings recorded yet.</p> : recentAlerts.slice(0, 4).map(alert => <button type="button" key={alert.id} onClick={() => navigate(`/inventory?product=${alert.product_id}`)} className="flex min-h-14 w-full items-center justify-between gap-3 py-3 text-left"><span className="min-w-0"><span className="block truncate text-sm font-black">{alert.product?.name || 'Inventory product'}</span><span className="block text-xs text-textMuted">{alert.alert_type === 'OUT_OF_STOCK' ? 'OUT OF STOCK' : `LOW STOCK · ${alert.stock_quantity} units`}</span></span><span className="shrink-0 text-xs font-bold text-textMuted">{new Date(alert.created_at).toLocaleDateString()}</span></button>)}</div></div><div className="rounded-2xl border border-borderLight bg-cardBg p-5 shadow-soft"><p className="text-xs font-black uppercase tracking-[.16em] text-textMuted">Inventory health</p><div className="mt-4 space-y-4"><div><div className="flex justify-between text-sm font-bold"><span>In stock</span><span>{Math.max(metrics.total - metrics.low - metrics.out, 0)}</span></div><div className="mt-2 h-2 rounded-full bg-[#E5D4B8]"><div className="h-full rounded-full bg-[#171717]" style={{ width: `${metrics.total ? Math.max(metrics.total - metrics.low - metrics.out, 0) / metrics.total * 100 : 0}%` }} /></div></div><div className="flex justify-between text-sm font-bold"><span>Unread alerts</span><span>{recentAlerts.filter(alert => !alert.is_read).length}</span></div></div></div></div><div className="mb-4 flex flex-wrap gap-2"><div className="relative min-w-[220px] flex-1"><SlidersHorizontal className="absolute left-3 top-1/2 -translate-y-1/2 text-textMuted" size={16} /><input className={`${inputClass} inventory-search-input`} placeholder="Search products" value={search} onChange={e => setSearch(e.target.value)} /></div>{(['all', 'low', 'out'] as StockFilter[]).map(value => <button key={value} onClick={() => setFilter(value)} className={`rounded-xl px-4 py-2 text-xs font-black uppercase ${filter === value ? 'bg-[#CBB89D]' : 'border border-borderLight bg-cardBg hover:bg-[#EDE4D4]'}`}>{value}</button>)}</div><ProductTable products={filteredProducts} loading={loading} onEdit={openProduct} onAdjust={setStockModal} /></>}
++    {tab === 'stock' && <><StatGrid className="mb-5"><StatCard label="Total Products" value={metrics.total} className="bg-cardBg shadow-soft" labelClassName="text-textMuted" valueClassName="text-xl" /><StatCard label="LOW STOCK" value={`${metrics.low} products`} className="bg-cardBg shadow-soft" labelClassName="text-textMuted" valueClassName="text-xl" /><StatCard label="OUT OF STOCK" value={`${metrics.out} products`} className="bg-cardBg shadow-soft" labelClassName="text-textMuted" valueClassName="text-xl" /><StatCard label="Stock Value" value={formatCurrency(metrics.value)} className="bg-cardBg shadow-soft" labelClassName="text-textMuted" valueClassName="text-xl" /></StatGrid><div className="mb-5 grid gap-5 lg:grid-cols-[1.3fr_.7fr]"><div className="rounded-2xl border border-borderLight bg-cardBg p-5 shadow-soft"><div className="flex items-center justify-between gap-3"><div><p className="text-xs font-black uppercase tracking-[.16em] text-textMuted">Recent alerts</p><h2 className="mt-1 text-lg font-black">Threshold activity</h2></div><AlertTriangle size={19} /></div><div className="mt-3 divide-y divide-borderLight">{recentAlerts.length === 0 ? <p className="py-4 text-sm text-textMuted">No threshold crossings recorded yet.</p> : recentAlerts.slice(0, 4).map(alert => <div key={alert.id} className="flex items-start justify-between gap-3 py-3"><button type="button" onClick={() => navigate(`/inventory?product=${alert.product_id}`)} className="min-w-0 flex-1 text-left"><span className="block truncate text-sm font-black">{alert.product?.name || 'Inventory product'}</span><span className="block text-xs text-textMuted">{alert.alert_type === 'OUT_OF_STOCK' ? 'OUT OF STOCK · Stock reached 0' : `LOW STOCK · ${alert.stock_quantity} units · Threshold: ${alert.threshold ?? '—'}`}</span><span className="block text-xs text-textMuted">{new Date(alert.created_at).toLocaleDateString()}</span></button>{!alert.is_read && <button type="button" onClick={() => void markAlertRead(alert.id)} className="inline-flex min-h-9 shrink-0 items-center gap-1 rounded-lg border border-borderLight px-2 text-[11px] font-black"><Check size={13} />Read</button>}</div>)}</div></div><div className="rounded-2xl border border-borderLight bg-cardBg p-5 shadow-soft"><p className="text-xs font-black uppercase tracking-[.16em] text-textMuted">Inventory health</p><div className="mt-4 space-y-4"><div><div className="flex justify-between text-sm font-bold"><span>In stock</span><span>{Math.max(metrics.total - metrics.low - metrics.out, 0)}</span></div><div className="mt-2 h-2 rounded-full bg-[#E5D4B8]"><div className="h-full rounded-full bg-[#171717]" style={{ width: `${metrics.total ? Math.max(metrics.total - metrics.low - metrics.out, 0) / metrics.total * 100 : 0}%` }} /></div></div><div className="flex justify-between text-sm font-bold"><span>Unread alerts</span><span>{recentAlerts.filter(alert => !alert.is_read).length}</span></div></div></div></div><div className="mb-4 flex flex-wrap gap-2"><div className="relative min-w-[220px] flex-1"><SlidersHorizontal className="absolute left-3 top-1/2 -translate-y-1/2 text-textMuted" size={16} /><input className={`${inputClass} inventory-search-input`} placeholder="Search products" value={search} onChange={e => setSearch(e.target.value)} /></div>{(['all', 'low', 'out'] as StockFilter[]).map(value => <button key={value} onClick={() => setFilter(value)} className={`rounded-xl px-4 py-2 text-xs font-black uppercase ${filter === value ? 'bg-[#CBB89D]' : 'border border-borderLight bg-cardBg hover:bg-[#EDE4D4]'}`}>{value}</button>)}</div><ProductTable products={filteredProducts} loading={loading} onEdit={openProduct} onAdjust={setStockModal} /></>}
+     {tab === 'products' && <div className="rounded-2xl border border-borderLight bg-cardBg p-5 shadow-soft"><div className="flex items-center justify-between"><div><h2 className="flex items-center gap-2 text-lg font-black"><Boxes size={19} />Product Management</h2><p className="mt-1 text-sm text-textMuted">Create or edit products used immediately by the Billing Catalog.</p></div><button onClick={() => openProduct()} className="btn-primary inline-flex items-center gap-2"><Plus size={16} />Add Product</button></div><div className="mt-5"><ProductTable products={products.filter(p => !search || `${p.name} ${p.category}`.toLowerCase().includes(search.toLowerCase()))} loading={loading} onEdit={openProduct} onAdjust={setStockModal} /></div></div>}
+     {tab === 'categories' && <div className="rounded-2xl border border-borderLight bg-cardBg shadow-soft"><div className="flex items-center justify-between border-b border-borderLight p-4"><h2 className="text-lg font-black">Catalog Categories</h2><button onClick={() => { setEditingCategory(null); setCategoryName('') }} className="btn-primary inline-flex items-center gap-2"><Plus size={16} />Add Category</button></div><form onSubmit={saveCategory} className="flex gap-2 border-b border-borderLight p-4"><input className={inputClass} placeholder="New category name" value={categoryName} onChange={e => setCategoryName(e.target.value)} /><button className="btn-primary shrink-0" type="submit">{editingCategory ? 'Rename' : 'Add'}</button></form><div className="divide-y divide-borderLight">{categories.map(category => <div key={category.id} className="flex items-center justify-between px-4 py-3"><span className={category.is_active ? 'font-bold' : 'font-bold text-textMuted line-through'}>{category.name_en}</span><div><button onClick={() => { setEditingCategory(category); setCategoryName(category.name_en) }} className="mr-1 rounded-lg border border-borderLight p-2 hover:bg-[#EDE4D4]"><Edit3 size={15} /></button><button onClick={async () => { const result = await supabase.from('categories').update({ is_active: !category.is_active }).eq('id', category.id); if (result.error) setNotice({ type: 'error', text: result.error.message }); else await refresh() }} className="mr-1 rounded-lg border border-borderLight p-2 hover:bg-[#EDE4D4]"><Power size={15} /></button><button onClick={() => void removeCategory(category)} className="rounded-lg border border-borderLight px-2 py-1 text-xs font-black hover:bg-[#EDE4D4]">Delete</button></div></div>)}</div></div>}
+     {tab === 'analytics' && <div className="grid gap-5 md:grid-cols-3"><div className="rounded-2xl border border-borderLight bg-cardBg p-5 shadow-soft"><BarChart3 size={19} /><p className="mt-4 text-xs font-black uppercase tracking-wider text-textMuted">Units Restocked · This Week</p><p className="mt-2 text-2xl font-black">{analytics.restocked}</p></div><div className="rounded-2xl border border-borderLight bg-cardBg p-5 shadow-soft"><BarChart3 size={19} /><p className="mt-4 text-xs font-black uppercase tracking-wider text-textMuted">Units Sold · This Week</p><p className="mt-2 text-2xl font-black">{analytics.sold}</p></div><div className="rounded-2xl border border-borderLight bg-cardBg p-5 shadow-soft"><BarChart3 size={19} /><p className="mt-4 text-xs font-black uppercase tracking-wider text-textMuted">Lost / Damaged · This Week</p><p className="mt-2 text-2xl font-black">{analytics.lost}</p></div><div className="rounded-2xl border border-borderLight bg-cardBg p-5 shadow-soft md:col-span-2"><h2 className="text-lg font-black">Highest Stock Value</h2><div className="mt-3 divide-y divide-borderLight">{[...physicalProducts].sort((a, b) => b.stock * b.price - a.stock * a.price).slice(0, 10).map(p => <div key={String(p.id)} className="flex justify-between py-3 text-sm"><span className="font-bold">{p.name}<span className="ml-2 text-textMuted">{p.stock} units × {formatCurrency(p.price)}</span></span><b>{formatCurrency(p.stock * p.price)}</b></div>)}</div></div><div className="rounded-2xl border border-borderLight bg-cardBg p-5 shadow-soft"><h2 className="text-lg font-black">Stock by Category</h2><div className="mt-3 divide-y divide-borderLight">{categories.map(c => <div key={c.id} className="flex justify-between py-3 text-sm"><span className="font-bold">{c.name_en}</span><b>{physicalProducts.filter(p => p.categoryId === c.id || p.category === c.name_en).length}</b></div>)}</div></div></div>}
+diff --git a/jj-signature-billing-app/supabase/migrations/20260904_0010_inventory_alerts_access_and_repair.sql b/jj-signature-billing-app/supabase/migrations/20260904_0010_inventory_alerts_access_and_repair.sql
+new file mode 100644
+index 0000000..c2f265b
+--- /dev/null
++++ b/jj-signature-billing-app/supabase/migrations/20260904_0010_inventory_alerts_access_and_repair.sql
+@@ -0,0 +1,93 @@
++-- J.J Signature: make inventory alerts deployable for the existing portal.
++-- This migration is idempotent and does not alter orders or stock values.
++
++CREATE TABLE IF NOT EXISTS public.inventory_alerts (
++  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
++  product_id BIGINT NOT NULL REFERENCES public.products(id) ON DELETE CASCADE,
++  alert_type TEXT NOT NULL CHECK (alert_type IN ('LOW_STOCK', 'OUT_OF_STOCK')),
++  stock_quantity INTEGER NOT NULL CHECK (stock_quantity >= 0),
++  threshold INTEGER CHECK (threshold IS NULL OR threshold >= 0),
++  message TEXT,
++  is_read BOOLEAN NOT NULL DEFAULT FALSE,
++  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
++  read_at TIMESTAMPTZ
++);
++
++CREATE INDEX IF NOT EXISTS inventory_alerts_product_idx ON public.inventory_alerts (product_id);
++CREATE INDEX IF NOT EXISTS inventory_alerts_read_idx ON public.inventory_alerts (is_read);
++CREATE INDEX IF NOT EXISTS inventory_alerts_created_idx ON public.inventory_alerts (created_at DESC);
++CREATE INDEX IF NOT EXISTS inventory_alerts_unread_created_idx
++  ON public.inventory_alerts (created_at DESC) WHERE is_read = FALSE;
++
++CREATE OR REPLACE FUNCTION public.create_inventory_alert_on_stock_transition()
++RETURNS TRIGGER
++LANGUAGE plpgsql
++SECURITY DEFINER
++SET search_path = public
++AS $$
++DECLARE
++  v_stock NUMERIC := COALESCE(NEW.stock_quantity, NEW.stock, 0);
++  v_old_stock NUMERIC := COALESCE(OLD.stock_quantity, OLD.stock, 0);
++  v_threshold NUMERIC := COALESCE(NEW.low_stock_alert, 0);
++  v_alert_type TEXT;
++  v_message TEXT;
++BEGIN
++  IF NOT COALESCE(NEW.track_inventory, TRUE) OR v_stock IS NOT DISTINCT FROM v_old_stock THEN
++    RETURN NEW;
++  END IF;
++
++  IF v_stock <= 0 AND v_old_stock > 0 THEN
++    v_alert_type := 'OUT_OF_STOCK';
++    v_message := 'The product is now out of stock.';
++  ELSIF v_stock > 0 AND v_stock <= v_threshold AND v_old_stock > v_threshold THEN
++    v_alert_type := 'LOW_STOCK';
++    v_message := format('Only %s units remaining. Threshold: %s.', v_stock, v_threshold);
++  ELSE
++    RETURN NEW;
++  END IF;
++
++  -- The products row lock plus this transaction lock makes the transition
++  -- decision safe across all stock-changing callers.
++  PERFORM pg_advisory_xact_lock(hashtextextended('inventory-alert:' || NEW.id::TEXT, 0));
++  INSERT INTO public.inventory_alerts (product_id, alert_type, stock_quantity, threshold, message)
++  VALUES (
++    NEW.id, v_alert_type, GREATEST(TRUNC(v_stock), 0)::INTEGER,
++    CASE WHEN v_alert_type = 'LOW_STOCK' THEN GREATEST(TRUNC(v_threshold), 0)::INTEGER ELSE NULL END,
++    v_message
++  );
++  RETURN NEW;
++END;
++$$;
++
++DROP TRIGGER IF EXISTS products_inventory_alert_transition ON public.products;
++CREATE TRIGGER products_inventory_alert_transition
++AFTER UPDATE OF stock_quantity, stock ON public.products
++FOR EACH ROW EXECUTE FUNCTION public.create_inventory_alert_on_stock_transition();
++
++ALTER TABLE public.inventory_alerts ENABLE ROW LEVEL SECURITY;
++DROP POLICY IF EXISTS inventory_alerts_admin_select ON public.inventory_alerts;
++CREATE POLICY inventory_alerts_admin_select ON public.inventory_alerts
++  FOR SELECT TO authenticated USING (public.is_admin());
++DROP POLICY IF EXISTS inventory_alerts_admin_update ON public.inventory_alerts;
++CREATE POLICY inventory_alerts_admin_update ON public.inventory_alerts
++  FOR UPDATE TO authenticated USING (public.is_admin()) WITH CHECK (public.is_admin());
++-- The existing public-portal deployment intentionally uses anon + is_admin().
++-- In the normal private deployment is_admin() remains false for anon.
++DROP POLICY IF EXISTS inventory_alerts_portal_select ON public.inventory_alerts;
++CREATE POLICY inventory_alerts_portal_select ON public.inventory_alerts
++  FOR SELECT TO anon USING (public.is_admin());
++DROP POLICY IF EXISTS inventory_alerts_portal_update ON public.inventory_alerts;
++CREATE POLICY inventory_alerts_portal_update ON public.inventory_alerts
++  FOR UPDATE TO anon USING (public.is_admin()) WITH CHECK (public.is_admin());
++
++REVOKE INSERT, DELETE ON public.inventory_alerts FROM anon, authenticated;
++GRANT SELECT, UPDATE ON public.inventory_alerts TO anon, authenticated;
++
++DO $$
++BEGIN
++  ALTER PUBLICATION supabase_realtime ADD TABLE public.inventory_alerts;
++EXCEPTION WHEN duplicate_object THEN NULL;
++END;
++$$;
++
++NOTIFY pgrst, 'reload schema';
+-- 
+2.46.1.windows.1
+
