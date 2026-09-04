@@ -51,6 +51,7 @@ import { createVariant, updateVariant, deleteVariant, setDefaultVariant, type Pr
 import { useVariantStore } from '../store/store'
 import Pos from './Pos'
 import AdvanceOrders from './AdvanceOrders'
+import { StatCard, StatGrid } from '../components/common/StatCard'
 import {
   ResponsiveContainer,
   XAxis,
@@ -1732,7 +1733,7 @@ export default function Dashboard() {
             </div>
 
             {/* Status summary cards */}
-            <div className="grid grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
               {[
                 { label: l('Total Requests', 'மொத்த கோரிக்கை'), val: analytics.waRequests,  bg: 'bg-blue-50',   color: 'text-blue-700',   border: 'border-blue-100' },
                 { label: l('Pending', 'நிலுவை'),                 val: analytics.waPending,   bg: 'bg-amber-50',  color: 'text-amber-700',  border: 'border-amber-100' },
@@ -2059,7 +2060,7 @@ export default function Dashboard() {
             {/* Revenue sub-tab */}
             {posAnalyticsTab === 'revenue' && (
               <div className="space-y-6">
-                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+                <StatGrid>
                   {[
                     { label: 'NET REVENUE',      helper: 'Selling revenue − expenses', value: formatCurrency(analytics.totalCompletedRevenue), icon: <RupeeIcon size={16} />, color: 'text-emerald-500', bg: 'bg-emerald-50' },
                     { label: 'TOTAL EXPENSES',    helper: 'Recorded operating expenses', value: formatCurrency(analytics.totalExpenses), icon: <ReceiptIndianRupee size={16} />, color: 'text-[#8A3B32]', bg: 'bg-[#F8F3E8]' },
@@ -2067,20 +2068,11 @@ export default function Dashboard() {
                     { label: 'OFFLINE BILLS',    helper: 'Walk-in POS sales',     value: formatCurrency(analytics.posRevenue),            icon: <RupeeIcon size={16} />, color: 'text-cyan-500',    bg: 'bg-cyan-50' },
                     { label: 'ONLINE BILLS',     helper: 'Online POS sales',      value: formatCurrency(analytics.onlinePosRevenue),      icon: <RupeeIcon size={16} />, color: 'text-indigo-500',  bg: 'bg-indigo-50' },
                   ].map((card, index) => (
-                    <div key={index} className="bg-white rounded-card border border-borderLight p-5 shadow-soft">
-                      <div className="flex items-start justify-between gap-2 mb-4">
-                        <div>
-                          <p className="text-[11px] font-bold text-[#111111] uppercase tracking-wider mb-1">{card.label}</p>
-                        </div>
-                        <div className={`w-8 h-8 rounded-full ${card.bg} flex items-center justify-center ${card.color}`}>{card.icon}</div>
-                      </div>
-                      <p className="text-[28px] font-bold text-[#111111] leading-none mb-2">{card.value}</p>
-                      <p className="text-[12px] text-[#6B7280]">{card.helper}</p>
-                    </div>
+                    <StatCard key={index} label={card.label} helper={card.helper} value={card.value} icon={card.icon} bg={card.bg} color={card.color} className="rounded-card border-borderLight p-5" labelClassName="text-[#111111]" valueClassName="text-[28px]" />
                   ))}
-                </div>
+                </StatGrid>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4">
+                <StatGrid>
                   {[
                     { label: 'TOTAL OFFLINE BILLS', helper: 'Walk-in POS orders',    value: analytics.offlineOrderCount,                    icon: <LayoutDashboard size={16} />, color: 'text-red-500',    bg: 'bg-red-50' },
                     { label: 'TOTAL ONLINE BILLS',  helper: 'Live completed online bills', value: analytics.onlineBillCount,               icon: <Box size={16} />,             color: 'text-blue-500',   bg: 'bg-blue-50' },
@@ -2088,18 +2080,9 @@ export default function Dashboard() {
                     { label: 'AVERAGE REVENUE PER BILL', helper: 'Average per Bill', value: formatCurrency(analytics.averageRevenuePerBill), icon: <RupeeIcon size={16} />, color: 'text-emerald-500', bg: 'bg-emerald-50' },
                     { label: 'TOP PRODUCT',         helper: 'Most sold item',        value: analytics.bestProduct || '-',                    icon: <Trophy size={16} />,          color: 'text-pink-500',   bg: 'bg-pink-50' },
                   ].map((card, index) => (
-                    <div key={index} className="bg-white rounded-card border border-borderLight p-5 shadow-soft">
-                      <div className="flex items-start justify-between gap-2 mb-4">
-                        <div>
-                          <p className="text-[11px] font-bold text-[#111111] uppercase tracking-wider mb-1">{card.label}</p>
-                        </div>
-                        <div className={`w-8 h-8 rounded-full ${card.bg} flex items-center justify-center ${card.color}`}>{card.icon}</div>
-                      </div>
-                      <p className="text-[22px] font-bold text-[#111111] leading-none mb-2 truncate">{card.value}</p>
-                      <p className="text-[12px] text-[#6B7280]">{card.helper}</p>
-                    </div>
+                    <StatCard key={index} label={card.label} helper={card.helper} value={card.value} icon={card.icon} bg={card.bg} color={card.color} className="rounded-card border-borderLight p-5" labelClassName="text-[#111111]" valueClassName="text-[22px] truncate" />
                   ))}
-                </div>
+                </StatGrid>
 
                 <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
                   <div className="xl:col-span-2 bg-white rounded-card border border-borderLight p-6 shadow-soft">

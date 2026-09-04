@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import {
   BarChart2,
@@ -43,6 +43,7 @@ import { useAuthStore, useProductStore, type Product } from '../store/store'
 import { formatCurrency, normalizeOrderMode, toNumber } from '../lib/retail'
 import { BRAND_EN, BRAND_LOGO } from '../lib/brand'
 import { getIndianPhoneParts } from '../lib/phone'
+import { StatGrid } from '../components/common/StatCard'
 
 type BillingOrder = {
   id: string
@@ -177,33 +178,6 @@ const exportCSV = (orders: BillingOrder[]) => {
   a.download = `billing_analytics_${new Date().toISOString().slice(0, 10)}.csv`
   a.click()
   URL.revokeObjectURL(url)
-}
-
-function StatCard({
-  label,
-  helper,
-  value,
-  icon,
-  bg,
-  color,
-}: {
-  label: string
-  helper: string
-  value: string | number
-  icon: ReactNode
-  bg: string
-  color: string
-}) {
-  return (
-    <div className="rounded-2xl border border-[#D1FAE5]/30 bg-white p-4 shadow-sm">
-      <div className="mb-2 flex items-start justify-between gap-2">
-        <p className="text-[10px] font-black uppercase tracking-wider text-[#374151]">{label}</p>
-        <div className={`flex h-8 w-8 items-center justify-center rounded-xl ${bg} ${color}`}>{icon}</div>
-      </div>
-      <p className="mb-2 text-[11px] font-semibold text-[#7A846F]">{helper}</p>
-      <p className="break-words text-[22px] font-black leading-tight text-[#111111]">{value}</p>
-    </div>
-  )
 }
 
 export default function BillingAnalytics() {
@@ -694,19 +668,7 @@ export default function BillingAnalytics() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
-          {summaryCards.map((card) => (
-            <StatCard
-              key={card.label}
-              label={card.label}
-              helper={card.helper}
-              value={card.value}
-              icon={card.icon}
-              bg={card.bg}
-              color={card.color}
-            />
-          ))}
-        </div>
+        <StatGrid cards={summaryCards} />
 
         <div className="mt-6">
           <CompactAnalytics analytics={analytics} />
