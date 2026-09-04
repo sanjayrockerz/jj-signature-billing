@@ -12,7 +12,7 @@ import { useProductStore, useVariantStore, useAdminAuthStore, type Product } fro
 import { Invoice } from '../components/Invoice'
 import CatalogModal from '../components/CatalogModal'
 import AddProductModal from '../components/AddProductModal'
-import { invoicePdfFile } from '../lib/invoicePdf'
+import { invoicePdfFile, invoicePdfFileFromElement } from '../lib/invoicePdf'
 import { uploadInvoicePdf } from '../lib/storage'
 import { createOrderWithStock } from '../services/orderService'
 import { createAdvanceOrder, type AdvanceOrder, type AdvancePaymentMethod } from '../services/advanceOrderService'
@@ -635,7 +635,14 @@ export default function Pos(props: PosProps = {}) {
 
   const persistInvoicePdf = async (inv: InvoiceSnap): Promise<string | undefined> => {
     try {
-      const file = await invoicePdfFile({
+      // Wait for the Invoice component to render, then export that exact
+      // preview layout at a stable width. Fallback keeps storage resilient if
+      // this function is called before the success screen paints.
+      await new Promise<void>(resolve => requestAnimationFrame(() => resolve()))
+      const previewElement = document.getElementById('invoice-print-root')
+      const file = previewElement
+        ? await invoicePdfFileFromElement(previewElement, inv.invoiceNo)
+        : await invoicePdfFile({
         invoiceNo: inv.invoiceNo,
         date: inv.date,
         customerName: inv.customerName,

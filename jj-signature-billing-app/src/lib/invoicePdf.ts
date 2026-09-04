@@ -180,16 +180,36 @@ export async function invoicePdfFileFromElement(
   invoiceNo: string,
 ): Promise<File> {
   const formattedNo = formatInvoiceNo(invoiceNo)
+  const exportElement = element.cloneNode(true) as HTMLElement
+  const exportWidth = 680
+  exportElement.querySelectorAll('button').forEach(button => button.remove())
+  exportElement.id = `${element.id || 'invoice'}-pdf-export`
+  exportElement.style.width = `${exportWidth}px`
+  exportElement.style.maxWidth = `${exportWidth}px`
+  exportElement.style.minWidth = `${exportWidth}px`
+  exportElement.style.margin = '0'
+  exportElement.style.position = 'absolute'
+  exportElement.style.left = '-10000px'
+  exportElement.style.top = '0'
+  exportElement.style.overflow = 'visible'
+  document.body.appendChild(exportElement)
   await document.fonts?.ready
-  const canvas = await html2canvas(element, {
-    backgroundColor: '#FFFDF8',
-    scale: 2,
-    useCORS: true,
-    logging: false,
-    width: element.clientWidth,
-    windowWidth: element.clientWidth,
-    windowHeight: element.clientHeight,
-  })
+  let canvas: HTMLCanvasElement
+  try {
+    canvas = await html2canvas(exportElement, {
+      backgroundColor: '#FFFDF8',
+      scale: 2,
+      useCORS: true,
+      logging: false,
+      width: exportWidth,
+      windowWidth: exportWidth,
+      windowHeight: exportElement.scrollHeight,
+      scrollX: 0,
+      scrollY: 0,
+    })
+  } finally {
+    exportElement.remove()
+  }
 
   const doc = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' })
   const pageWidth = 210

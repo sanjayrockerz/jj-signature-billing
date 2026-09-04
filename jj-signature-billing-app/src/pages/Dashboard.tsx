@@ -44,7 +44,7 @@ import { BRAND_EN, BRAND_LOGO } from '../lib/brand'
 import { Invoice } from '../components/Invoice'
 import { buildProfessionalWhatsAppMessage } from '../lib/whatsappMessageUtf8'
 import { getIndianPhoneParts } from '../lib/phone'
-import { invoicePdfFile } from '../lib/invoicePdf'
+import { invoicePdfFile, invoicePdfFileFromElement } from '../lib/invoicePdf'
 // toWhatsAppUrl removed - using direct link building in handlers
 import { createVariant, updateVariant, deleteVariant, setDefaultVariant, type ProductVariant } from '../services/variantService'
 import { useVariantStore } from '../store/store'
@@ -841,6 +841,21 @@ export default function Dashboard() {
     }
     const opened = window.open(url, '_blank', 'noopener,noreferrer')
     if (mode === 'print') opened?.addEventListener('load', () => opened.print())
+  }
+
+  const downloadInvoicePreview = async (order: DashboardOrder) => {
+    const previewElement = document.getElementById('invoice-print-root')
+    if (!previewElement) {
+      await openOrderInvoice(order, 'download')
+      return
+    }
+    const file = await invoicePdfFileFromElement(previewElement, order.invoice_no || order.id)
+    const url = URL.createObjectURL(file)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = file.name
+    link.click()
+    setTimeout(() => URL.revokeObjectURL(url), 1000)
   }
 
   const generateCouponCode = () => {
@@ -3768,7 +3783,7 @@ export default function Dashboard() {
                   </button>
                   <button
                     type="button"
-                    onClick={() => void openOrderInvoice(invoicePreviewOrder, 'download')}
+                    onClick={() => void downloadInvoicePreview(invoicePreviewOrder)}
                     className="inline-flex min-h-[40px] items-center gap-1.5 rounded-xl bg-maroon-dark px-3 text-xs font-black text-white hover:bg-maroon"
                   >
                     <Download size={15} /> Download
