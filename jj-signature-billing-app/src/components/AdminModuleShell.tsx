@@ -25,8 +25,8 @@ export function AdminModuleShell({ title, subtitle, children }: { title: string;
   const navLinks = links.filter(({ href }) => role === 'admin' || !['/pos-analytics', '/dashboard?tab=coupons'].includes(href))
   const go = (href: string) => { setMobileNavOpen(false); navigate(href) }
   return (
-    <div className="admin-shell flex min-h-screen bg-bgMain text-textMain">
-      <aside className="hidden w-[260px] shrink-0 flex-col border-r border-maroon-dark bg-maroon-dark text-white lg:flex lg:h-screen lg:min-h-screen lg:self-start lg:sticky lg:top-0">
+    <div className="admin-shell flex min-h-screen bg-bgMain text-textMain lg:h-dvh lg:overflow-hidden">
+      <aside className="hidden w-[260px] min-w-[260px] shrink-0 flex-col border-r border-maroon-dark bg-maroon-dark text-white lg:flex lg:h-dvh lg:min-h-dvh lg:self-start lg:sticky lg:top-0">
         <Link to="/dashboard" className="flex items-center gap-3 border-b border-white/10 px-5 py-5">
           <span className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-emerald-900/40 bg-white p-1 shadow-sm"><img src={BRAND_LOGO} alt={`${BRAND_EN} logo`} className="h-full w-full object-contain" /></span>
           <span className="truncate text-2xl font-black tracking-tight text-white">{BRAND_EN}</span>
@@ -41,7 +41,7 @@ export function AdminModuleShell({ title, subtitle, children }: { title: string;
         </nav>
         <button onClick={() => { logout(); navigate('/admin-login', { replace: true }) }} className="mb-4 mx-4 flex h-12 items-center gap-3 rounded-xl px-4 text-base font-medium text-white/70 hover:bg-white/10 hover:text-white"><LogOut size={18} />Logout</button>
       </aside>
-      <main className="min-w-0 flex-1">
+      <main className="min-w-0 flex-1 lg:min-h-0 lg:overflow-y-auto lg:overscroll-contain">
         <div className="border-b border-borderLight bg-cardBg px-4 py-4 sm:px-8 sm:py-5">
           <div className="mx-auto flex max-w-7xl items-start gap-3">
             <button type="button" onClick={() => setMobileNavOpen(true)} aria-label="Open navigation" className="touch-target mt-0.5 inline-flex items-center justify-center rounded-xl border border-borderLight bg-[#FFFDF8] lg:hidden"><Menu size={20} /></button>

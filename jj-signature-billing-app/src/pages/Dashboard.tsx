@@ -1361,11 +1361,11 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="admin-shell min-h-screen bg-bgMain flex flex-col lg:flex-row">
+    <div className="admin-shell min-h-screen bg-bgMain flex flex-col lg:h-dvh lg:flex-row lg:overflow-hidden">
       {/* Sidebar */}
       <aside
         className={[
-          'hidden w-full bg-maroon-dark text-white border-b lg:border-b-0 lg:border-r border-maroon-dark lg:flex lg:h-screen lg:min-h-screen lg:self-start flex-col shrink-0 lg:sticky lg:top-0',
+          'hidden w-full bg-maroon-dark text-white border-b lg:border-b-0 lg:border-r border-maroon-dark lg:flex lg:h-dvh lg:min-h-dvh lg:self-start flex-col shrink-0 lg:sticky lg:top-0',
           'transition-[width] duration-300 ease-in-out',
           sidebarCollapsed ? 'lg:w-[88px]' : 'lg:w-[260px]',
         ].join(' ')}
@@ -1472,7 +1472,7 @@ export default function Dashboard() {
       )}
 
       {/* Main */}
-      <main className="flex-grow flex min-w-0 flex-col">
+      <main className="flex-grow flex min-w-0 flex-col lg:min-h-0 lg:overflow-y-auto lg:overscroll-contain">
         <div className="flex items-center gap-3 border-b border-borderLight bg-cardBg px-4 py-3 lg:hidden">
           <button type="button" onClick={() => setMobileNavOpen(true)} aria-label="Open navigation" className="touch-target inline-flex items-center justify-center rounded-xl border border-borderLight bg-[#FFFDF8]"><Menu size={20} /></button>
           <Link to="/pos" onClick={() => setMobileNavOpen(false)} className="flex min-w-0 items-center gap-2">
