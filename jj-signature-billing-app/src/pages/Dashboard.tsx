@@ -42,7 +42,6 @@ import { formatCurrency, normalizeOrderMode, normalizeUnitType, toNumber, type U
 import { normalizeStructuredOrderItem } from '../lib/retail'
 import { BRAND_EN, BRAND_LOGO } from '../lib/brand'
 import { Invoice } from '../components/Invoice'
-import { printThermalReceipt } from '../lib/thermalPrint'
 import { buildProfessionalWhatsAppMessage } from '../lib/whatsappMessageUtf8'
 import { getIndianPhoneParts } from '../lib/phone'
 import { invoicePdfFile } from '../lib/invoicePdf'
@@ -801,40 +800,6 @@ export default function Dashboard() {
     return { items, subtotal, message, fileName: `Invoice-${order.invoice_no || order.id}.pdf` }
   }
 
-
-  const handlePrintReceipt = (order: DashboardOrder) => {
-    const preview = getOrderWhatsAppPreview(order)
-    if (!preview) { alert('This order has no invoice details available.'); return }
-    const subtotal = order.total - (order.delivery_charge || 0) + (order.discount_amount || 0)
-
-    printThermalReceipt({
-      invoiceNo: order.invoice_no || order.id,
-      date: order.created_at,
-      customerName: order.customer_name,
-      phone: order.phone,
-      items: (preview.items as Array<{
-        name?: string
-        product_name?: string
-        qty?: number
-        quantity?: number
-        unit?: string
-        price?: number
-        base_price?: number
-        line_total?: number
-      }>).map((item) => ({
-        name: item.name || item.product_name || '',
-        qty: item.qty || item.quantity || 0,
-        unit: item.unit || '',
-        price: item.price || item.base_price || 0,
-        line_total: item.line_total || 0
-      })),
-      subtotal,
-      shipping: order.delivery_charge || 0,
-      couponDiscount: order.discount_amount || 0,
-      totalGst: order.total_gst || 0,
-      total: order.total
-    })
-  }
 
   const openOrderInvoice = async (order: DashboardOrder, mode: 'view' | 'download' | 'print') => {
     if (mode === 'view') {
@@ -3796,7 +3761,7 @@ export default function Dashboard() {
                 <div className="flex items-center gap-2">
                   <button
                     type="button"
-                    onClick={() => handlePrintReceipt(invoicePreviewOrder)}
+                    onClick={() => void openOrderInvoice(invoicePreviewOrder, 'print')}
                     className="inline-flex min-h-[40px] items-center gap-1.5 rounded-xl border border-[#D1FAE5]/70 px-3 text-xs font-black text-[#111111] hover:bg-[#F9FAFB]"
                   >
                     <Printer size={15} /> Print
