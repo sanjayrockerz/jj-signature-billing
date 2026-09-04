@@ -139,16 +139,6 @@
   .hide-scrollbar::-webkit-scrollbar { display: none; }
   .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-  /* All protected desktop views use the same non-shrinking navigation rail. */
-  @media (min-width: 1024px) {
-    .admin-shell > aside {
-      flex: 0 0 260px;
-      width: 260px !important;
-      min-width: 260px;
-      max-width: 260px;
-    }
-  }
-
   /* Glassmorphism nav */
   .glass {
     background: rgba(255, 255, 255, 0.92) !important;

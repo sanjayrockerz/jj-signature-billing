@@ -20,24 +20,26 @@ export function AdminModuleShell({ title, subtitle, children }: { title: string;
   const location = useLocation()
   const navigate = useNavigate()
   const logout = useAdminAuthStore(state => state.logout)
+  const role = useAdminAuthStore(state => state.role)
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
+  const navLinks = links.filter(({ href }) => role === 'admin' || !['/pos-analytics', '/dashboard?tab=coupons'].includes(href))
   const go = (href: string) => { setMobileNavOpen(false); navigate(href) }
   return (
     <div className="admin-shell flex min-h-screen bg-bgMain text-textMain">
-      <aside className="hidden w-[260px] shrink-0 flex-col border-r border-borderLight bg-[#E5D4B8] lg:flex">
-        <Link to="/dashboard" className="flex items-center gap-3 border-b border-borderLight px-5 py-5">
-          <span className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-xl border border-borderLight bg-cardBg p-1 shadow-sm"><img src={BRAND_LOGO} alt={`${BRAND_EN} logo`} className="h-full w-full object-contain" /></span>
-          <span className="truncate text-[20px] font-black tracking-tight text-[#171717]">{BRAND_EN}</span>
+      <aside className="hidden w-[260px] shrink-0 flex-col border-r border-maroon-dark bg-maroon-dark text-white lg:flex lg:sticky lg:top-0 lg:h-screen">
+        <Link to="/dashboard" className="flex items-center gap-3 border-b border-white/10 px-5 py-5">
+          <span className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-emerald-900/40 bg-white p-1 shadow-sm"><img src={BRAND_LOGO} alt={`${BRAND_EN} logo`} className="h-full w-full object-contain" /></span>
+          <span className="truncate text-[20px] font-black tracking-tight text-white">{BRAND_EN}</span>
         </Link>
-        <nav className="flex flex-1 flex-col gap-2 px-4 py-4">
-          {links.map(({ href, label, icon: Icon }) => {
+        <nav className="flex flex-1 flex-col gap-2 px-4 py-3">
+          {navLinks.map(({ href, label, icon: Icon }) => {
             const [path, search = ''] = href.split('?')
             const active = location.pathname === path
               && (search ? location.search === `?${search}` : true)
-            return <Link key={href} to={href} className={`flex h-11 items-center gap-3 rounded-xl px-4 text-sm font-bold transition-colors ${active ? 'bg-[#CBB89D] text-[#171717] shadow-sm' : 'text-[#171717] hover:bg-[#FFFDF8]'}`}><Icon size={18} />{label}</Link>
+            return <Link key={href} to={href} className={`flex h-12 items-center gap-3 rounded-xl px-4 text-[14px] font-medium transition-all ${active ? 'sidebar-nav-active bg-white text-maroon-dark shadow-sm' : 'sidebar-nav-inactive text-white/70 hover:bg-white/10 hover:text-white'}`}><Icon size={18} />{label}</Link>
           })}
         </nav>
-        <button onClick={() => { logout(); navigate('/admin-login', { replace: true }) }} className="mb-5 mx-4 flex h-11 items-center gap-3 rounded-xl px-4 text-sm font-bold text-[#171717] hover:bg-[#FFFDF8]"><LogOut size={18} />Logout</button>
+        <button onClick={() => { logout(); navigate('/admin-login', { replace: true }) }} className="mb-4 mx-4 flex h-12 items-center gap-3 rounded-xl px-4 text-[14px] font-medium text-white/70 hover:bg-white/10 hover:text-white"><LogOut size={18} />Logout</button>
       </aside>
       <main className="min-w-0 flex-1">
         <div className="border-b border-borderLight bg-cardBg px-4 py-4 sm:px-8 sm:py-5">
@@ -50,10 +52,10 @@ export function AdminModuleShell({ title, subtitle, children }: { title: string;
       </main>
       {mobileNavOpen && <div className="fixed inset-0 z-[120] lg:hidden" role="dialog" aria-label="Navigation">
         <button type="button" aria-label="Close navigation" onClick={() => setMobileNavOpen(false)} className="absolute inset-0 bg-black/35" />
-        <div className="relative flex h-full w-[min(86vw,320px)] flex-col bg-[#E5D4B8] p-4 shadow-2xl">
+          <div className="relative flex h-full w-[min(86vw,320px)] flex-col bg-maroon-dark p-4 text-white shadow-2xl">
           <div className="flex items-center justify-between border-b border-borderLight pb-4"><div className="flex min-w-0 items-center gap-3"><img src={BRAND_LOGO} alt={`${BRAND_EN} logo`} className="h-10 w-10 rounded-xl bg-[#FFFDF8] object-contain p-1" /><span className="truncate text-lg font-black">{BRAND_EN}</span></div><button type="button" onClick={() => setMobileNavOpen(false)} aria-label="Close navigation" className="touch-target inline-flex items-center justify-center rounded-xl"><X size={20} /></button></div>
-          <nav className="mt-4 flex flex-col gap-2">{links.map(({ href, label, icon: Icon }) => { const [path, search = ''] = href.split('?'); const active = location.pathname === path && (search ? location.search === `?${search}` : true); return <button type="button" key={href} onClick={() => go(href)} className={`flex min-h-12 items-center gap-3 rounded-xl px-4 text-left text-sm font-bold ${active ? 'bg-[#CBB89D]' : 'hover:bg-[#FFFDF8]'}`}><Icon size={18} />{label}</button> })}</nav>
-          <button type="button" onClick={() => { setMobileNavOpen(false); logout(); navigate('/admin-login', { replace: true }) }} className="mt-auto flex min-h-12 items-center gap-3 rounded-xl px-4 text-sm font-bold hover:bg-[#FFFDF8]"><LogOut size={18} />Logout</button>
+          <nav className="mt-4 flex flex-col gap-2">{navLinks.map(({ href, label, icon: Icon }) => { const [path, search = ''] = href.split('?'); const active = location.pathname === path && (search ? location.search === `?${search}` : true); return <button type="button" key={href} onClick={() => go(href)} className={`flex min-h-12 items-center gap-3 rounded-xl px-4 text-left text-sm font-bold ${active ? 'bg-white text-maroon-dark' : 'text-white/80 hover:bg-white/10 hover:text-white'}`}><Icon size={18} />{label}</button> })}</nav>
+          <button type="button" onClick={() => { setMobileNavOpen(false); logout(); navigate('/admin-login', { replace: true }) }} className="mt-auto flex min-h-12 items-center gap-3 rounded-xl px-4 text-sm font-bold text-white/80 hover:bg-white/10 hover:text-white"><LogOut size={18} />Logout</button>
         </div>
       </div>}
     </div>
