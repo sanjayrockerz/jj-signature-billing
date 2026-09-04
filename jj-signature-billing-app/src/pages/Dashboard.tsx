@@ -47,6 +47,7 @@ import { getIndianPhoneParts } from '../lib/phone'
 import { invoicePdfFile, invoicePdfFileFromElement } from '../lib/invoicePdf'
 // toWhatsAppUrl removed - using direct link building in handlers
 import { createVariant, updateVariant, deleteVariant, setDefaultVariant, type ProductVariant } from '../services/variantService'
+import { listInventoryAlerts, type InventoryAlert } from '../services/inventoryAlertService'
 import { useVariantStore } from '../store/store'
 import Pos from './Pos'
 import AdvanceOrders from './AdvanceOrders'
@@ -186,6 +187,7 @@ export default function Dashboard() {
   const [orders, setOrders] = useState<DashboardOrder[]>([])
   const [expenses, setExpenses] = useState<DashboardExpense[]>([])
   const [orderItems, setOrderItems] = useState<DashboardOrderItem[]>([])
+  const [inventoryAlerts, setInventoryAlerts] = useState<InventoryAlert[]>([])
   const [editingProd, setEditingProd] = useState<Product | null>(null)
   const [prodForm, setProdForm] = useState(emptyForm)
   const [newCat, setNewCat] = useState({ name_en: '', name_ta: '' })
@@ -656,7 +658,7 @@ export default function Dashboard() {
     setLoading(true)
     try {
       const productsPromise = fetchProducts(true)
-      const [cRes, oRes, couponRes, expenseRes] = await Promise.all([
+      const [cRes, oRes, couponRes, expenseRes, alertRes] = await Promise.all([
         supabase.from('categories').select('id, name_en, name_ta, is_active, sort_order').order('sort_order'),
         supabase.from('orders')
           .select('id, invoice_no, customer_name, phone, address, created_at, recorded_at, total, status, order_mode, order_type, user_id, items, coupon_code, discount_amount, manual_discount_amount, delivery_charge, total_gst, gst_amount, payment_mode, payment_method, invoice_pdf_url, remarks, reference_number')
@@ -668,6 +670,7 @@ export default function Dashboard() {
           .select('id, code, percentage, is_active, expiry_date, usage_limit, usage_count, min_order_value')
           .order('created_at', { ascending: false }),
         supabase.from('expenses').select('expense_date, amount').order('expense_date', { ascending: false }),
+        listInventoryAlerts(30),
       ])
       if (cRes.error) throw cRes.error
       if (oRes.error) throw oRes.error
@@ -677,6 +680,7 @@ export default function Dashboard() {
       setSearchResults(mappedOrders.filter(o => normalizeOrderType(o.order_type) !== 'online_request').slice(0, 100))
       setCoupons((couponRes.data || []) as DashboardCoupon[])
       setExpenses((expenseRes.data || []).map(row => ({ expense_date: String(row.expense_date || '').slice(0, 10), amount: toNumber(row.amount, 0) })))
+      if (!alertRes.error) setInventoryAlerts((alertRes.data || []) as unknown as InventoryAlert[])
 
       const orderIds = mappedOrders.map(o => o.id).filter(Boolean)
       if (orderIds.length > 0) {
@@ -1608,15 +1612,27 @@ export default function Dashboard() {
                 <div className="bg-white rounded-2xl border border-[#D1FAE5]/30 p-5 shadow-sm">
                   <h3 className="text-base font-black text-[#111111] mb-4">Low Stock Alerts</h3>
                   <div className="space-y-3">
-                    {products.filter(p => p.stock <= (p.lowStockAlert || 5)).slice(0, 10).map((p, i) => (
+                    {products.filter(p => p.trackInventory && p.stock <= (p.lowStockAlert || 5)).slice(0, 10).map((p, i) => (
                       <div key={i} className="flex justify-between items-center bg-red-50 border border-red-100 p-3 rounded-xl">
                         <p className="text-base font-bold text-red-900">{p.name}</p>
                         <p className="text-base font-black text-red-700">{p.stock} left</p>
                       </div>
                     ))}
-                    {products.filter(p => p.stock <= (p.lowStockAlert || 5)).length === 0 && (
+                    {products.filter(p => p.trackInventory && p.stock <= (p.lowStockAlert || 5)).length === 0 && (
                       <p className="text-base text-[#374151]">No low stock alerts.</p>
                     )}
+                  </div>
+                  <div className="mt-4 border-t border-borderLight pt-3">
+                    <div className="flex items-center justify-between gap-2">
+                      <p className="text-xs font-black uppercase tracking-wider text-textMuted">Unread inventory alerts</p>
+                      <p className="text-lg font-black">{inventoryAlerts.filter(alert => !alert.is_read).length}</p>
+                    </div>
+                    {inventoryAlerts.slice(0, 3).map(alert => (
+                      <div key={alert.id} className="mt-2 flex items-start justify-between gap-3 rounded-xl bg-[#F8F3E8] px-3 py-2 text-sm">
+                        <div className="min-w-0"><p className="font-black uppercase tracking-wide">{alert.alert_type === 'OUT_OF_STOCK' ? 'Out of stock' : 'Low stock'}</p><p className="truncate text-textMuted">{alert.message || `Stock: ${alert.stock_quantity}`}</p></div>
+                        <span className="shrink-0 font-black">{alert.stock_quantity}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
                 <div className="bg-white rounded-2xl border border-[#D1FAE5]/30 p-5 shadow-sm">

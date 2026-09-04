@@ -15,6 +15,7 @@ export function InventoryNotificationCenter() {
   const [open, setOpen] = useState(false)
   const [toast, setToast] = useState<InventoryAlert | null>(null)
   const [soundsEnabled, setSoundsEnabled] = useState(() => isInventorySoundEnabled())
+  const [soundFeedback, setSoundFeedback] = useState('')
   const [permission, setPermission] = useState<NotificationPermission | 'unsupported'>(() => typeof Notification === 'undefined' ? 'unsupported' : Notification.permission)
   const seenIds = useRef(new Set<string>())
 
@@ -67,7 +68,14 @@ export function InventoryNotificationCenter() {
     const enabled = !soundsEnabled
     setSoundsEnabled(enabled)
     setInventorySoundEnabled(enabled)
-    if (enabled) { await unlockInventoryAlertSound(); void playInventoryAlertSound('LOW_STOCK') }
+    if (enabled) { await unlockInventoryAlertSound(); void playInventoryAlertSound('LOW_STOCK'); setSoundFeedback('Alert sound enabled') }
+    else setSoundFeedback('Click to enable alert sound')
+  }
+  const testAlertSound = async (type: 'LOW_STOCK' | 'OUT_OF_STOCK') => {
+    if (!soundsEnabled) { setSoundsEnabled(true); setInventorySoundEnabled(true) }
+    await unlockInventoryAlertSound()
+    void playInventoryAlertSound(type)
+    setSoundFeedback('Alert sound enabled')
   }
   const enableBrowserNotifications = async () => {
     if (typeof Notification === 'undefined') return
@@ -93,7 +101,7 @@ export function InventoryNotificationCenter() {
             <div className="flex items-start gap-3"><div className={`mt-0.5 rounded-full p-2 ${alert.alert_type === 'OUT_OF_STOCK' ? 'bg-[#171717] text-white' : 'bg-[#CBB89D]'}`}><Bell size={14} /></div><div className="min-w-0 flex-1"><div className="flex items-start justify-between gap-2"><p className="text-[11px] font-black uppercase tracking-[.14em]">{alert.alert_type === 'OUT_OF_STOCK' ? 'Out of stock' : 'Low stock'}</p>{!alert.is_read && <span className="h-2 w-2 shrink-0 rounded-full bg-[#171717]" aria-label="Unread" />}</div><p className="mt-1 break-words font-black">{productName(alert)}</p><p className="mt-1 text-xs text-textMuted">Stock: {alert.stock_quantity}{alert.threshold !== null && ` · Alert at: ${alert.threshold}`}</p><p className="mt-1 text-[11px] text-textMuted">{formatAlertTime(alert.created_at)}</p><div className="mt-2 flex flex-wrap gap-2"><button type="button" onClick={() => goToProduct(alert)} className="inline-flex min-h-9 items-center gap-1 rounded-lg border border-borderLight px-2.5 text-[11px] font-black"><ExternalLink size={13} />View product</button>{!alert.is_read && <button type="button" onClick={() => void markRead(alert.id)} className="inline-flex min-h-9 items-center gap-1 rounded-lg border border-borderLight px-2.5 text-[11px] font-black"><Check size={13} />Mark read</button>}</div></div></div>
           </article>)}
         </div>
-        <div className="border-t border-borderLight p-3"><div className="flex flex-wrap gap-2"><button type="button" onClick={() => void toggleSounds()} className="inline-flex min-h-10 flex-1 items-center justify-center gap-2 rounded-xl border border-borderLight px-3 text-xs font-black">{soundsEnabled ? <Volume2 size={15} /> : <VolumeX size={15} />}{soundsEnabled ? 'Sounds enabled' : 'Enable sounds'}</button>{permission === 'default' && <button type="button" onClick={() => void enableBrowserNotifications()} className="min-h-10 flex-1 rounded-xl border border-borderLight px-3 text-xs font-black">Enable browser alerts</button>}</div>{unreadCount > 0 && <button type="button" onClick={async () => { const result = await markAllInventoryAlertsRead(); if (!result.error) setAlerts(current => current.map(alert => ({ ...alert, is_read: true, read_at: new Date().toISOString() }))) }} className="mt-2 inline-flex min-h-9 w-full items-center justify-center gap-2 rounded-xl text-xs font-black text-textMuted"><Check size={14} />Mark all as read</button>}</div>
+        <div className="border-t border-borderLight p-3"><div className="flex flex-wrap gap-2"><button type="button" onClick={() => void toggleSounds()} className="inline-flex min-h-10 flex-1 items-center justify-center gap-2 rounded-xl border border-borderLight px-3 text-xs font-black">{soundsEnabled ? <Volume2 size={15} /> : <VolumeX size={15} />}{soundsEnabled ? 'Sounds enabled' : 'Enable sounds'}</button><button type="button" onClick={() => void testAlertSound('LOW_STOCK')} className="min-h-10 flex-1 rounded-xl border border-borderLight px-3 text-xs font-black">Test alert sound</button>{permission === 'default' && <button type="button" onClick={() => void enableBrowserNotifications()} className="min-h-10 flex-1 rounded-xl border border-borderLight px-3 text-xs font-black">Enable browser alerts</button>}</div>{soundFeedback && <p role="status" className="mt-2 text-center text-[11px] font-bold text-textMuted">{soundFeedback}</p>}{unreadCount > 0 && <button type="button" onClick={async () => { const result = await markAllInventoryAlertsRead(); if (!result.error) setAlerts(current => current.map(alert => ({ ...alert, is_read: true, read_at: new Date().toISOString() }))) }} className="mt-2 inline-flex min-h-9 w-full items-center justify-center gap-2 rounded-xl text-xs font-black text-textMuted"><Check size={14} />Mark all as read</button>}</div>
       </div>}
     </div>
     {toast && <div role="status" className="fixed bottom-4 right-4 z-[130] w-[min(calc(100vw-2rem),390px)] rounded-2xl border border-borderLight bg-[#FFFDF8] p-4 shadow-2xl"><button type="button" onClick={() => setToast(null)} aria-label="Dismiss notification" className="absolute right-2 top-2 rounded-lg p-2"><X size={15} /></button><p className="text-[11px] font-black uppercase tracking-[.16em]">{toast.alert_type === 'OUT_OF_STOCK' ? '⚠ Out of stock' : 'Low stock'}</p><p className="mt-2 font-black">{productName(toast)}</p><p className="mt-1 text-sm text-textMuted">{toast.alert_type === 'OUT_OF_STOCK' ? 'Current stock: 0' : toast.message || `Current stock: ${toast.stock_quantity}.`}</p><button type="button" onClick={() => goToProduct(toast)} className="mt-3 min-h-10 rounded-xl border border-borderLight px-3 text-xs font-black">View product</button></div>}
