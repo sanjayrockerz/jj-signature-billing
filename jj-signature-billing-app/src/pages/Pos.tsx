@@ -150,6 +150,7 @@ export default function Pos(props: PosProps = {}) {
   const [depositForm, setDepositForm] = useState({ amount: '', expectedDeliveryDate: '', paymentMethod: 'cash' as AdvancePaymentMethod, address: '', remarks: '', referenceNumber: '' })
   const [dbCategories, setDbCategories] = useState<string[]>([])
   const searchRef = useRef<HTMLInputElement>(null)
+  const cashReceivedRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     void fetchProducts()
@@ -490,8 +491,8 @@ export default function Pos(props: PosProps = {}) {
     const normalizedPhone = normalizePhone(customer.phone || '')
     if (!normalizedPhone) { setError('Please enter a valid Indian mobile number (e.g. 6379048966 or +91 6379048966)'); return }
     // Validate payment amount (only required for cash)
-    if (paymentType === 'cash' && !cashReceived.trim()) { setError('Enter the amount received from customer'); return }
-    if (paymentType === 'cash' && cashReceivedNum < total) { setError(`Insufficient payment. Customer still owes ${formatCurrency(total - cashReceivedNum)}`); return }
+    if (paymentType === 'cash' && !cashReceived.trim()) { setError('Enter the amount received from customer'); cashReceivedRef.current?.focus(); cashReceivedRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }); return }
+    if (paymentType === 'cash' && cashReceivedNum < total) { setError(`Insufficient payment. Customer still owes ${formatCurrency(total - cashReceivedNum)}`); cashReceivedRef.current?.focus(); cashReceivedRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }); return }
     // Validate online mode availability
     if (orderMode === 'online' && !isSupabaseConfigured) { setError('Cannot place online orders while offline'); return }
     setSaving(true); setError('')
@@ -1113,7 +1114,7 @@ export default function Pos(props: PosProps = {}) {
         </div>
 
         {/* RIGHT COLUMN (approx 32%) */}
-        <div className={`${mobilePanelView === 'catalogue' ? 'hidden lg:flex' : 'flex'} min-w-0 w-full flex-[1] min-h-0 flex-col gap-6 lg:sticky lg:top-4 lg:h-[calc(100vh-140px)] lg:max-h-[calc(100vh-140px)]`}>
+        <div className={`${mobilePanelView === 'catalogue' ? 'hidden lg:flex' : 'flex'} min-w-0 w-full flex-[1] min-h-0 flex-col gap-6 h-[calc(100dvh-11rem)] max-h-[calc(100dvh-11rem)] lg:sticky lg:top-4 lg:h-[calc(100vh-140px)] lg:max-h-[calc(100vh-140px)]`}>
           <div className="flex min-h-0 h-full max-h-full flex-col overflow-hidden rounded-2xl border border-[#D1FAE5]/60 bg-[#FAF9F6] shadow-sm">
 
             {/* Header */}
@@ -1234,6 +1235,7 @@ export default function Pos(props: PosProps = {}) {
                     <ChevronDown size={12} className="absolute right-2 top-1/2 -translate-y-1/2 text-[#374151] pointer-events-none" />
                   </div>
                   <input
+                    ref={cashReceivedRef}
                     type="number" onWheel={(e) => (e.target as HTMLInputElement).blur()}
                     value={manualDiscountValue}
                     onChange={e => setManualDiscountValue(e.target.value)}
