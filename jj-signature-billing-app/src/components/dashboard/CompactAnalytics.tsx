@@ -13,6 +13,7 @@ import {
   YAxis,
 } from 'recharts'
 import { ChevronDown, Sparkles } from 'lucide-react'
+import { useState } from 'react'
 import { formatCurrency, toNumber } from '../../lib/retail'
 
 type MonthlyPoint = { month: string; revenue: number }
@@ -53,6 +54,8 @@ function TooltipCard({ active, payload, label, currency = false }: {
 const chartAxis = { fill: '#6B7661', fontSize: 11 }
 
 export default function CompactAnalytics({ analytics }: CompactAnalyticsProps) {
+  const [moreOpen, setMoreOpen] = useState(false)
+
   return (
     <section className="space-y-4">
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
@@ -107,14 +110,14 @@ export default function CompactAnalytics({ analytics }: CompactAnalyticsProps) {
         </div>
       </div>
 
-      <details className="group rounded-2xl border border-[#E7DED0] bg-white/80 backdrop-blur-sm px-4 py-3 shadow-[0_10px_24px_rgba(34,49,38,0.04)]">
+      <details open={moreOpen} onToggle={(event) => setMoreOpen(event.currentTarget.open)} className="group rounded-2xl border border-[#E7DED0] bg-white/80 backdrop-blur-sm px-4 py-3 shadow-[0_10px_24px_rgba(34,49,38,0.04)]">
         <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-[14px] font-black text-[#223126]">
           <span>More insights</span>
           <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-[0.22em] text-[#6B7661] group-open:text-[#111111]">
             Expand <ChevronDown size={12} className="transition-transform group-open:rotate-180" />
           </span>
         </summary>
-        <div className="mt-3 grid grid-cols-1 xl:grid-cols-2 gap-4">
+        {moreOpen && <div className="mt-3 grid grid-cols-1 xl:grid-cols-2 gap-4">
           <div className="rounded-2xl border border-[#E7DED0] bg-[#FBFCF9] p-4">
             <h4 className="text-[13px] font-black text-[#223126] mb-3">Top Categories</h4>
             <div className="h-48 sm:h-52">
@@ -144,7 +147,7 @@ export default function CompactAnalytics({ analytics }: CompactAnalyticsProps) {
               </ResponsiveContainer>
             </div>
           </div>
-        </div>
+        </div>}
       </details>
     </section>
   )
