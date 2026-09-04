@@ -597,8 +597,12 @@ export default function Pos(props: PosProps = {}) {
   const change = cashReceived && Number(cashReceived) >= total
     ? Number(cashReceived) - total : null
 
-  const sendPosWhatsApp = (inv: InvoiceSnap) => {
-    const invoiceUrl = `${window.location.origin}/invoice/${encodeURIComponent(inv.invoiceNo)}`
+  const sendPosWhatsApp = async (inv: InvoiceSnap) => {
+    // Share the same generated PDF used by Download. The responsive invoice
+    // page is kept as a fallback only when PDF storage is unavailable.
+    const whatsappWindow = window.open('', '_blank')
+    const storedPdfUrl = inv.invoicePdfUrl || await persistInvoicePdf(inv)
+    const invoiceUrl = storedPdfUrl || `${window.location.origin}/invoice/${encodeURIComponent(inv.invoiceNo)}`
     const message = buildProfessionalWhatsAppMessage({
       customerName: inv.customerName,
       phone: inv.phone,
@@ -620,10 +624,16 @@ export default function Pos(props: PosProps = {}) {
       gstAmount: inv.gstAmount,
       total: inv.total,
     })
-    window.open(toWhatsAppUrl(inv.phone || customer.phone || '', message), '_blank', 'noopener,noreferrer')
+    const whatsappUrl = toWhatsAppUrl(inv.phone || customer.phone || '', message)
+    if (whatsappWindow) {
+      whatsappWindow.opener = null
+      whatsappWindow.location.href = whatsappUrl
+    } else {
+      window.open(whatsappUrl, '_blank', 'noopener,noreferrer')
+    }
   }
 
-  const persistInvoicePdf = async (inv: InvoiceSnap) => {
+  const persistInvoicePdf = async (inv: InvoiceSnap): Promise<string | undefined> => {
     try {
       const file = await invoicePdfFile({
         invoiceNo: inv.invoiceNo,
@@ -645,8 +655,10 @@ export default function Pos(props: PosProps = {}) {
       const url = await uploadInvoicePdf(file, inv.invoiceNo)
       await supabase.from('orders').update({ invoice_pdf_url: url }).eq('id', inv.id)
       setInvoice(current => current?.id === inv.id ? { ...current, invoicePdfUrl: url } : current)
+      return url
     } catch (err) {
       console.warn('Invoice PDF could not be stored:', err)
+      return undefined
     }
   }
 
