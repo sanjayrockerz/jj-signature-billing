@@ -362,6 +362,31 @@
     var(--jj-ivory);
 }
 
+/* Shared desktop admin-shell contract. Dashboard tabs (including Analytics
+   and Order History) and standalone admin modules use this same structure:
+   the sidebar owns the viewport height and main owns vertical scrolling. */
+@media (min-width: 1024px) {
+  .admin-shell {
+    height: 100dvh;
+    min-height: 100dvh;
+    overflow: hidden;
+  }
+
+  .admin-shell > aside {
+    min-width: 0;
+    min-height: 100dvh;
+    height: 100dvh;
+    flex-shrink: 0;
+  }
+
+  .admin-shell > main {
+    min-width: 0;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+}
+
 /* Mobile layout contract: pages own their height, while the document owns
    vertical scrolling. This prevents long operational screens from being
    trapped behind an app-level 100vh/overflow boundary. */
