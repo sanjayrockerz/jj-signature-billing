@@ -1373,7 +1373,7 @@ export default function Dashboard() {
               <img src={BRAND_LOGO} alt={`${BRAND_EN} logo`} className="w-full h-full object-contain" />
             </div>
             {!sidebarCollapsed && (
-              <h1 className="text-[20px] font-black text-white truncate tracking-tight">{BRAND_EN}</h1>
+              <h1 className="text-2xl font-black text-white truncate tracking-tight">{BRAND_EN}</h1>
             )}
           </Link>
           <button
@@ -1392,7 +1392,7 @@ export default function Dashboard() {
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white border border-emerald-900/40 shrink-0 overflow-hidden shadow-sm p-1 hover:scale-105 transition-transform">
               <img src={BRAND_LOGO} alt={`${BRAND_EN} logo`} className="w-full h-full object-contain" />
             </div>
-            <span className="text-[16px] font-black text-white truncate">{BRAND_EN}</span>
+            <span className="text-lg font-black text-white truncate">{BRAND_EN}</span>
           </Link>
         </div>
         {/* Nav */}
@@ -1410,7 +1410,7 @@ export default function Dashboard() {
                 'h-[56px] min-w-[92px] lg:w-full lg:h-[48px]',
                 sidebarCollapsed ? 'lg:w-[48px] lg:justify-center mx-auto' : 'lg:px-4',
                 'px-0 py-1 lg:py-0',
-                'rounded-xl font-medium text-[11px] lg:text-[14px] transition-all overflow-hidden',
+                'rounded-xl font-medium text-sm lg:text-base transition-all overflow-hidden',
                 (item.route ? location.pathname === item.route : tab === item.id) ? 'sidebar-nav-active bg-white text-maroon-dark shadow-sm' : 'sidebar-nav-inactive text-white/70 hover:bg-white/10 hover:text-white',
               ].join(' ')}
             >
@@ -1434,7 +1434,7 @@ export default function Dashboard() {
               'h-[56px] w-[64px] lg:w-full lg:h-[48px]',
               sidebarCollapsed ? 'lg:w-[48px] lg:justify-center mx-auto' : 'lg:px-4',
               'px-0 py-1 lg:py-0',
-              'sidebar-nav-inactive rounded-xl font-medium text-[11px] lg:text-[14px] transition-all text-white/70 hover:bg-white/10 hover:text-white lg:mt-auto mb-1 lg:mb-4 overflow-hidden',
+              'sidebar-nav-inactive rounded-xl font-medium text-sm lg:text-base transition-all text-white/70 hover:bg-white/10 hover:text-white lg:mt-auto mb-1 lg:mb-4 overflow-hidden',
             ].join(' ')}
           >
             <span className="shrink-0"><Power size={20} /></span>
@@ -1490,7 +1490,7 @@ export default function Dashboard() {
               <h2 className="text-xl font-black text-[#111111]">{l('Analytics Dashboard', 'பகுப்பாய்வு தட்டு')}</h2>
               <div className="flex items-center gap-2">
                 <button onClick={() => void loadData()}
-                  className="flex items-center gap-1.5 px-3 py-2 bg-white border border-[#D1FAE5]/40 rounded-xl text-[12px] font-bold text-[#374151] hover:bg-[#F9FAFB]">
+                  className="flex items-center gap-1.5 px-3 py-2 bg-white border border-[#D1FAE5]/40 rounded-xl text-sm font-bold text-[#374151] hover:bg-[#F9FAFB]">
                   <RefreshCw size={13} /> {l('Refresh', 'புதுப்பி')}
                 </button>
               </div>
@@ -1505,7 +1505,7 @@ export default function Dashboard() {
                 { id: 'billing', label: 'Billing' },
               ].map(sub => (
                 <button key={sub.id} onClick={() => setAnalyticsTab(sub.id)}
-                  className={`px-4 py-2 rounded-xl text-[13px] font-bold whitespace-nowrap transition-colors ${analyticsTab === sub.id ? 'bg-[#111111] text-white' : 'bg-white border border-[#D1FAE5]/40 text-[#374151] hover:bg-[#F9FAFB]'}`}>
+                  className={`px-4 py-2 rounded-xl text-base font-bold whitespace-nowrap transition-colors ${analyticsTab === sub.id ? 'bg-[#111111] text-white' : 'bg-white border border-[#D1FAE5]/40 text-[#374151] hover:bg-[#F9FAFB]'}`}>
                   {sub.label}
                 </button>
               ))}
@@ -1525,10 +1525,10 @@ export default function Dashboard() {
               ].map((card, i) => (
                 <div key={i} className={`bg-gradient-to-br ${card.from} rounded-2xl border border-white/40 p-4 shadow-sm backdrop-blur-sm`}>
                   <div className="flex items-center justify-between gap-1 mb-2">
-                    <p className="text-[10px] uppercase font-black text-[#374151] tracking-wider leading-tight">{card.label}</p>
+                    <p className="text-xs uppercase font-black text-[#374151] tracking-wider leading-tight">{card.label}</p>
                     <div className={`w-7 h-7 rounded-xl bg-gradient-to-br ${card.iconBg} flex items-center justify-center text-white shrink-0 shadow-sm`}>{card.icon}</div>
                   </div>
-                  <p className="text-[20px] font-black text-[#111111] break-words leading-tight">{card.value}</p>
+                  <p className="text-2xl font-black text-[#111111] break-words leading-tight">{card.value}</p>
                 </div>
               ))}
             </div>
@@ -1537,12 +1537,12 @@ export default function Dashboard() {
             <div className="bg-white rounded-2xl border border-[#D1FAE5]/30 p-5 shadow-sm">
               <div className="flex items-center justify-between mb-3">
                 <h3 className="text-base font-black text-[#111111]">{l('Latest POS Bills', 'POS பில்கள்')}</h3>
-                <button onClick={() => setTab('billing')} className="text-[12px] font-bold text-[#10B981] hover:underline">{l('View All →', 'அனைத்தும் →')}</button>
+                <button onClick={() => setTab('billing')} className="text-sm font-bold text-[#10B981] hover:underline">{l('View All →', 'அனைத்தும் →')}</button>
               </div>
               {latestPOS.length > 0 ? (
                 <div className="overflow-x-auto rounded-xl border border-[#D1FAE5]/30">
-                  <table className="w-full min-w-[480px] text-[12px]">
-                    <thead className="bg-[#F9FAFB] text-[10px] uppercase tracking-wider text-[#374151]">
+                  <table className="w-full min-w-[480px] text-sm">
+                    <thead className="bg-[#F9FAFB] text-xs uppercase tracking-wider text-[#374151]">
                       <tr>
                         <th className="px-3 py-2.5 font-black text-left">{l('Invoice', 'பில்')}</th>
                         <th className="px-3 py-2.5 font-black text-left">{l('Customer', 'வாடிக்கையாளர்')}</th>
@@ -1558,13 +1558,13 @@ export default function Dashboard() {
                         const btClass = normalizeOrderType(o.order_type) === 'manual_sale' ? 'bg-purple-100 text-purple-700' : normalizeOrderMode(o.order_mode) === 'online' ? 'bg-blue-100 text-blue-700' : 'bg-orange-100 text-orange-700'
                         return (
                           <tr key={o.id} className="hover:bg-[#F9FAFB]/50">
-                            <td className="px-3 py-2.5 font-bold text-[#10B981] text-[11px]">{o.invoice_no || '-'}</td>
+                            <td className="px-3 py-2.5 font-bold text-[#10B981] text-sm">{o.invoice_no || '-'}</td>
                             <td className="px-3 py-2.5 font-semibold text-[#111111] max-w-[100px] truncate">{o.customer_name}</td>
                             <td className="px-3 py-2.5 font-black text-[#111111]">{formatCurrency(getOrderTotal(o))}</td>
                             <td className="px-3 py-2.5 text-[#7A846F] whitespace-nowrap">{new Date(o.created_at).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' })}</td>
-                            <td className="px-3 py-2.5"><span className={`px-2 py-0.5 rounded-full text-[10px] font-black ${btClass}`}>{btLabel}</span></td>
+                            <td className="px-3 py-2.5"><span className={`px-2 py-0.5 rounded-full text-xs font-black ${btClass}`}>{btLabel}</span></td>
                             <td className="px-3 py-2.5">
-                              <span className={`text-[11px] font-black px-2 py-0.5 rounded-lg ${normalizeStatus(o.status) === 'completed' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}`}>
+                              <span className={`text-sm font-black px-2 py-0.5 rounded-lg ${normalizeStatus(o.status) === 'completed' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}`}>
                                 {normalizeStatus(o.status)}
                               </span>
                             </td>
@@ -1575,7 +1575,7 @@ export default function Dashboard() {
                   </table>
                 </div>
               ) : (
-                <p className="text-[13px] text-[#374151] text-center py-4">{l('No bills yet', 'பில்கள் இல்லை')}</p>
+                <p className="text-base text-[#374151] text-center py-4">{l('No bills yet', 'பில்கள் இல்லை')}</p>
               )}
             </div>
             </>
@@ -1589,12 +1589,12 @@ export default function Dashboard() {
                     {analytics.topProducts.slice(0, 10).map((p, i) => (
                       <div key={i} className="flex justify-between items-center bg-[#F9FAFB] p-3 rounded-xl">
                         <div>
-                          <p className="text-[13px] font-bold text-[#111111]">{p.name}</p>
-                          <p className="text-[11px] text-[#374151]">{p.billCount} bills</p>
+                          <p className="text-base font-bold text-[#111111]">{p.name}</p>
+                          <p className="text-sm text-[#374151]">{p.billCount} bills</p>
                         </div>
                         <div className="text-right">
-                          <p className="text-[14px] font-black text-[#111111]">{p.qty}</p>
-                          <p className="text-[11px] font-bold text-[#10B981]">{formatCurrency(p.revenue)}</p>
+                          <p className="text-base font-black text-[#111111]">{p.qty}</p>
+                          <p className="text-sm font-bold text-[#10B981]">{formatCurrency(p.revenue)}</p>
                         </div>
                       </div>
                     ))}
@@ -1606,11 +1606,11 @@ export default function Dashboard() {
                     {analytics.topCategories.slice(0, 10).map((c, i) => (
                       <div key={i} className="flex justify-between items-center bg-[#F9FAFB] p-3 rounded-xl">
                         <div>
-                          <p className="text-[13px] font-bold text-[#111111]">{c.name}</p>
+                          <p className="text-base font-bold text-[#111111]">{c.name}</p>
                         </div>
                         <div className="text-right">
-                          <p className="text-[14px] font-black text-[#111111]">{formatCurrency(c.revenue)}</p>
-                          <p className="text-[11px] text-[#374151]">{c.qty} sold</p>
+                          <p className="text-base font-black text-[#111111]">{formatCurrency(c.revenue)}</p>
+                          <p className="text-sm text-[#374151]">{c.qty} sold</p>
                         </div>
                       </div>
                     ))}
@@ -1626,20 +1626,20 @@ export default function Dashboard() {
                   <div className="space-y-3">
                     {products.filter(p => p.stock <= (p.lowStockAlert || 5)).slice(0, 10).map((p, i) => (
                       <div key={i} className="flex justify-between items-center bg-red-50 border border-red-100 p-3 rounded-xl">
-                        <p className="text-[13px] font-bold text-red-900">{p.name}</p>
-                        <p className="text-[14px] font-black text-red-700">{p.stock} left</p>
+                        <p className="text-base font-bold text-red-900">{p.name}</p>
+                        <p className="text-base font-black text-red-700">{p.stock} left</p>
                       </div>
                     ))}
                     {products.filter(p => p.stock <= (p.lowStockAlert || 5)).length === 0 && (
-                      <p className="text-[13px] text-[#374151]">No low stock alerts.</p>
+                      <p className="text-base text-[#374151]">No low stock alerts.</p>
                     )}
                   </div>
                 </div>
                 <div className="bg-white rounded-2xl border border-[#D1FAE5]/30 p-5 shadow-sm">
                   <h3 className="text-base font-black text-[#111111] mb-4">Total Inventory Value</h3>
                   <div className="bg-[#F9FAFB] p-5 rounded-xl">
-                    <p className="text-[11px] uppercase tracking-wider font-bold text-[#374151] mb-1">Selling Value (MRP)</p>
-                    <p className="text-[24px] font-black text-[#111111]">
+                    <p className="text-sm uppercase tracking-wider font-bold text-[#374151] mb-1">Selling Value (MRP)</p>
+                    <p className="text-2xl font-black text-[#111111]">
                       {formatCurrency(products.reduce((acc, p) => acc + (p.stock * p.price), 0))}
                     </p>
                   </div>
@@ -1652,14 +1652,14 @@ export default function Dashboard() {
                 <div className="bg-white rounded-2xl border border-[#D1FAE5]/30 p-5 shadow-sm">
                   <h3 className="text-base font-black text-[#111111] mb-4">Customer Insights</h3>
                   <div className="bg-blue-50 border border-blue-100 p-5 rounded-xl mb-4">
-                    <p className="text-[11px] uppercase tracking-wider font-bold text-blue-800 mb-1">Unique Customers</p>
-                    <p className="text-[24px] font-black text-blue-900">
+                    <p className="text-sm uppercase tracking-wider font-bold text-blue-800 mb-1">Unique Customers</p>
+                    <p className="text-2xl font-black text-blue-900">
                       {new Set(searchResults.filter(o => o.phone).map(o => o.phone)).size}
                     </p>
                   </div>
                   <div className="bg-[#F9FAFB] p-5 rounded-xl">
-                    <p className="text-[11px] uppercase tracking-wider font-bold text-[#374151] mb-1">Avg Order Value</p>
-                    <p className="text-[24px] font-black text-[#111111]">
+                    <p className="text-sm uppercase tracking-wider font-bold text-[#374151] mb-1">Avg Order Value</p>
+                    <p className="text-2xl font-black text-[#111111]">
                       {formatCurrency(analytics.totalCompletedRevenue / (searchResults.filter(o => isCompletedStatus(o.status)).length || 1))}
                     </p>
                   </div>
@@ -1673,12 +1673,12 @@ export default function Dashboard() {
                   <h3 className="text-base font-black text-[#111111] mb-4">Billing Metrics</h3>
                   <div className="space-y-4">
                     <div className="bg-[#F9FAFB] p-4 rounded-xl flex justify-between items-center">
-                      <span className="text-[13px] font-bold text-[#374151]">Total Invoices Generated</span>
-                      <span className="text-[16px] font-black text-[#111111]">{searchResults.length}</span>
+                      <span className="text-base font-bold text-[#374151]">Total Invoices Generated</span>
+                      <span className="text-lg font-black text-[#111111]">{searchResults.length}</span>
                     </div>
                     <div className="bg-[#F9FAFB] p-4 rounded-xl flex justify-between items-center">
-                      <span className="text-[13px] font-bold text-[#374151]">Discounts Applied</span>
-                      <span className="text-[16px] font-black text-[#10B981]">
+                      <span className="text-base font-bold text-[#374151]">Discounts Applied</span>
+                      <span className="text-lg font-black text-[#10B981]">
                         {formatCurrency(searchResults.reduce((acc, o) => acc + (toNumber(o.discount_amount, 0)), 0))}
                       </span>
                     </div>
@@ -1689,11 +1689,11 @@ export default function Dashboard() {
                   <div className="space-y-3">
                     {analytics.topCoupons.slice(0, 5).map((c, i) => (
                       <div key={i} className="flex justify-between items-center bg-[#F9FAFB] p-3 rounded-xl">
-                        <span className="text-[13px] font-bold text-[#111111]">{c.code}</span>
-                        <span className="text-[12px] font-bold text-[#10B981]">{c.usage} uses</span>
+                        <span className="text-base font-bold text-[#111111]">{c.code}</span>
+                        <span className="text-sm font-bold text-[#10B981]">{c.usage} uses</span>
                       </div>
                     ))}
-                    {analytics.topCoupons.length === 0 && <p className="text-[13px] text-[#374151]">No coupons used yet.</p>}
+                    {analytics.topCoupons.length === 0 && <p className="text-base text-[#374151]">No coupons used yet.</p>}
                   </div>
                 </div>
               </div>
@@ -1710,7 +1710,7 @@ export default function Dashboard() {
               <div className="flex items-center gap-3">
                 <h2 className="text-xl font-black text-[#111111]">{l('WhatsApp Center', 'வாட்ஸ் அப் மையம்')}</h2>
                 {analytics.waPending > 0 && (
-                  <span className="px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-700 text-[12px] font-black animate-pulse">
+                  <span className="px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-700 text-sm font-black animate-pulse">
                     {analytics.waPending} {l('pending', 'நிலுவை')}
                   </span>
                 )}
@@ -1720,13 +1720,13 @@ export default function Dashboard() {
                 <div className="flex gap-1">
                   {(['all', 'today', 'week', 'month'] as const).map(preset => (
                     <button key={preset} type="button" onClick={() => applyAnalyticsPreset(preset)}
-                      className={`px-2.5 py-1.5 rounded-lg text-[11px] font-black transition-colors ${analyticsDatePreset === preset ? 'bg-[#CBB89D] text-[#171717] shadow-sm' : 'bg-[#F9FAFB] text-[#374151] hover:bg-[#EDE4D4]'}`}>
+                      className={`px-2.5 py-1.5 rounded-lg text-sm font-black transition-colors ${analyticsDatePreset === preset ? 'bg-[#CBB89D] text-[#171717] shadow-sm' : 'bg-[#F9FAFB] text-[#374151] hover:bg-[#EDE4D4]'}`}>
                       {preset === 'all' ? l('All','எல்லாம்') : preset === 'today' ? l('Today','இன்று') : preset === 'week' ? l('Week','வாரம்') : l('Month','மாதம்')}
                     </button>
                   ))}
                 </div>
                 <button onClick={() => void loadData()}
-                  className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-[#D1FAE5]/40 rounded-lg text-[11px] font-bold text-[#374151] hover:bg-[#F9FAFB]">
+                  className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-[#D1FAE5]/40 rounded-lg text-sm font-bold text-[#374151] hover:bg-[#F9FAFB]">
                   <RefreshCw size={12} /> {l('Refresh', 'புதுப்பி')}
                 </button>
               </div>
@@ -1741,8 +1741,8 @@ export default function Dashboard() {
                 { label: l('Completed', 'முடிந்தது'),              val: analytics.waCompleted, bg: 'bg-green-50',  color: 'text-green-700',  border: 'border-green-100' },
               ].map(({ label, val, bg, color, border }) => (
                 <div key={label} className={`${bg} border ${border} rounded-xl p-3 text-center`}>
-                  <p className={`text-[10px] uppercase font-black ${color} tracking-wider mb-1`}>{label}</p>
-                  <p className="text-[28px] font-black text-[#111111] leading-none">{val}</p>
+                  <p className={`text-xs uppercase font-black ${color} tracking-wider mb-1`}>{label}</p>
+                  <p className="text-3xl font-black text-[#111111] leading-none">{val}</p>
                 </div>
               ))}
             </div>
@@ -1753,16 +1753,16 @@ export default function Dashboard() {
                 <div className="flex items-center gap-2">
                   <MessageCircle size={17} className="text-blue-600" />
                   <h3 className="text-base font-black text-[#111111]">{l('Customer Requests', 'வாடிக்கையாளர் கோரிக்கைகள்')}</h3>
-                  <span className="text-[10px] font-bold text-[#9BAB9A] bg-[#F9FAFB] px-2 py-0.5 rounded-full">{l('₹0 revenue - status updates only', '₹0 வருவாய் - நிலை மட்டும்')}</span>
+                  <span className="text-xs font-bold text-[#9BAB9A] bg-[#F9FAFB] px-2 py-0.5 rounded-full">{l('₹0 revenue - status updates only', '₹0 வருவாய் - நிலை மட்டும்')}</span>
                 </div>
-                <span className="text-[12px] text-[#374151] font-bold">{analytics.onlineRequestOrders.length} {l('requests', 'கோரிக்கைகள்')}</span>
+                <span className="text-sm text-[#374151] font-bold">{analytics.onlineRequestOrders.length} {l('requests', 'கோரிக்கைகள்')}</span>
               </div>
 
               {analytics.onlineRequestOrders.length > 0 ? (
                 <div className="overflow-x-auto">
-                  <table className="w-full text-[12px] min-w-[820px]">
+                  <table className="w-full text-sm min-w-[820px]">
                     <thead className="bg-blue-50 border-b border-blue-100 sticky top-0 z-10">
-                      <tr className="text-left text-[#374151] font-black text-[10px] uppercase tracking-wider">
+                      <tr className="text-left text-[#374151] font-black text-xs uppercase tracking-wider">
                         <th className="px-4 py-3">{l('Customer', 'வாடிக்கையாளர்')}</th>
                         <th className="px-4 py-3">{l('Phone', 'தொலைபேசி')}</th>
                         <th className="px-4 py-3">{l('Address', 'முகவரி')}</th>
@@ -1804,19 +1804,19 @@ export default function Dashboard() {
                               <td className="px-4 py-3 text-[#374151] whitespace-nowrap">{order.phone || '-'}</td>
                               <td className="px-4 py-3 text-[#7A846F] max-w-[140px] truncate" title={order.address || '-'}>{order.address || '-'}</td>
                               <td className="px-4 py-3 text-center">
-                                <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-blue-100 text-blue-700 text-[11px] font-black">{its.length}</span>
+                                <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-blue-100 text-blue-700 text-sm font-black">{its.length}</span>
                               </td>
                               <td className="px-4 py-3 font-black text-[#111111]">{formatCurrency(getOrderTotal(order))}</td>
-                              <td className="px-4 py-3 text-[#7A846F] whitespace-nowrap text-[11px]">
+                              <td className="px-4 py-3 text-[#7A846F] whitespace-nowrap text-sm">
                                 <div>{new Date(order.created_at).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}</div>
-                                <div className="text-[10px]">{new Date(order.created_at).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}</div>
+                                <div className="text-xs">{new Date(order.created_at).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}</div>
                               </td>
                               <td className="px-4 py-3">
                                 <div className="flex items-center gap-2">
                                   <select
                                     value={normalizeStatus(order.status)}
                                     onChange={e => void updateOrderStatus(order.id, e.target.value)}
-                                    className={`text-[11px] font-black px-2 py-1.5 rounded-lg border cursor-pointer outline-none ${
+                                    className={`text-sm font-black px-2 py-1.5 rounded-lg border cursor-pointer outline-none ${
                                       isCompletedStatus(order.status) ? 'bg-green-100 text-green-700 border-green-200'
                                       : normalizeStatus(order.status) === 'contacted' ? 'bg-orange-100 text-orange-700 border-orange-200'
                                       : 'bg-amber-100 text-amber-700 border-amber-200'
@@ -1834,7 +1834,7 @@ export default function Dashboard() {
                                 <button
                                   type="button"
                                   onClick={() => setWaExpandedId(isExpanded ? null : order.id)}
-                                  className={`px-3 py-1.5 rounded-lg text-[11px] font-black transition-colors whitespace-nowrap ${
+                                  className={`px-3 py-1.5 rounded-lg text-sm font-black transition-colors whitespace-nowrap ${
                                     isExpanded ? 'bg-[#111111] text-white' : 'bg-blue-100 text-blue-700 hover:bg-blue-200'
                                   }`}>
                                   {isExpanded ? l('Close', 'மூடு') : l('View', 'பார்')}
@@ -1848,7 +1848,7 @@ export default function Dashboard() {
                                 <td colSpan={8} className="px-4 pb-5 pt-2 bg-blue-50/40">
                                   <div className="space-y-4">
                                     {/* Customer info bar */}
-                                    <div className="flex flex-wrap gap-4 text-[12px] bg-white rounded-xl p-3 border border-blue-100">
+                                    <div className="flex flex-wrap gap-4 text-sm bg-white rounded-xl p-3 border border-blue-100">
                                       <div><span className="font-black text-[#374151]">{l('Name', 'பெயர்')}: </span><span className="font-bold text-[#111111]">{order.customer_name || '-'}</span></div>
                                       <div><span className="font-black text-[#374151]">{l('Phone', 'தொலைபேசி')}: </span><span className="font-bold text-[#111111]">{order.phone || '-'}</span></div>
                                       <div className="flex-1"><span className="font-black text-[#374151]">{l('Address', 'முகவரி')}: </span><span className="text-[#111111]">{order.address || '-'}</span></div>
@@ -1863,9 +1863,9 @@ export default function Dashboard() {
                                     {/* Items table */}
                                     {its.length > 0 && (
                                       <div className="overflow-x-auto">
-                                        <table className="w-full text-[12px] min-w-[540px] bg-white rounded-xl overflow-hidden border border-blue-100">
+                                        <table className="w-full text-sm min-w-[540px] bg-white rounded-xl overflow-hidden border border-blue-100">
                                           <thead className="bg-[#F9FAFB]">
-                                            <tr className="text-left text-[#374151] font-black text-[10px] uppercase tracking-wider">
+                                            <tr className="text-left text-[#374151] font-black text-xs uppercase tracking-wider">
                                               <th className="px-4 py-2.5">{l('Product', 'பொருள்')}</th>
                                               <th className="px-4 py-2.5">{l('Variant', 'வகைப்படி')}</th>
                                               <th className="px-4 py-2.5">{l('Size / Weight', 'அளவு / எடை')}</th>
@@ -1906,8 +1906,8 @@ export default function Dashboard() {
                                           </tbody>
                                           <tfoot className="bg-[#F9FAFB] border-t border-[#D1FAE5]/30">
                                             <tr>
-                                              <td colSpan={5} className="px-4 py-2.5 text-right font-black text-[#374151] text-[11px] uppercase tracking-wider">{l('Grand Total', 'மொத்த தொகை')}</td>
-                                              <td className="px-4 py-2.5 text-right font-black text-[18px] text-[#111111]">{formatCurrency(getOrderTotal(order))}</td>
+                                              <td colSpan={5} className="px-4 py-2.5 text-right font-black text-[#374151] text-sm uppercase tracking-wider">{l('Grand Total', 'மொத்த தொகை')}</td>
+                                              <td className="px-4 py-2.5 text-right font-black text-xl text-[#111111]">{formatCurrency(getOrderTotal(order))}</td>
                                             </tr>
                                           </tfoot>
                                         </table>
@@ -1917,15 +1917,15 @@ export default function Dashboard() {
                                     {/* WhatsApp message */}
                                     <div className="bg-white rounded-xl border border-blue-100 p-4">
                                       <div className="flex items-center justify-between mb-2">
-                                        <span className="text-[11px] font-black text-[#374151] uppercase tracking-wider">{l('WhatsApp Message', 'வாட்ஸ் அப் செய்தி')}</span>
+                                        <span className="text-sm font-black text-[#374151] uppercase tracking-wider">{l('WhatsApp Message', 'வாட்ஸ் அப் செய்தி')}</span>
                                         <button
                                           type="button"
                                           onClick={() => void navigator.clipboard.writeText(waMsg)}
-                                          className="px-3 py-1 rounded-lg bg-[#25D366] text-white text-[11px] font-black hover:bg-[#1da851] transition-colors">
+                                          className="px-3 py-1 rounded-lg bg-[#25D366] text-white text-sm font-black hover:bg-[#1da851] transition-colors">
                                           {l('Copy Message', 'நகல் எடு')}
                                         </button>
                                       </div>
-                                      <pre className="text-[12px] text-[#111111] bg-[#F9FAFB] rounded-xl p-3 whitespace-pre-wrap font-sans leading-relaxed select-all">{waMsg}</pre>
+                                      <pre className="text-sm text-[#111111] bg-[#F9FAFB] rounded-xl p-3 whitespace-pre-wrap font-sans leading-relaxed select-all">{waMsg}</pre>
                                     </div>
                                   </div>
                                 </td>
@@ -1940,7 +1940,7 @@ export default function Dashboard() {
               ) : (
                 <div className="px-5 py-12 text-center">
                   <MessageCircle size={40} className="mx-auto text-blue-200 mb-3" />
-                  <p className="text-[14px] font-bold text-[#374151]">{l('No WhatsApp requests in selected period', 'தேர்ந்த காலத்தில் WA கோரிக்கை இல்லை')}</p>
+                  <p className="text-base font-bold text-[#374151]">{l('No WhatsApp requests in selected period', 'தேர்ந்த காலத்தில் WA கோரிக்கை இல்லை')}</p>
                 </div>
               )}
             </div>
@@ -1949,43 +1949,43 @@ export default function Dashboard() {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {/* Top Requested Products */}
               <div className="bg-white rounded-2xl border border-[#D1FAE5]/30 p-4 shadow-sm">
-                <h3 className="text-[13px] font-black text-[#111111] mb-3">{l('Top Requested Products', 'அதிக தேவை')}</h3>
+                <h3 className="text-base font-black text-[#111111] mb-3">{l('Top Requested Products', 'அதிக தேவை')}</h3>
                 {analytics.topWAProducts.length > 0 ? (
                   <div className="space-y-1.5">
                     {analytics.topWAProducts.slice(0, 6).map((item, i) => (
                       <div key={item.name} className="flex items-center gap-2">
-                        <span className="w-5 h-5 rounded-full bg-blue-100 text-blue-700 text-[9px] font-black flex items-center justify-center shrink-0">{i + 1}</span>
-                        <span className="text-[11px] font-bold text-[#111111] truncate flex-1">{item.name}</span>
-                        <span className="text-[11px] font-black text-blue-600 shrink-0">{item.count}x</span>
+                        <span className="w-5 h-5 rounded-full bg-blue-100 text-blue-700 text-xs font-black flex items-center justify-center shrink-0">{i + 1}</span>
+                        <span className="text-sm font-bold text-[#111111] truncate flex-1">{item.name}</span>
+                        <span className="text-sm font-black text-blue-600 shrink-0">{item.count}x</span>
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <p className="text-[12px] text-[#9BAB9A] text-center py-3">{l('No data', 'தரவு இல்லை')}</p>
+                  <p className="text-sm text-[#9BAB9A] text-center py-3">{l('No data', 'தரவு இல்லை')}</p>
                 )}
               </div>
 
               {/* Top Requested Categories */}
               <div className="bg-white rounded-2xl border border-[#D1FAE5]/30 p-4 shadow-sm">
-                <h3 className="text-[13px] font-black text-[#111111] mb-3">{l('Top Categories', 'வகைகள்')}</h3>
+                <h3 className="text-base font-black text-[#111111] mb-3">{l('Top Categories', 'வகைகள்')}</h3>
                 {analytics.topWACategories.length > 0 ? (
                   <div className="space-y-1.5">
                     {analytics.topWACategories.slice(0, 6).map((cat, i) => (
                       <div key={cat.name} className="flex items-center gap-2">
-                        <span className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 text-[9px] font-black flex items-center justify-center shrink-0">{i + 1}</span>
-                        <span className="text-[11px] font-bold text-[#111111] truncate flex-1">{cat.name}</span>
-                        <span className="text-[11px] font-black text-emerald-600 shrink-0">{cat.count}x</span>
+                        <span className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 text-xs font-black flex items-center justify-center shrink-0">{i + 1}</span>
+                        <span className="text-sm font-bold text-[#111111] truncate flex-1">{cat.name}</span>
+                        <span className="text-sm font-black text-emerald-600 shrink-0">{cat.count}x</span>
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <p className="text-[12px] text-[#9BAB9A] text-center py-3">{l('No data', 'தரவு இல்லை')}</p>
+                  <p className="text-sm text-[#9BAB9A] text-center py-3">{l('No data', 'தரவு இல்லை')}</p>
                 )}
               </div>
 
               {/* Status Distribution - compact bar */}
               <div className="bg-white rounded-2xl border border-[#D1FAE5]/30 p-4 shadow-sm">
-                <h3 className="text-[13px] font-black text-[#111111] mb-3">{l('Status Distribution', 'நிலை விளக்கம்')}</h3>
+                <h3 className="text-base font-black text-[#111111] mb-3">{l('Status Distribution', 'நிலை விளக்கம்')}</h3>
                 <div className="h-36">
                   <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
                     <BarChart data={analytics.statusDistribution} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>
@@ -2010,8 +2010,8 @@ export default function Dashboard() {
         {tab === 'pos_analytics' && (
           <div className="space-y-6">
             <div>
-              <h2 className="text-[24px] font-bold text-[#111111]">POS Analytics</h2>
-              <p className="text-[13px] text-[#6B7280]">Real time store & channel insights</p>
+              <h2 className="text-2xl font-bold text-[#111111]">POS Analytics</h2>
+              <p className="text-base text-[#6B7280]">Real time store & channel insights</p>
             </div>
 
             <div className="flex flex-col gap-4 border-b border-[#E7E7E7] pb-4 md:flex-row md:items-center md:justify-between">
@@ -2024,7 +2024,7 @@ export default function Dashboard() {
                   { id: 'coupons' as const,    label: 'COUPONS' },
                 ]).map(({ id, label }) => (
                   <button key={id} onClick={() => setPosAnalyticsTab(id as PosAnalyticsTab)}
-                    className={`pb-2 md:pb-4 text-left text-[13px] font-bold tracking-wide transition-colors relative ${posAnalyticsTab === id ? 'text-maroon-dark' : 'text-[#6B7280] hover:text-[#111111]'}`}>
+                    className={`pb-2 md:pb-4 text-left text-base font-bold tracking-wide transition-colors relative ${posAnalyticsTab === id ? 'text-maroon-dark' : 'text-[#6B7280] hover:text-[#111111]'}`}>
                     {label}
                     {posAnalyticsTab === id && <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-maroon-dark rounded-t-md" />}
                   </button>
@@ -2035,22 +2035,22 @@ export default function Dashboard() {
               {posAnalyticsTab !== 'today' && (
                 <div className="flex flex-col gap-3 md:items-end">
                   <div className="flex flex-wrap items-center gap-2 rounded-2xl bg-[#F8F8F8] p-2">
-                    <span className="text-[10px] font-bold uppercase text-[#6B7280] ml-1 mr-1">Period:</span>
+                    <span className="text-xs font-bold uppercase text-[#6B7280] ml-1 mr-1">Period:</span>
                     {(['all', 'today', 'week', 'month', 'year'] as const).map(preset => (
                       <button key={preset} type="button" onClick={() => applyAnalyticsPreset(preset)}
-                        className={`px-4 py-1.5 rounded-full text-[11px] font-bold uppercase transition-all ${analyticsDatePreset === preset ? 'bg-[#CBB89D] text-[#171717] shadow-sm' : 'text-[#6B7280] hover:bg-[#EDE4D4] hover:text-[#111111]'}`}>
+                        className={`px-4 py-1.5 rounded-full text-sm font-bold uppercase transition-all ${analyticsDatePreset === preset ? 'bg-[#CBB89D] text-[#171717] shadow-sm' : 'text-[#6B7280] hover:bg-[#EDE4D4] hover:text-[#111111]'}`}>
                         {preset === 'all' ? 'All Time' : preset === 'today' ? 'Today' : preset === 'week' ? 'This Week' : preset === 'month' ? 'This Month' : 'This Year'}
                       </button>
                     ))}
                   </div>
                   <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 w-full">
                     <div className="flex items-center border border-[#E7E7E7] rounded-xl px-3 py-2 bg-white min-w-0">
-                      <span className="text-[10px] uppercase font-bold text-[#6B7280] mr-2">From:</span>
-                      <input type="date" value={analyticsDateFrom} onChange={e => { setAnalyticsDateFrom(e.target.value); setAnalyticsDatePreset('custom'); }} className="w-full min-w-0 text-[12px] font-semibold text-[#111111] bg-transparent outline-none" />
+                      <span className="text-xs uppercase font-bold text-[#6B7280] mr-2">From:</span>
+                      <input type="date" value={analyticsDateFrom} onChange={e => { setAnalyticsDateFrom(e.target.value); setAnalyticsDatePreset('custom'); }} className="w-full min-w-0 text-sm font-semibold text-[#111111] bg-transparent outline-none" />
                     </div>
                     <div className="flex items-center border border-[#E7E7E7] rounded-xl px-3 py-2 bg-white min-w-0">
-                      <span className="text-[10px] uppercase font-bold text-[#6B7280] mr-2">To:</span>
-                      <input type="date" value={analyticsDateTo} onChange={e => { setAnalyticsDateTo(e.target.value); setAnalyticsDatePreset('custom'); }} className="w-full min-w-0 text-[12px] font-semibold text-[#111111] bg-transparent outline-none" />
+                      <span className="text-xs uppercase font-bold text-[#6B7280] mr-2">To:</span>
+                      <input type="date" value={analyticsDateTo} onChange={e => { setAnalyticsDateTo(e.target.value); setAnalyticsDatePreset('custom'); }} className="w-full min-w-0 text-sm font-semibold text-[#111111] bg-transparent outline-none" />
                     </div>
                   </div>
                 </div>
@@ -2068,7 +2068,7 @@ export default function Dashboard() {
                     { label: 'OFFLINE BILLS',    helper: 'Walk-in POS sales',     value: formatCurrency(analytics.posRevenue),            icon: <RupeeIcon size={16} />, color: 'text-cyan-500',    bg: 'bg-cyan-50' },
                     { label: 'ONLINE BILLS',     helper: 'Online POS sales',      value: formatCurrency(analytics.onlinePosRevenue),      icon: <RupeeIcon size={16} />, color: 'text-indigo-500',  bg: 'bg-indigo-50' },
                   ].map((card, index) => (
-                    <StatCard key={index} label={card.label} helper={card.helper} value={card.value} icon={card.icon} bg={card.bg} color={card.color} className="rounded-card border-borderLight p-5" labelClassName="text-[#111111]" valueClassName="text-[28px]" />
+                    <StatCard key={index} label={card.label} helper={card.helper} value={card.value} icon={card.icon} bg={card.bg} color={card.color} className="rounded-card border-borderLight p-5" labelClassName="text-[#111111]" valueClassName="text-3xl" />
                   ))}
                 </StatGrid>
 
@@ -2080,15 +2080,15 @@ export default function Dashboard() {
                     { label: 'AVERAGE REVENUE PER BILL', helper: 'Average per Bill', value: formatCurrency(analytics.averageRevenuePerBill), icon: <RupeeIcon size={16} />, color: 'text-emerald-500', bg: 'bg-emerald-50' },
                     { label: 'TOP PRODUCT',         helper: 'Most sold item',        value: analytics.bestProduct || '-',                    icon: <Trophy size={16} />,          color: 'text-pink-500',   bg: 'bg-pink-50' },
                   ].map((card, index) => (
-                    <StatCard key={index} label={card.label} helper={card.helper} value={card.value} icon={card.icon} bg={card.bg} color={card.color} className="rounded-card border-borderLight p-5" labelClassName="text-[#111111]" valueClassName="text-[22px] truncate" />
+                    <StatCard key={index} label={card.label} helper={card.helper} value={card.value} icon={card.icon} bg={card.bg} color={card.color} className="rounded-card border-borderLight p-5" labelClassName="text-[#111111]" valueClassName="text-2xl truncate" />
                   ))}
                 </StatGrid>
 
                 <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
                   <div className="xl:col-span-2 bg-white rounded-card border border-borderLight p-6 shadow-soft">
                     <div className="flex items-center justify-between gap-4 mb-4">
-                      <h3 className="text-[16px] font-bold text-[#111111]">Revenue Trend {analytics.chartYear}</h3>
-                      <span className="text-[12px] font-bold text-maroon-dark bg-red-50 px-2.5 py-1 rounded-md">Avg {formatCurrency(analytics.monthlyRevenue || 0)}/mo</span>
+                      <h3 className="text-lg font-bold text-[#111111]">Revenue Trend {analytics.chartYear}</h3>
+                      <span className="text-sm font-bold text-maroon-dark bg-red-50 px-2.5 py-1 rounded-md">Avg {formatCurrency(analytics.monthlyRevenue || 0)}/mo</span>
                     </div>
                     <div className="h-48">
                       <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
@@ -2104,10 +2104,10 @@ export default function Dashboard() {
                   </div>
                   <div className="space-y-6">
                     <div className="bg-white rounded-card border border-borderLight p-6 shadow-soft">
-                      <h3 className="text-[16px] font-bold text-[#111111] mb-6">Order Source</h3>
+                      <h3 className="text-lg font-bold text-[#111111] mb-6">Order Source</h3>
                       <div className="space-y-4">
                         <div>
-                          <div className="flex justify-between text-[12px] font-bold mb-2">
+                          <div className="flex justify-between text-sm font-bold mb-2">
                             <span className="text-maroon-dark uppercase">Offline</span>
                             <span className="text-[#111111]">{analytics.completedOrders}</span>
                           </div>
@@ -2116,7 +2116,7 @@ export default function Dashboard() {
                           </div>
                         </div>
                         <div>
-                          <div className="flex justify-between text-[12px] font-bold mb-2">
+                          <div className="flex justify-between text-sm font-bold mb-2">
                             <span className="text-[#6B7280] uppercase">Online</span>
                             <span className="text-[#111111]">0</span>
                           </div>
@@ -2128,17 +2128,17 @@ export default function Dashboard() {
                     </div>
 
                     <div className="bg-white rounded-card border border-borderLight p-6 shadow-soft">
-                      <h3 className="text-[16px] font-bold text-[#111111] mb-4">Top Items by Revenue</h3>
+                      <h3 className="text-lg font-bold text-[#111111] mb-4">Top Items by Revenue</h3>
                       <div className="space-y-3">
                         {analytics.topProducts.slice(0, 3).map((p, i) => (
-                          <div key={i} className="flex items-center justify-between text-[13px]">
+                          <div key={i} className="flex items-center justify-between text-base">
                             <div className="flex items-center gap-3">
                               <span className="font-bold text-[#6B7280] w-4">{i + 1}</span>
                               <span className="font-bold text-[#111111] truncate max-w-[120px]">{p.name}</span>
                             </div>
                             <div className="flex items-center gap-4">
                               <span className="font-bold text-maroon-dark">{formatCurrency(p.revenue)}</span>
-                              <span className="text-[#6B7280] text-[11px] w-8 text-right">{Math.round(p.qty)} pcs</span>
+                              <span className="text-[#6B7280] text-sm w-8 text-right">{Math.round(p.qty)} pcs</span>
                             </div>
                           </div>
                         ))}
@@ -2151,14 +2151,14 @@ export default function Dashboard() {
                   <div className="xl:col-span-2 bg-white rounded-card border border-borderLight p-6 shadow-soft">
                     <div className="flex items-center justify-between gap-3 mb-6">
                       <div>
-                        <h3 className="text-[16px] font-bold text-[#111111]">Revenue Trend This Week</h3>
-                        <p className="mt-1 text-[12px] text-[#6B7280]">Monday to Sunday sales view for the current week.</p>
+                        <h3 className="text-lg font-bold text-[#111111]">Revenue Trend This Week</h3>
+                        <p className="mt-1 text-sm text-[#6B7280]">Monday to Sunday sales view for the current week.</p>
                       </div>
                       <div className="flex items-center gap-2">
-                        <span className="rounded-full bg-[#F9FAFB] px-3 py-1 text-[11px] font-bold text-[#047857]">
+                        <span className="rounded-full bg-[#F9FAFB] px-3 py-1 text-sm font-bold text-[#047857]">
                           Week {(() => { const now = new Date(); const start = new Date(now.getFullYear(), 0, 1); const diff = Math.floor((now.getTime() - start.getTime()) / 86400000); return Math.ceil((diff + start.getDay() + 1) / 7) })()} of {new Date().getFullYear()}
                         </span>
-                        <span className="rounded-full bg-[#F9FAFB] px-3 py-1 text-[11px] font-bold text-[#047857]">
+                        <span className="rounded-full bg-[#F9FAFB] px-3 py-1 text-sm font-bold text-[#047857]">
                           Today: {formatCurrency(analytics.todaySales)}
                         </span>
                       </div>
@@ -2184,22 +2184,22 @@ export default function Dashboard() {
                   </div>
 
                   <div className="bg-white rounded-card border border-borderLight p-6 shadow-soft">
-                    <h3 className="text-[16px] font-bold text-[#111111] mb-4">Top Products This Week</h3>
+                    <h3 className="text-lg font-bold text-[#111111] mb-4">Top Products This Week</h3>
                     <div className="space-y-3">
                       {analytics.topProducts.slice(0, 5).map((p, i) => (
                         <div key={`${p.name}-${i}`} className="flex items-center justify-between rounded-xl bg-[#F9FAFB] p-3">
                           <div className="min-w-0">
-                            <p className="truncate text-[13px] font-bold text-[#111111]">{p.name}</p>
-                            <p className="text-[11px] text-[#6B7280]">{p.billCount} bills</p>
+                            <p className="truncate text-base font-bold text-[#111111]">{p.name}</p>
+                            <p className="text-sm text-[#6B7280]">{p.billCount} bills</p>
                           </div>
                           <div className="text-right">
-                            <p className="text-[13px] font-black text-[#111111]">{Math.round(p.qty)}</p>
-                            <p className="text-[11px] font-bold text-[#10B981]">{formatCurrency(p.revenue)}</p>
+                            <p className="text-base font-black text-[#111111]">{Math.round(p.qty)}</p>
+                            <p className="text-sm font-bold text-[#10B981]">{formatCurrency(p.revenue)}</p>
                           </div>
                         </div>
                       ))}
                       {analytics.topProducts.length === 0 && (
-                        <p className="text-[13px] text-[#6B7280]">No completed product sales yet.</p>
+                        <p className="text-base text-[#6B7280]">No completed product sales yet.</p>
                       )}
                     </div>
                   </div>
@@ -2220,8 +2220,8 @@ export default function Dashboard() {
                   ].map((card, i) => (
                     <div key={i} className="bg-white rounded-2xl border border-gray-200/80 p-4 sm:p-5 shadow-sm hover:shadow-md transition-shadow flex items-center justify-between gap-4">
                       <div className="min-w-0 flex-1">
-                        <p className="text-[11px] font-extrabold uppercase tracking-wider text-gray-500 mb-1">{card.label}</p>
-                        <p className="text-[22px] sm:text-[24px] font-black text-[#111111] leading-tight truncate">{card.value}</p>
+                        <p className="text-sm font-extrabold uppercase tracking-wider text-gray-500 mb-1">{card.label}</p>
+                        <p className="text-2xl sm:text-2xl font-black text-[#111111] leading-tight truncate">{card.value}</p>
                       </div>
                       <div className={`w-11 h-11 rounded-2xl ${card.bg} border ${card.border} flex items-center justify-center shrink-0 shadow-xs`}>
                         {card.icon}
@@ -2232,19 +2232,19 @@ export default function Dashboard() {
 
                 {/* Top products today */}
                 <div className="bg-white rounded-2xl border border-[#D1FAE5]/30 p-5 shadow-sm">
-                  <h3 className="text-[15px] font-bold text-[#111111] mb-4">Top Products Today</h3>
+                  <h3 className="text-lg font-bold text-[#111111] mb-4">Top Products Today</h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                     {analytics.todayTopProducts.map((p, i) => (
                       <div key={i} className="flex items-center justify-between bg-[#F9FAFB] p-3 rounded-xl border border-gray-100">
                         <div className="min-w-0 flex-1">
-                          <p className="text-[13px] font-bold text-[#111111] truncate">{p.name}</p>
-                          <p className="text-[11px] text-[#374151]">{Math.round(p.qty)} sold</p>
+                          <p className="text-base font-bold text-[#111111] truncate">{p.name}</p>
+                          <p className="text-sm text-[#374151]">{Math.round(p.qty)} sold</p>
                         </div>
-                        <p className="text-[13px] font-black text-[#10B981] ml-2">{formatCurrency(p.revenue)}</p>
+                        <p className="text-base font-black text-[#10B981] ml-2">{formatCurrency(p.revenue)}</p>
                       </div>
                     ))}
                     {analytics.todayTopProducts.length === 0 && (
-                      <p className="col-span-full text-center text-[13px] text-[#374151] py-6">No products sold yet today.</p>
+                      <p className="col-span-full text-center text-base text-[#374151] py-6">No products sold yet today.</p>
                     )}
                   </div>
                 </div>
@@ -2252,8 +2252,8 @@ export default function Dashboard() {
                 {/* Today's latest bills */}
                 <div className="bg-white rounded-2xl border border-[#D1FAE5]/30 p-5 shadow-sm">
                   <div className="flex items-center justify-between mb-3">
-                    <h3 className="text-[15px] font-bold text-[#111111]">Today's Bills</h3>
-                    <span className="text-[11px] font-bold text-[#10B981]">{analytics.todayCompletedOrdersCount} orders</span>
+                    <h3 className="text-lg font-bold text-[#111111]">Today's Bills</h3>
+                    <span className="text-sm font-bold text-[#10B981]">{analytics.todayCompletedOrdersCount} orders</span>
                   </div>
                   <div className="mb-3">
                     <input
@@ -2261,15 +2261,15 @@ export default function Dashboard() {
                       placeholder="Search by invoice number..."
                       value={todayBillsSearch}
                       onChange={e => setTodayBillsSearch(e.target.value)}
-                      className="w-full px-4 py-2.5 bg-[#F9FAFB] border border-[#D1FAE5]/60 rounded-xl text-[13px] font-bold text-[#111111] placeholder:text-[#8A9384] focus:outline-none focus:border-[#047857] transition-colors"
+                      className="w-full px-4 py-2.5 bg-[#F9FAFB] border border-[#D1FAE5]/60 rounded-xl text-base font-bold text-[#111111] placeholder:text-[#8A9384] focus:outline-none focus:border-[#047857] transition-colors"
                     />
                   </div>
                   {(() => {
                     const filteredBills = analytics.todayBills.filter(b => !todayBillsSearch || b.invoice_no?.toLowerCase().includes(todayBillsSearch.toLowerCase()))
                     return filteredBills.length > 0 ? (
                     <div className="overflow-x-auto rounded-xl border border-[#D1FAE5]/30">
-                      <table className="w-full min-w-[480px] text-[12px]">
-                        <thead className="bg-[#F9FAFB] text-[10px] uppercase tracking-wider text-[#374151]">
+                      <table className="w-full min-w-[480px] text-sm">
+                        <thead className="bg-[#F9FAFB] text-xs uppercase tracking-wider text-[#374151]">
                           <tr>
                             <th className="px-3 py-2.5 font-black text-left">Invoice</th>
                             <th className="px-3 py-2.5 font-black text-left">Customer</th>
@@ -2285,13 +2285,13 @@ export default function Dashboard() {
                             const btClass = normalizeOrderType(o.order_type) === 'manual_sale' ? 'bg-purple-100 text-purple-700' : normalizeOrderMode(o.order_mode) === 'online' ? 'bg-blue-100 text-blue-700' : 'bg-orange-100 text-orange-700'
                             return (
                               <tr key={o.id} className="hover:bg-[#F9FAFB]/50">
-                                <td className="px-3 py-2.5 font-bold text-[#10B981] text-[11px]">{o.invoice_no || '-'}</td>
+                                <td className="px-3 py-2.5 font-bold text-[#10B981] text-sm">{o.invoice_no || '-'}</td>
                                 <td className="px-3 py-2.5 font-semibold text-[#111111] max-w-[100px] truncate">{o.customer_name}</td>
                                 <td className="px-3 py-2.5 font-black text-[#111111]">{formatCurrency(getOrderTotal(o))}</td>
                                 <td className="px-3 py-2.5 text-[#374151] whitespace-nowrap">{new Date(o.created_at).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}</td>
-                                <td className="px-3 py-2.5"><span className={`px-2 py-0.5 rounded-full text-[10px] font-black ${btClass}`}>{btLabel}</span></td>
+                                <td className="px-3 py-2.5"><span className={`px-2 py-0.5 rounded-full text-xs font-black ${btClass}`}>{btLabel}</span></td>
                                 <td className="px-3 py-2.5">
-                                  <button onClick={() => void openOrderInvoice(o, 'view')} className="inline-flex items-center gap-1 rounded-lg border border-[#D1FAE5]/60 px-2 py-1.5 text-[11px] font-black text-[#111111] hover:bg-[#F9FAFB]" title="View Invoice">
+                                  <button onClick={() => void openOrderInvoice(o, 'view')} className="inline-flex items-center gap-1 rounded-lg border border-[#D1FAE5]/60 px-2 py-1.5 text-sm font-black text-[#111111] hover:bg-[#F9FAFB]" title="View Invoice">
                                     <Eye size={13} /> View Invoice
                                   </button>
                                 </td>
@@ -2302,7 +2302,7 @@ export default function Dashboard() {
                       </table>
                     </div>
                   ) : (
-                    <p className="text-[13px] text-[#374151] text-center py-4">{todayBillsSearch ? 'No bills match your search.' : 'No bills yet today.'}</p>
+                    <p className="text-base text-[#374151] text-center py-4">{todayBillsSearch ? 'No bills match your search.' : 'No bills yet today.'}</p>
                   )})()}
                 </div>
               </div>
@@ -2323,10 +2323,10 @@ export default function Dashboard() {
                       <div className="absolute inset-0 bg-gradient-to-tl from-white/30 via-white/10 to-transparent" />
                       <div className="relative z-10">
                         <div className="flex items-center justify-between mb-3">
-                          <p className="text-[10px] uppercase font-black text-white/80 tracking-wider">{card.label}</p>
+                          <p className="text-xs uppercase font-black text-white/80 tracking-wider">{card.label}</p>
                           <div className="w-9 h-9 rounded-xl bg-white/25 backdrop-blur-sm flex items-center justify-center text-white shadow-sm">{card.icon}</div>
                         </div>
-                        <p className="text-[22px] font-extrabold text-white drop-shadow-sm truncate">{card.value}</p>
+                        <p className="text-2xl font-extrabold text-white drop-shadow-sm truncate">{card.value}</p>
                       </div>
                     </div>
                   ))}
@@ -2336,10 +2336,10 @@ export default function Dashboard() {
                 <div className="bg-white rounded-2xl border border-[#D1FAE5]/30 p-5 shadow-sm">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
                     <div>
-                      <h3 className="text-[15px] font-bold text-[#111111]">All Products Analytics</h3>
-                      <p className="text-[12px] text-[#6B7280]">Search by Product Name, SKU, or Category for instant statistics</p>
+                      <h3 className="text-lg font-bold text-[#111111]">All Products Analytics</h3>
+                      <p className="text-sm text-[#6B7280]">Search by Product Name, SKU, or Category for instant statistics</p>
                     </div>
-                    <span className="text-[11px] font-bold text-[#10B981] bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200 self-start sm:self-auto">{analytics.topProducts.length} products</span>
+                    <span className="text-sm font-bold text-[#10B981] bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200 self-start sm:self-auto">{analytics.topProducts.length} products</span>
                   </div>
                   <div className="mb-4">
                     <input
@@ -2347,7 +2347,7 @@ export default function Dashboard() {
                       placeholder="Search by Product Name, SKU, or Category..."
                       value={productAnalyticsSearch}
                       onChange={e => setProductAnalyticsSearch(e.target.value)}
-                      className="w-full px-4 py-2.5 bg-[#F9FAFB] border border-[#D1FAE5]/60 rounded-xl text-[13px] font-bold text-[#111111] placeholder:text-[#8A9384] focus:outline-none focus:border-[#047857] transition-colors"
+                      className="w-full px-4 py-2.5 bg-[#F9FAFB] border border-[#D1FAE5]/60 rounded-xl text-base font-bold text-[#111111] placeholder:text-[#8A9384] focus:outline-none focus:border-[#047857] transition-colors"
                     />
                   </div>
                   {(() => {
@@ -2363,23 +2363,23 @@ export default function Dashboard() {
                           <div key={`${p.name}-${p.variant || i}`} className="rounded-2xl border border-[#D1FAE5]/30 bg-[#FBFAF6] p-4">
                             <div className="flex items-start justify-between gap-3">
                               <div className="min-w-0">
-                                <p className="text-[13px] font-black text-[#9BAB9A]">#{i + 1}</p>
-                                <p className="text-[16px] font-bold text-[#111111] break-words">{p.name}</p>
-                                <p className="text-[13px] text-[#374151]">{p.variant || 'No variant'}</p>
+                                <p className="text-base font-black text-[#9BAB9A]">#{i + 1}</p>
+                                <p className="text-lg font-bold text-[#111111] break-words">{p.name}</p>
+                                <p className="text-base text-[#374151]">{p.variant || 'No variant'}</p>
                               </div>
-                              <p className="text-[14px] font-black text-emerald-700">{formatCurrency(p.revenue)}</p>
+                              <p className="text-base font-black text-emerald-700">{formatCurrency(p.revenue)}</p>
                             </div>
-                            <div className="mt-3 grid grid-cols-2 gap-3 text-[13px]">
+                            <div className="mt-3 grid grid-cols-2 gap-3 text-base">
                               <div>
-                                <p className="text-[#9BAB9A] uppercase text-[11px] font-black">Qty Sold</p>
+                                <p className="text-[#9BAB9A] uppercase text-sm font-black">Qty Sold</p>
                                 <p className="font-bold text-[#111111]">{Math.round(p.qty)}</p>
                               </div>
                               <div>
-                                <p className="text-[#9BAB9A] uppercase text-[11px] font-black">Bills</p>
+                                <p className="text-[#9BAB9A] uppercase text-sm font-black">Bills</p>
                                 <p className="font-bold text-[#111111]">{p.billCount}</p>
                               </div>
                               <div>
-                                <p className="text-[#9BAB9A] uppercase text-[11px] font-black">Avg Revenue/Bill</p>
+                                <p className="text-[#9BAB9A] uppercase text-sm font-black">Avg Revenue/Bill</p>
                                 <p className="font-bold text-[#111111]">{formatCurrency(p.billCount > 0 ? p.revenue / p.billCount : 0)}</p>
                               </div>
                             </div>
@@ -2387,8 +2387,8 @@ export default function Dashboard() {
                         ))}
                       </div>
                       <div className="hidden md:block overflow-x-auto rounded-xl border border-[#D1FAE5]/30">
-                        <table className="w-full min-w-[580px] text-left text-[12px]">
-                          <thead className="bg-[#F9FAFB] text-[10px] uppercase tracking-wider text-[#374151]">
+                        <table className="w-full min-w-[580px] text-left text-sm">
+                          <thead className="bg-[#F9FAFB] text-xs uppercase tracking-wider text-[#374151]">
                             <tr>
                               <th className="px-4 py-2.5 font-black">#</th>
                               <th className="px-4 py-2.5 font-black">Product</th>
@@ -2402,7 +2402,7 @@ export default function Dashboard() {
                           <tbody className="divide-y divide-[#D1FAE5]/20">
                             {filteredProds.slice(0, 50).map((p, i) => (
                               <tr key={`${p.name}-${p.variant || i}`} className="hover:bg-[#F9FAFB]/50">
-                                <td className="px-4 py-2 text-[11px] text-[#9BAB9A] font-bold">{i + 1}</td>
+                                <td className="px-4 py-2 text-sm text-[#9BAB9A] font-bold">{i + 1}</td>
                                 <td className="px-4 py-2 font-bold text-[#111111]">{p.name}</td>
                                 <td className="px-4 py-2 text-[#374151]">{p.variant || '-'}</td>
                                 <td className="px-4 py-2 font-bold">{Math.round(p.qty)}</td>
@@ -2416,7 +2416,7 @@ export default function Dashboard() {
                       </div>
                       </>
                     ) : (
-                      <p className="text-center text-[13px] text-[#374151] py-6">{productAnalyticsSearch ? 'No products match your search query.' : 'No product sales in selected period'}</p>
+                      <p className="text-center text-base text-[#374151] py-6">{productAnalyticsSearch ? 'No products match your search query.' : 'No product sales in selected period'}</p>
                     )
                   })()}
                 </div>
@@ -2434,21 +2434,21 @@ export default function Dashboard() {
                       <div key={c.name} className="rounded-2xl border border-[#D1FAE5]/30 bg-[#FBFAF6] p-4">
                         <div className="flex items-start justify-between gap-3">
                           <div>
-                            <p className="text-[13px] font-black text-[#9BAB9A]">#{i + 1}</p>
-                            <p className="text-[16px] font-bold text-[#111111] break-words">{c.name}</p>
+                            <p className="text-base font-black text-[#9BAB9A]">#{i + 1}</p>
+                            <p className="text-lg font-bold text-[#111111] break-words">{c.name}</p>
                           </div>
-                          <p className="text-[14px] font-black text-emerald-700">{formatCurrency(c.revenue)}</p>
+                          <p className="text-base font-black text-emerald-700">{formatCurrency(c.revenue)}</p>
                         </div>
                         <div className="mt-3">
-                          <p className="text-[#9BAB9A] uppercase text-[11px] font-black">Qty Sold</p>
+                          <p className="text-[#9BAB9A] uppercase text-sm font-black">Qty Sold</p>
                           <p className="font-bold text-[#111111]">{Math.round(c.qty)}</p>
                         </div>
                       </div>
                     ))}
                   </div>
                   <div className="hidden md:block overflow-x-auto rounded-xl border border-[#D1FAE5]/30">
-                    <table className="w-full text-left text-[13px]">
-                      <thead className="bg-[#F9FAFB] text-[10px] uppercase tracking-wider text-[#374151]">
+                    <table className="w-full text-left text-base">
+                      <thead className="bg-[#F9FAFB] text-xs uppercase tracking-wider text-[#374151]">
                         <tr>
                           <th className="px-4 py-2.5 font-black">#</th>
                           <th className="px-4 py-2.5 font-black">{l('Category', 'வகை')}</th>
@@ -2459,7 +2459,7 @@ export default function Dashboard() {
                       <tbody className="divide-y divide-[#D1FAE5]/20">
                         {analytics.topCategories.map((c, i) => (
                           <tr key={c.name} className="hover:bg-[#F9FAFB]/50">
-                            <td className="px-4 py-2 text-[11px] text-[#9BAB9A] font-bold">{i + 1}</td>
+                            <td className="px-4 py-2 text-sm text-[#9BAB9A] font-bold">{i + 1}</td>
                             <td className="px-4 py-2 font-bold text-[#111111]">{c.name}</td>
                             <td className="px-4 py-2 font-bold text-emerald-700">{formatCurrency(c.revenue)}</td>
                             <td className="px-4 py-2 text-[#374151]">{Math.round(c.qty)}</td>
@@ -2470,7 +2470,7 @@ export default function Dashboard() {
                   </div>
                   </>
                 ) : (
-                  <p className="text-center text-[13px] text-[#374151] py-6">{l('No data in selected period', 'தேர்ந்த காலத்தில் தரவு இல்லை')}</p>
+                  <p className="text-center text-base text-[#374151] py-6">{l('No data in selected period', 'தேர்ந்த காலத்தில் தரவு இல்லை')}</p>
                 )}
               </div>
             )}
@@ -2490,10 +2490,10 @@ export default function Dashboard() {
                       <div className="absolute inset-0 bg-gradient-to-tl from-white/30 via-white/10 to-transparent" />
                       <div className="relative z-10">
                         <div className="flex items-center justify-between mb-3">
-                          <p className="text-[10px] uppercase font-black text-white/80 tracking-wider">{card.label}</p>
+                          <p className="text-xs uppercase font-black text-white/80 tracking-wider">{card.label}</p>
                           <div className="w-9 h-9 rounded-xl bg-white/25 backdrop-blur-sm flex items-center justify-center text-white shadow-sm">{card.icon}</div>
                         </div>
-                        <p className="text-[22px] font-extrabold text-white drop-shadow-sm truncate">{card.value}</p>
+                        <p className="text-2xl font-extrabold text-white drop-shadow-sm truncate">{card.value}</p>
                       </div>
                     </div>
                   ))}
@@ -2502,7 +2502,7 @@ export default function Dashboard() {
                 {/* Coupon daily trend + Top coupons */}
                 <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
                   <div className="xl:col-span-2 bg-white rounded-2xl border border-[#D1FAE5]/30 p-5 shadow-sm">
-                    <h3 className="text-[15px] font-bold text-[#111111] mb-4">Coupon Usage (Last 7 Days)</h3>
+                    <h3 className="text-lg font-bold text-[#111111] mb-4">Coupon Usage (Last 7 Days)</h3>
                     {analytics.couponDailyTrend.some(d => d.orders > 0) ? (
                       <div className="h-64">
                         <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
@@ -2522,30 +2522,30 @@ export default function Dashboard() {
                         </ResponsiveContainer>
                       </div>
                     ) : (
-                      <p className="text-center text-[13px] text-[#374151] py-12">No coupon usage in the last 7 days.</p>
+                      <p className="text-center text-base text-[#374151] py-12">No coupon usage in the last 7 days.</p>
                     )}
                   </div>
 
                   <div className="bg-white rounded-2xl border border-[#D1FAE5]/30 p-5 shadow-sm">
-                    <h3 className="text-[15px] font-bold text-[#111111] mb-4">Top Coupons</h3>
+                    <h3 className="text-lg font-bold text-[#111111] mb-4">Top Coupons</h3>
                     <div className="space-y-3">
                       {analytics.topCoupons.slice(0, 8).map((coupon, i) => (
                         <div key={coupon.code} className="flex items-center justify-between gap-2 p-3 bg-[#F9FAFB] rounded-xl">
                           <div className="min-w-0 flex-1">
                             <div className="flex items-center gap-2">
-                              <span className="text-[10px] font-black text-[#9BAB9A]">{i + 1}</span>
-                              <p className="text-[13px] font-bold text-[#111111] truncate">{coupon.code}</p>
+                              <span className="text-xs font-black text-[#9BAB9A]">{i + 1}</span>
+                              <p className="text-base font-bold text-[#111111] truncate">{coupon.code}</p>
                             </div>
-                            <p className="text-[11px] text-[#374151] ml-5">{coupon.usage} order{coupon.usage > 1 ? 's' : ''}</p>
+                            <p className="text-sm text-[#374151] ml-5">{coupon.usage} order{coupon.usage > 1 ? 's' : ''}</p>
                           </div>
                           <div className="text-right shrink-0">
-                            <p className="text-[13px] font-black text-emerald-700">{formatCurrency(coupon.discounts)}</p>
-                            <p className="text-[10px] text-[#374151]">discounted</p>
+                            <p className="text-base font-black text-emerald-700">{formatCurrency(coupon.discounts)}</p>
+                            <p className="text-xs text-[#374151]">discounted</p>
                           </div>
                         </div>
                       ))}
                       {analytics.topCoupons.length === 0 && (
-                        <p className="text-center text-[13px] text-[#374151] py-6">No coupon usage yet</p>
+                        <p className="text-center text-base text-[#374151] py-6">No coupon usage yet</p>
                       )}
                     </div>
                   </div>
@@ -2555,26 +2555,26 @@ export default function Dashboard() {
                 {analytics.topCoupons.length > 0 && (
                   <div className="bg-white rounded-2xl border border-[#D1FAE5]/30 p-5 shadow-sm">
                     <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-[15px] font-bold text-[#111111]">All Coupons Performance</h3>
-                      <span className="text-[11px] font-bold text-[#10B981]">{analytics.topCoupons.length} coupons</span>
+                      <h3 className="text-lg font-bold text-[#111111]">All Coupons Performance</h3>
+                      <span className="text-sm font-bold text-[#10B981]">{analytics.topCoupons.length} coupons</span>
                     </div>
                     <div className="space-y-3 md:hidden">
                       {analytics.topCoupons.map((coupon, i) => (
                         <div key={coupon.code} className="rounded-2xl border border-[#D1FAE5]/30 bg-[#FBFAF6] p-4">
                           <div className="flex items-start justify-between gap-3">
                             <div>
-                              <p className="text-[13px] font-black text-[#9BAB9A]">#{i + 1}</p>
-                              <p className="text-[16px] font-bold text-[#111111] break-words">{coupon.code}</p>
+                              <p className="text-base font-black text-[#9BAB9A]">#{i + 1}</p>
+                              <p className="text-lg font-bold text-[#111111] break-words">{coupon.code}</p>
                             </div>
-                            <p className="text-[14px] font-black text-emerald-700">{formatCurrency(coupon.discounts)}</p>
+                            <p className="text-base font-black text-emerald-700">{formatCurrency(coupon.discounts)}</p>
                           </div>
-                          <div className="mt-3 grid grid-cols-2 gap-3 text-[13px]">
+                          <div className="mt-3 grid grid-cols-2 gap-3 text-base">
                             <div>
-                              <p className="text-[#9BAB9A] uppercase text-[11px] font-black">Orders</p>
+                              <p className="text-[#9BAB9A] uppercase text-sm font-black">Orders</p>
                               <p className="font-bold text-[#111111]">{coupon.usage}</p>
                             </div>
                             <div>
-                              <p className="text-[#9BAB9A] uppercase text-[11px] font-black">Avg Discount</p>
+                              <p className="text-[#9BAB9A] uppercase text-sm font-black">Avg Discount</p>
                               <p className="font-semibold text-[#374151]">{coupon.usage > 0 ? formatCurrency(coupon.discounts / coupon.usage) : '-'}</p>
                             </div>
                           </div>
@@ -2582,8 +2582,8 @@ export default function Dashboard() {
                       ))}
                     </div>
                     <div className="hidden md:block overflow-x-auto rounded-xl border border-[#D1FAE5]/30">
-                      <table className="w-full min-w-[400px] text-left text-[12px]">
-                        <thead className="bg-[#F9FAFB] text-[10px] uppercase tracking-wider text-[#374151]">
+                      <table className="w-full min-w-[400px] text-left text-sm">
+                        <thead className="bg-[#F9FAFB] text-xs uppercase tracking-wider text-[#374151]">
                           <tr>
                             <th className="px-4 py-2.5 font-black">#</th>
                             <th className="px-4 py-2.5 font-black">Code</th>
@@ -2595,7 +2595,7 @@ export default function Dashboard() {
                         <tbody className="divide-y divide-[#D1FAE5]/20">
                           {analytics.topCoupons.map((coupon, i) => (
                             <tr key={coupon.code} className="hover:bg-[#F9FAFB]/50">
-                              <td className="px-4 py-2 text-[11px] text-[#9BAB9A] font-bold">{i + 1}</td>
+                              <td className="px-4 py-2 text-sm text-[#9BAB9A] font-bold">{i + 1}</td>
                               <td className="px-4 py-2 font-bold text-[#111111]">{coupon.code}</td>
                               <td className="px-4 py-2 font-bold">{coupon.usage}</td>
                               <td className="px-4 py-2 font-bold text-emerald-700">{formatCurrency(coupon.discounts)}</td>
@@ -2626,11 +2626,11 @@ export default function Dashboard() {
           <div className="space-y-4 sm:space-y-6 rounded-[20px] sm:rounded-[28px] border border-[#D1FAE5]/60 bg-[#FBFAF6] p-3 sm:p-6 lg:p-7 shadow-sm">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
-                <p className="text-[11px] font-black uppercase tracking-[0.24em] text-[#10B981]">{l('Billing history', 'பில் வரலாறு')}</p>
-                <h2 className="mt-1 text-xl font-black text-[#111111]">{l('Order Management', 'ஆர்டர் மேலாண்மை')} <span className="text-[11px] font-semibold text-[#374151]">({l('POS Bills only', 'POS பில்கள் மட்டுமே')})</span></h2>
+                <p className="text-sm font-black uppercase tracking-[0.24em] text-[#10B981]">{l('Billing history', 'பில் வரலாறு')}</p>
+                <h2 className="mt-1 text-xl font-black text-[#111111]">{l('Order Management', 'ஆர்டர் மேலாண்மை')} <span className="text-sm font-semibold text-[#374151]">({l('POS Bills only', 'POS பில்கள் மட்டுமே')})</span></h2>
               </div>
               <div className="flex gap-2">
-                <Link to="/pos" className="inline-flex items-center gap-2 rounded-xl bg-[#111111] px-4 py-2 text-[13px] font-bold text-white shadow-sm hover:bg-[#1f281d]">
+                <Link to="/pos" className="inline-flex items-center gap-2 rounded-xl bg-[#111111] px-4 py-2 text-base font-bold text-white shadow-sm hover:bg-[#1f281d]">
                   <ShoppingCart size={14} /> Open POS
                 </Link>
               </div>
@@ -2645,7 +2645,7 @@ export default function Dashboard() {
                   { v: 'manual',  l: l('Manual', 'கைமுறை') },
                 ] as const).map(({ v, l }) => (
                   <button key={v} type="button" onClick={() => setBillTypeFilter(v)}
-                    className={`min-h-[44px] px-3 py-1.5 rounded-xl text-[12px] font-black transition-colors ${billTypeFilter === v ? 'bg-[#111111] text-white shadow-sm' : 'bg-[#F9FAFB] text-[#374151] hover:bg-[#D1FAE5]/40'}`}>
+                    className={`min-h-[44px] px-3 py-1.5 rounded-xl text-sm font-black transition-colors ${billTypeFilter === v ? 'bg-[#111111] text-white shadow-sm' : 'bg-[#F9FAFB] text-[#374151] hover:bg-[#D1FAE5]/40'}`}>
                     {l}
                   </button>
                 ))}
@@ -2654,50 +2654,50 @@ export default function Dashboard() {
                 <div className="flex flex-wrap gap-2 items-center">
                   {(['today', 'week', 'month', 'custom'] as const).map(preset => (
                     <button key={preset} type="button" onClick={() => applyDatePreset(preset)}
-                      className={`min-h-[44px] px-3 py-1.5 rounded-xl text-[12px] font-black transition-colors ${datePreset === preset ? 'bg-[#047857] text-white shadow-sm' : 'bg-[#F9FAFB] text-[#374151] hover:bg-[#D1FAE5]/40'}`}>
+                      className={`min-h-[44px] px-3 py-1.5 rounded-xl text-sm font-black transition-colors ${datePreset === preset ? 'bg-[#047857] text-white shadow-sm' : 'bg-[#F9FAFB] text-[#374151] hover:bg-[#D1FAE5]/40'}`}>
                       {preset === 'today' ? l('Today','இன்று') : preset === 'week' ? l('This Week','இந்த வாரம்') : preset === 'month' ? l('This Month','இந்த மாதம்') : l('Custom Range','தேர்வு')}
                     </button>
                   ))}
                   {(search.dateFrom || search.dateTo || datePreset) && (
                     <button type="button" onClick={() => { setDatePreset(''); setSearch(s => ({ ...s, dateFrom: '', dateTo: '' })) }}
-                      className="min-h-[44px] px-3 py-1.5 rounded-xl text-[12px] font-black text-[#047857] hover:bg-[#047857]/5">{l('Clear Dates', 'தேதி அழி')}</button>
+                      className="min-h-[44px] px-3 py-1.5 rounded-xl text-sm font-black text-[#047857] hover:bg-[#047857]/5">{l('Clear Dates', 'தேதி அழி')}</button>
                   )}
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                  <input className="min-h-[48px] rounded-xl bg-[#F9FAFB] px-3 py-2.5 text-[16px] md:text-[13px] font-semibold text-[#111111] placeholder:text-[#8A9384] focus:outline-none focus:ring-2 focus:ring-[#047857]/15" placeholder={l('Invoice / Bill No', 'பில் எண்')}
+                  <input className="min-h-[48px] rounded-xl bg-[#F9FAFB] px-3 py-2.5 text-lg md:text-base font-semibold text-[#111111] placeholder:text-[#8A9384] focus:outline-none focus:ring-2 focus:ring-[#047857]/15" placeholder={l('Invoice / Bill No', 'பில் எண்')}
                     value={search.invoiceNo} onChange={e => setSearch(s => ({ ...s, invoiceNo: e.target.value }))} />
-                  <input className="min-h-[48px] rounded-xl bg-[#F9FAFB] px-3 py-2.5 text-[16px] md:text-[13px] font-semibold text-[#111111] placeholder:text-[#8A9384] focus:outline-none focus:ring-2 focus:ring-[#047857]/15" placeholder={l('Customer Name', 'வாடிக்கையாளர் பெயர்')}
+                  <input className="min-h-[48px] rounded-xl bg-[#F9FAFB] px-3 py-2.5 text-lg md:text-base font-semibold text-[#111111] placeholder:text-[#8A9384] focus:outline-none focus:ring-2 focus:ring-[#047857]/15" placeholder={l('Customer Name', 'வாடிக்கையாளர் பெயர்')}
                     value={search.customerName} onChange={e => setSearch(s => ({ ...s, customerName: e.target.value }))} />
-                  <input className="min-h-[48px] rounded-xl bg-[#F9FAFB] px-3 py-2.5 text-[16px] md:text-[13px] font-semibold text-[#111111] placeholder:text-[#8A9384] focus:outline-none focus:ring-2 focus:ring-[#047857]/15" placeholder={l('Mobile Number', 'மொபைல் எண்')}
+                  <input className="min-h-[48px] rounded-xl bg-[#F9FAFB] px-3 py-2.5 text-lg md:text-base font-semibold text-[#111111] placeholder:text-[#8A9384] focus:outline-none focus:ring-2 focus:ring-[#047857]/15" placeholder={l('Mobile Number', 'மொபைல் எண்')}
                     value={search.phone} onChange={e => setSearch(s => ({ ...s, phone: e.target.value }))} />
-                  <input className="min-h-[48px] rounded-xl bg-[#F9FAFB] px-3 py-2.5 text-[16px] md:text-[13px] font-semibold text-[#111111] placeholder:text-[#8A9384] focus:outline-none focus:ring-2 focus:ring-[#047857]/15" placeholder={l('Reference Number', 'குறிப்பு எண்')}
+                  <input className="min-h-[48px] rounded-xl bg-[#F9FAFB] px-3 py-2.5 text-lg md:text-base font-semibold text-[#111111] placeholder:text-[#8A9384] focus:outline-none focus:ring-2 focus:ring-[#047857]/15" placeholder={l('Reference Number', 'குறிப்பு எண்')}
                     value={search.referenceNumber} onChange={e => setSearch(s => ({ ...s, referenceNumber: e.target.value }))} />
                   {datePreset === 'custom' ? (
                     <>
-                      <input type="date" className="min-h-[48px] rounded-xl bg-[#F9FAFB] px-3 py-2.5 text-[16px] md:text-[13px] font-semibold text-[#111111] focus:outline-none focus:ring-2 focus:ring-[#047857]/15"
+                      <input type="date" className="min-h-[48px] rounded-xl bg-[#F9FAFB] px-3 py-2.5 text-lg md:text-base font-semibold text-[#111111] focus:outline-none focus:ring-2 focus:ring-[#047857]/15"
                         value={search.dateFrom} onChange={e => setSearch(s => ({ ...s, dateFrom: e.target.value }))} />
-                      <input type="date" className="min-h-[48px] rounded-xl bg-[#F9FAFB] px-3 py-2.5 text-[16px] md:text-[13px] font-semibold text-[#111111] focus:outline-none focus:ring-2 focus:ring-[#047857]/15"
+                      <input type="date" className="min-h-[48px] rounded-xl bg-[#F9FAFB] px-3 py-2.5 text-lg md:text-base font-semibold text-[#111111] focus:outline-none focus:ring-2 focus:ring-[#047857]/15"
                         value={search.dateTo} onChange={e => setSearch(s => ({ ...s, dateTo: e.target.value }))} />
                     </>
                   ) : (
                     <button type="submit" disabled={searchLoading}
-                      className="sm:col-span-2 min-h-[48px] flex items-center justify-center gap-2 rounded-xl bg-[#047857] py-2.5 text-[13px] font-bold text-white shadow-sm transition-colors hover:bg-[#065F46] disabled:opacity-60">
+                      className="sm:col-span-2 min-h-[48px] flex items-center justify-center gap-2 rounded-xl bg-[#047857] py-2.5 text-base font-bold text-white shadow-sm transition-colors hover:bg-[#065F46] disabled:opacity-60">
                       <Search size={14} /> {searchLoading ? l('Searching...','தேடுகிறது...') : l('Search Bills','தேடு')}
                     </button>
                   )}
                   {datePreset === 'custom' && (
                     <button type="submit" disabled={searchLoading}
-                      className="sm:col-span-2 lg:col-span-4 min-h-[48px] flex items-center justify-center gap-2 rounded-xl bg-[#047857] py-2.5 text-[13px] font-bold text-white shadow-sm transition-colors hover:bg-[#065F46] disabled:opacity-60">
+                      className="sm:col-span-2 lg:col-span-4 min-h-[48px] flex items-center justify-center gap-2 rounded-xl bg-[#047857] py-2.5 text-base font-bold text-white shadow-sm transition-colors hover:bg-[#065F46] disabled:opacity-60">
                       <Search size={14} /> {searchLoading ? l('Searching...','தேடுகிறது...') : l('Search Bills','தேடு')}
                     </button>
                   )}
                 </div>
               </form>
               <div className="flex items-center justify-between mb-2">
-                <p className="text-[11px] font-semibold text-[#374151]">{filteredSearchResults.length} {l('result(s)', 'முடிவுகள்')}</p>
+                <p className="text-sm font-semibold text-[#374151]">{filteredSearchResults.length} {l('result(s)', 'முடிவுகள்')}</p>
                 {filteredSearchResults.length > 0 && (
                   <button onClick={() => exportCSV(filteredSearchResults)}
-                    className="flex items-center gap-1 text-[11px] font-bold text-[#047857] hover:underline">
+                    className="flex items-center gap-1 text-sm font-bold text-[#047857] hover:underline">
                     <Download size={11} /> Export CSV
                   </button>
                 )}
@@ -2710,61 +2710,61 @@ export default function Dashboard() {
                     <div key={o.id} className="rounded-2xl border border-[#D1FAE5]/60 bg-[#FBFAF6] p-3 sm:p-4 space-y-3">
                       <div className="flex items-start justify-between gap-3">
                         <div className="min-w-0">
-                          <p className="text-[13px] font-black text-[#111111] break-words">{o.invoice_no || '—'}</p>
-                          <p className="text-[13px] text-[#374151]">{new Date(o.created_at).toLocaleDateString('en-IN')}</p>
+                          <p className="text-base font-black text-[#111111] break-words">{o.invoice_no || '—'}</p>
+                          <p className="text-base text-[#374151]">{new Date(o.created_at).toLocaleDateString('en-IN')}</p>
                         </div>
-                        <span className={`px-2 py-1 rounded-full text-[10px] font-black uppercase ${billTypeClass}`}>{billTypeLabel}</span>
+                        <span className={`px-2 py-1 rounded-full text-xs font-black uppercase ${billTypeClass}`}>{billTypeLabel}</span>
                       </div>
-                      <div className="grid grid-cols-2 gap-2 sm:gap-3 text-[12px] sm:text-[13px]">
+                      <div className="grid grid-cols-2 gap-2 sm:gap-3 text-sm sm:text-base">
                         <div className="min-w-0">
-                          <p className="text-[#9BAB9A] uppercase text-[10px] sm:text-[11px] font-black">Customer</p>
+                          <p className="text-[#9BAB9A] uppercase text-xs sm:text-sm font-black">Customer</p>
                           <p className="font-bold text-[#111111] truncate">{o.customer_name || '—'}</p>
                         </div>
                         <div className="min-w-0">
-                          <p className="text-[#9BAB9A] uppercase text-[10px] sm:text-[11px] font-black">Phone</p>
+                          <p className="text-[#9BAB9A] uppercase text-xs sm:text-sm font-black">Phone</p>
                           <p className="font-semibold text-[#374151] truncate">{o.phone || '—'}</p>
                         </div>
                         <div className="min-w-0">
-                          <p className="text-[#9BAB9A] uppercase text-[10px] sm:text-[11px] font-black">Total</p>
+                          <p className="text-[#9BAB9A] uppercase text-xs sm:text-sm font-black">Total</p>
                           <p className="font-black text-[#111111]">{formatCurrency(getOrderTotal(o))}</p>
                         </div>
                         <div>
-                          <p className="text-[#9BAB9A] uppercase text-[11px] font-black">Coupon</p>
+                          <p className="text-[#9BAB9A] uppercase text-sm font-black">Coupon</p>
                           <p className="font-semibold text-[#374151] break-words">{o.coupon_code || '—'}</p>
                         </div>
                         <div>
-                          <p className="text-[#9BAB9A] uppercase text-[11px] font-black">Discount</p>
+                          <p className="text-[#9BAB9A] uppercase text-sm font-black">Discount</p>
                           <p className="font-semibold text-emerald-700">{o.discount_amount > 0 ? `-${formatCurrency(o.discount_amount)}` : '—'}</p>
                         </div>
                         <div>
-                          <p className="text-[#9BAB9A] uppercase text-[11px] font-black">Delivery</p>
+                          <p className="text-[#9BAB9A] uppercase text-sm font-black">Delivery</p>
                           <p className="font-semibold text-[#111111]">{o.delivery_charge > 0 ? formatCurrency(o.delivery_charge) : '—'}</p>
                         </div>
                         {((o as unknown as Record<string,unknown>).reference_number as string) && (
                           <div>
-                            <p className="text-[#9BAB9A] uppercase text-[11px] font-black">Ref #</p>
+                            <p className="text-[#9BAB9A] uppercase text-sm font-black">Ref #</p>
                             <p className="font-semibold text-[#111111] break-words">{(o as unknown as Record<string,unknown>).reference_number as string}</p>
                           </div>
                         )}
                         {((o as unknown as Record<string,unknown>).remarks as string) && (
                           <div className="col-span-2">
-                            <p className="text-[#9BAB9A] uppercase text-[11px] font-black">Remarks</p>
+                            <p className="text-[#9BAB9A] uppercase text-sm font-black">Remarks</p>
                             <p className="font-semibold text-[#374151] break-words">{(o as unknown as Record<string,unknown>).remarks as string}</p>
                           </div>
                         )}
                       </div>
                       <div className="flex flex-col sm:flex-row gap-2 pt-1">
                         <div className="flex gap-2 w-full sm:flex-1">
-                          <button onClick={() => void openOrderInvoice(o, 'view')} className="inline-flex h-10 sm:min-h-[44px] flex-1 items-center justify-center gap-1.5 rounded-xl border border-[#D1FAE5]/60 px-2 sm:px-3 text-[12px] font-black text-[#111111] transition-colors hover:bg-white" title="View Invoice">
+                          <button onClick={() => void openOrderInvoice(o, 'view')} className="inline-flex h-10 sm:min-h-[44px] flex-1 items-center justify-center gap-1.5 rounded-xl border border-[#D1FAE5]/60 px-2 sm:px-3 text-sm font-black text-[#111111] transition-colors hover:bg-white" title="View Invoice">
                             <Eye size={14} /> View
                           </button>
-                          <button onClick={() => window.open(`/invoice/${o.id}`, '_blank')} className="inline-flex h-10 sm:min-h-[44px] flex-1 items-center justify-center gap-1.5 rounded-xl bg-green-500 px-2 sm:px-3 text-[12px] font-black text-white transition-colors hover:bg-green-600" title="Invoice & Share">
+                          <button onClick={() => window.open(`/invoice/${o.id}`, '_blank')} className="inline-flex h-10 sm:min-h-[44px] flex-1 items-center justify-center gap-1.5 rounded-xl bg-green-500 px-2 sm:px-3 text-sm font-black text-white transition-colors hover:bg-green-600" title="Invoice & Share">
                             <MessageCircle size={14} /> Share
                           </button>
                         </div>
                         <div className="flex gap-2 w-full sm:flex-1">
                         <select value={normalizeStatus(o.status)} onChange={e => void updateOrderStatus(o.id, e.target.value)}
-                          className={`min-h-[44px] flex-1 cursor-pointer rounded-xl border px-3 py-2 text-[12px] font-black outline-none ${normalizeStatus(o.status) === 'completed' ? 'border-emerald-200 bg-emerald-50 text-emerald-700' : 'border-amber-200 bg-amber-50 text-amber-700'}`}>
+                          className={`min-h-[44px] flex-1 cursor-pointer rounded-xl border px-3 py-2 text-sm font-black outline-none ${normalizeStatus(o.status) === 'completed' ? 'border-emerald-200 bg-emerald-50 text-emerald-700' : 'border-amber-200 bg-amber-50 text-amber-700'}`}>
                           <option value="pending">{l('Pending', 'நிலுவை')}</option>
                           <option value="completed">{l('Completed', 'முடிந்தது')}</option>
                         </select>
@@ -2781,8 +2781,8 @@ export default function Dashboard() {
                 )}
               </div>
               <div className="hidden md:block overflow-x-auto rounded-xl border border-[#D1FAE5]/60 bg-[#FBFAF6]">
-                <table className="w-full text-left text-[13px]">
-                  <thead className="bg-[#F9FAFB] text-[10px] uppercase tracking-wider text-[#374151]">
+                <table className="w-full text-left text-base">
+                  <thead className="bg-[#F9FAFB] text-xs uppercase tracking-wider text-[#374151]">
                     <tr>
                       {['Invoice No', 'Customer Name', 'Phone', 'Bill Type', 'Coupon', 'Discount', 'Delivery', 'Total', 'Date', 'Status', 'Actions', 'Details'].map(h => (
                         <th key={h} className="px-2 py-3 font-black text-center">{h}</th>
@@ -2796,25 +2796,25 @@ export default function Dashboard() {
                       return (
                         <React.Fragment key={o.id}>
                         <tr key={o.id} className="hover:bg-[#F9FAFB] text-center">
-                          <td className="whitespace-nowrap px-2 py-3 text-[11px] font-bold text-[#111111]">{o.invoice_no || '—'}</td>
-                          <td className="max-w-[100px] truncate px-2 py-3 text-[11px] font-semibold text-[#111111]">{o.customer_name}</td>
-                          <td className="whitespace-nowrap px-2 py-3 text-[11px] text-[#374151]">{o.phone}</td>
-                          <td className="px-2 py-3"><span className={`px-1.5 py-0.5 rounded-full text-[9px] font-black uppercase ${billTypeClass}`}>{billTypeLabel}</span></td>
-                          <td className="px-2 py-3 text-[11px]">
-                            {o.coupon_code ? <span className="rounded bg-emerald-50 px-1.5 py-0.5 text-[10px] font-bold text-emerald-700">{o.coupon_code}</span> : <span className="text-[#9BAB9A]">—</span>}
+                          <td className="whitespace-nowrap px-2 py-3 text-sm font-bold text-[#111111]">{o.invoice_no || '—'}</td>
+                          <td className="max-w-[100px] truncate px-2 py-3 text-sm font-semibold text-[#111111]">{o.customer_name}</td>
+                          <td className="whitespace-nowrap px-2 py-3 text-sm text-[#374151]">{o.phone}</td>
+                          <td className="px-2 py-3"><span className={`px-1.5 py-0.5 rounded-full text-xs font-black uppercase ${billTypeClass}`}>{billTypeLabel}</span></td>
+                          <td className="px-2 py-3 text-sm">
+                            {o.coupon_code ? <span className="rounded bg-emerald-50 px-1.5 py-0.5 text-xs font-bold text-emerald-700">{o.coupon_code}</span> : <span className="text-[#9BAB9A]">—</span>}
                           </td>
-                          <td className="px-2 py-3 text-[11px]">
+                          <td className="px-2 py-3 text-sm">
                             {o.discount_amount > 0 ? <span className="font-bold text-emerald-700">-{formatCurrency(o.discount_amount)}</span> : <span className="text-[#9BAB9A]">—</span>}
                           </td>
-                          <td className="px-2 py-3 text-[11px]">
+                          <td className="px-2 py-3 text-sm">
                             {o.delivery_charge > 0 ? <span className="font-bold text-[#111111]">{formatCurrency(o.delivery_charge)}</span> : <span className="text-[#9BAB9A]">—</span>}
                           </td>
-                          <td className="whitespace-nowrap px-2 py-3 text-[11px] font-bold text-[#111111]">{formatCurrency(getOrderTotal(o))}</td>
-                          <td className="whitespace-nowrap px-2 py-3 text-[11px] text-[#374151]">{new Date(o.created_at).toLocaleDateString('en-IN')}</td>
+                          <td className="whitespace-nowrap px-2 py-3 text-sm font-bold text-[#111111]">{formatCurrency(getOrderTotal(o))}</td>
+                          <td className="whitespace-nowrap px-2 py-3 text-sm text-[#374151]">{new Date(o.created_at).toLocaleDateString('en-IN')}</td>
                           <td className="px-2 py-3">
                             <div className="flex items-center justify-center gap-1.5">
                               <select value={normalizeStatus(o.status)} onChange={e => void updateOrderStatus(o.id, e.target.value)}
-                                className={`cursor-pointer rounded-lg border px-1.5 py-1 text-[10px] font-black outline-none ${normalizeStatus(o.status) === 'completed' ? 'border-emerald-200 bg-emerald-50 text-emerald-700' : 'border-amber-200 bg-amber-50 text-amber-700'}`}>
+                                className={`cursor-pointer rounded-lg border px-1.5 py-1 text-xs font-black outline-none ${normalizeStatus(o.status) === 'completed' ? 'border-emerald-200 bg-emerald-50 text-emerald-700' : 'border-amber-200 bg-amber-50 text-amber-700'}`}>
                                 <option value="pending">{l('Pending', 'நிலுவை')}</option>
                                 <option value="completed">{l('Completed', 'முடிந்தது')}</option>
                               </select>
@@ -2850,21 +2850,21 @@ export default function Dashboard() {
                         {historyExpandedId === o.id && (
                           <tr className="bg-[#F9FAFB] border-b border-[#D1FAE5]/40">
                             <td colSpan={12} className="px-4 py-4">
-                              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-[12px]">
+                              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm">
                                 <div>
-                                  <p className="text-[10px] font-black uppercase text-[#9BAB9A] tracking-wider mb-1">Reference No</p>
+                                  <p className="text-xs font-black uppercase text-[#9BAB9A] tracking-wider mb-1">Reference No</p>
                                   <p className="font-semibold text-[#111111]">{(o as unknown as Record<string,unknown>).reference_number as string || '—'}</p>
                                 </div>
                                 <div>
-                                  <p className="text-[10px] font-black uppercase text-[#9BAB9A] tracking-wider mb-1">Remarks</p>
+                                  <p className="text-xs font-black uppercase text-[#9BAB9A] tracking-wider mb-1">Remarks</p>
                                   <p className="font-semibold text-[#374151] break-words">{(o as unknown as Record<string,unknown>).remarks as string || '—'}</p>
                                 </div>
                                 <div>
-                                  <p className="text-[10px] font-black uppercase text-[#9BAB9A] tracking-wider mb-1">Customer</p>
+                                  <p className="text-xs font-black uppercase text-[#9BAB9A] tracking-wider mb-1">Customer</p>
                                   <p className="font-semibold text-[#111111]">{o.customer_name}</p>
                                 </div>
                                 <div>
-                                  <p className="text-[10px] font-black uppercase text-[#9BAB9A] tracking-wider mb-1">Address</p>
+                                  <p className="text-xs font-black uppercase text-[#9BAB9A] tracking-wider mb-1">Address</p>
                                   <p className="font-semibold text-[#374151] break-words">{o.address || '—'}</p>
                                 </div>
                               </div>
@@ -2890,17 +2890,17 @@ export default function Dashboard() {
             {/* Product Form */}
             <div className="xl:col-span-2">
               <form onSubmit={handleSaveProd} className="bg-white rounded-2xl border border-borderLight p-6 shadow-sm space-y-5">
-                <h3 className="text-[18px] font-black text-[#111111]">{editingProd ? l('Edit Product', 'திருத்து') : l('Add Product', 'சேர்க்கவும்')}</h3>
+                <h3 className="text-xl font-black text-[#111111]">{editingProd ? l('Edit Product', 'திருத்து') : l('Add Product', 'சேர்க்கவும்')}</h3>
 
                 {productNotice && (
-                  <div className={`p-3 rounded-xl text-[13px] font-bold text-center ${productNotice.includes('!') && !productNotice.toLowerCase().includes('error') && !productNotice.toLowerCase().includes('fail') ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
+                  <div className={`p-3 rounded-xl text-base font-bold text-center ${productNotice.includes('!') && !productNotice.toLowerCase().includes('error') && !productNotice.toLowerCase().includes('fail') ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
                     {productNotice}
                   </div>
                 )}
 
                 {/* Product Type */}
                 <div>
-                  <label className="block text-[11px] font-black uppercase text-[#6B7280] tracking-wider mb-2">{l('Product Type', 'பொருள் வகை')} *</label>
+                  <label className="block text-sm font-black uppercase text-[#6B7280] tracking-wider mb-2">{l('Product Type', 'பொருள் வகை')} *</label>
                   <div className="grid grid-cols-2 gap-3">
                     {UNIT_TYPE_OPTIONS.map(opt => (
                       <button key={opt.value} type="button"
@@ -2911,8 +2911,8 @@ export default function Dashboard() {
                           setProdForm(f => ({ ...f, unitType: opt.value, unitLabel, baseQuantity: baseQty, predefinedOptionsText: defaults, allowDecimalQuantity: opt.value === 'weight' || opt.value === 'volume' }))
                         }}
                         className={`p-3 rounded-xl text-left border-2 transition-colors ${prodForm.unitType === opt.value ? 'border-maroon-dark bg-maroon-dark/5' : 'border-[#F3F4F6] hover:border-[#D1D5DB]'}`}>
-                        <p className={`text-[13px] font-black ${prodForm.unitType === opt.value ? 'text-maroon-dark' : 'text-[#111111]'}`}>{opt.label}</p>
-                        <p className="text-[11px] text-[#6B7280] leading-tight mt-1">{opt.hint}</p>
+                        <p className={`text-base font-black ${prodForm.unitType === opt.value ? 'text-maroon-dark' : 'text-[#111111]'}`}>{opt.label}</p>
+                        <p className="text-sm text-[#6B7280] leading-tight mt-1">{opt.hint}</p>
                       </button>
                     ))}
                   </div>
@@ -2920,63 +2920,63 @@ export default function Dashboard() {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="col-span-2">
-                    <label className="block text-[11px] font-black uppercase text-[#6B7280] tracking-wider mb-1">{l('Product Name', 'பொருள் பெயர்')} *</label>
-                    <input required className="w-full px-4 py-2.5 bg-[#FAFAFA] border border-[#F3F4F6] focus:border-maroon-dark rounded-xl text-[13px] font-bold outline-none transition-colors"
+                    <label className="block text-sm font-black uppercase text-[#6B7280] tracking-wider mb-1">{l('Product Name', 'பொருள் பெயர்')} *</label>
+                    <input required className="w-full px-4 py-2.5 bg-[#FAFAFA] border border-[#F3F4F6] focus:border-maroon-dark rounded-xl text-base font-bold outline-none transition-colors"
                       placeholder="e.g. Manjal Podi" value={prodForm.name} onChange={e => setProdForm(f => ({...f, name: e.target.value}))} />
                   </div>
                   <div className="col-span-2">
-                    <label className="block text-[11px] font-black uppercase text-[#6B7280] tracking-wider mb-1">{l('Tamil Name', 'தமிழ் பெயர்')}</label>
-                    <input className="w-full px-4 py-2.5 bg-[#FAFAFA] border border-[#F3F4F6] focus:border-maroon-dark rounded-xl text-[13px] font-bold outline-none transition-colors"
+                    <label className="block text-sm font-black uppercase text-[#6B7280] tracking-wider mb-1">{l('Tamil Name', 'தமிழ் பெயர்')}</label>
+                    <input className="w-full px-4 py-2.5 bg-[#FAFAFA] border border-[#F3F4F6] focus:border-maroon-dark rounded-xl text-base font-bold outline-none transition-colors"
                       placeholder="எ.கா. மஞ்சள் பொடி" value={prodForm.nameTa} onChange={e => setProdForm(f => ({...f, nameTa: e.target.value}))} />
                   </div>
                   <div>
-                    <label className="block text-[11px] font-black uppercase text-[#6B7280] tracking-wider mb-1">{l('Price (₹)', 'விலை (₹)')} *</label>
+                    <label className="block text-sm font-black uppercase text-[#6B7280] tracking-wider mb-1">{l('Price (₹)', 'விலை (₹)')} *</label>
                     <input required type="number" min="0" step="0.01"
-                      className="w-full px-4 py-2.5 bg-[#FAFAFA] border border-[#F3F4F6] focus:border-maroon-dark rounded-xl text-[13px] font-bold outline-none transition-colors"
+                      className="w-full px-4 py-2.5 bg-[#FAFAFA] border border-[#F3F4F6] focus:border-maroon-dark rounded-xl text-base font-bold outline-none transition-colors"
                       value={prodForm.price} onChange={e => setProdForm(f => ({...f, price: Number(e.target.value)}))} />
-                    <p className="text-[11px] text-[#6B7280] mt-1">
+                    <p className="text-sm text-[#6B7280] mt-1">
                       {prodForm.unitType === 'weight' ? `Per ${prodForm.baseQuantity}g` : prodForm.unitType === 'volume' ? `Per ${prodForm.baseQuantity}ml` : 'Per piece/bundle'}
                     </p>
                   </div>
                   <div>
-                    <label className="block text-[11px] font-black uppercase text-[#6B7280] tracking-wider mb-1">{l('Purchase Price (₹)', 'வாங்கிய விலை')} *</label>
+                    <label className="block text-sm font-black uppercase text-[#6B7280] tracking-wider mb-1">{l('Purchase Price (₹)', 'வாங்கிய விலை')} *</label>
                     <input required type="number" min="0" step="0.01"
-                      className="w-full px-4 py-2.5 bg-[#FAFAFA] border border-[#F3F4F6] focus:border-maroon-dark rounded-xl text-[13px] font-bold outline-none transition-colors"
+                      className="w-full px-4 py-2.5 bg-[#FAFAFA] border border-[#F3F4F6] focus:border-maroon-dark rounded-xl text-base font-bold outline-none transition-colors"
                       value={prodForm.purchasePrice} onChange={e => setProdForm(f => ({...f, purchasePrice: Number(e.target.value)}))} />
                   </div>
                   <div>
-                    <label className="block text-[11px] font-black uppercase text-[#6B7280] tracking-wider mb-1">{l('MRP (₹)', 'MRP (₹)')}</label>
+                    <label className="block text-sm font-black uppercase text-[#6B7280] tracking-wider mb-1">{l('MRP (₹)', 'MRP (₹)')}</label>
                     <input type="number" min="0" step="0.01"
-                      className="w-full px-4 py-2.5 bg-[#FAFAFA] border border-[#F3F4F6] focus:border-maroon-dark rounded-xl text-[13px] font-bold outline-none transition-colors"
+                      className="w-full px-4 py-2.5 bg-[#FAFAFA] border border-[#F3F4F6] focus:border-maroon-dark rounded-xl text-base font-bold outline-none transition-colors"
                       placeholder="Maximum Retail Price"
                       value={prodForm.mrp} onChange={e => setProdForm(f => ({...f, mrp: e.target.value}))} />
                   </div>
                   <div>
-                    <label className="block text-[11px] font-black uppercase text-[#6B7280] tracking-wider mb-1">{l('Offer Price (₹)', 'சலுகை விலை')}</label>
+                    <label className="block text-sm font-black uppercase text-[#6B7280] tracking-wider mb-1">{l('Offer Price (₹)', 'சலுகை விலை')}</label>
                     <input type="number" min="0" step="0.01"
-                      className="w-full px-4 py-2.5 bg-[#FAFAFA] border border-[#F3F4F6] focus:border-maroon-dark rounded-xl text-[13px] font-bold outline-none transition-colors"
+                      className="w-full px-4 py-2.5 bg-[#FAFAFA] border border-[#F3F4F6] focus:border-maroon-dark rounded-xl text-base font-bold outline-none transition-colors"
                       placeholder="Leave blank for no discount"
                       value={prodForm.offerPrice} onChange={e => setProdForm(f => ({...f, offerPrice: e.target.value}))} />
                   </div>
                   <div>
-                    <label className="block text-[11px] font-black uppercase text-[#6B7280] tracking-wider mb-1">{l('SKU', 'SKU')}</label>
-                    <input className="w-full px-4 py-2.5 bg-[#FAFAFA] border border-[#F3F4F6] focus:border-maroon-dark rounded-xl text-[13px] font-bold outline-none transition-colors"
+                    <label className="block text-sm font-black uppercase text-[#6B7280] tracking-wider mb-1">{l('SKU', 'SKU')}</label>
+                    <input className="w-full px-4 py-2.5 bg-[#FAFAFA] border border-[#F3F4F6] focus:border-maroon-dark rounded-xl text-base font-bold outline-none transition-colors"
                       placeholder="e.g. MP-100G" value={prodForm.sku} onChange={e => setProdForm(f => ({...f, sku: e.target.value}))} />
                   </div>
                   <div>
-                    <label className="block text-[11px] font-black uppercase text-[#6B7280] tracking-wider mb-1">{l('Barcode', 'பார்கோடு')}</label>
-                    <input className="w-full px-4 py-2.5 bg-[#FAFAFA] border border-[#F3F4F6] focus:border-maroon-dark rounded-xl text-[13px] font-bold outline-none transition-colors"
+                    <label className="block text-sm font-black uppercase text-[#6B7280] tracking-wider mb-1">{l('Barcode', 'பார்கோடு')}</label>
+                    <input className="w-full px-4 py-2.5 bg-[#FAFAFA] border border-[#F3F4F6] focus:border-maroon-dark rounded-xl text-base font-bold outline-none transition-colors"
                       placeholder="e.g. 8901234567890" value={prodForm.barcode} onChange={e => setProdForm(f => ({...f, barcode: e.target.value}))} />
                   </div>
                   <div>
-                    <label className="block text-[11px] font-black uppercase text-[#6B7280] tracking-wider mb-1">{l('Stock', 'இருப்பு')} *</label>
+                    <label className="block text-sm font-black uppercase text-[#6B7280] tracking-wider mb-1">{l('Stock', 'இருப்பு')} *</label>
                     <input required type="number" min="0"
-                      className="w-full px-4 py-2.5 bg-[#FAFAFA] border border-[#F3F4F6] focus:border-maroon-dark rounded-xl text-[13px] font-bold outline-none transition-colors"
+                      className="w-full px-4 py-2.5 bg-[#FAFAFA] border border-[#F3F4F6] focus:border-maroon-dark rounded-xl text-base font-bold outline-none transition-colors"
                       value={prodForm.stockQuantity} onChange={e => setProdForm(f => ({...f, stockQuantity: Number(e.target.value)}))} />
                   </div>
                   <div className="col-span-2 sm:col-span-1">
-                    <label className="block text-[11px] font-black uppercase text-[#6B7280] tracking-wider mb-1">{l('Category', 'வகை')} *</label>
-                    <select required className="w-full min-w-0 h-11 px-4 py-2.5 bg-[#FAFAFA] border border-[#F3F4F6] focus:border-maroon-dark rounded-xl text-[13px] font-bold outline-none transition-colors touch-manipulation"
+                    <label className="block text-sm font-black uppercase text-[#6B7280] tracking-wider mb-1">{l('Category', 'வகை')} *</label>
+                    <select required className="w-full min-w-0 h-11 px-4 py-2.5 bg-[#FAFAFA] border border-[#F3F4F6] focus:border-maroon-dark rounded-xl text-base font-bold outline-none transition-colors touch-manipulation"
                       value={prodForm.category}
                       onChange={e => {
                         const sel = cats.find(c => c.name_en === e.target.value)
@@ -2988,17 +2988,17 @@ export default function Dashboard() {
                     <button
                       type="button"
                       onClick={() => setCategoryManagerOpen(open => !open)}
-                      className="mt-2 text-[11px] font-black text-maroon-dark hover:underline"
+                      className="mt-2 text-sm font-black text-maroon-dark hover:underline"
                     >
                       {categoryManagerOpen ? 'Hide categories' : 'Manage categories'}
                     </button>
                     {categoryManagerOpen && (
                       <div className="mt-2 rounded-xl border border-[#D1FAE5]/60 bg-white p-2 space-y-1">
                         {cats.length === 0 ? (
-                          <p className="px-2 py-1 text-[11px] text-[#6B7280]">No categories available.</p>
+                          <p className="px-2 py-1 text-sm text-[#6B7280]">No categories available.</p>
                         ) : activeCategories.map(c => (
                           <div key={c.id} className="relative flex items-center justify-between gap-2 rounded-lg px-2 py-1.5 hover:bg-red-50">
-                            <span className="truncate text-[12px] font-bold text-[#111111]">{c.name_en}</span>
+                            <span className="truncate text-sm font-bold text-[#111111]">{c.name_en}</span>
                             <button
                               type="button"
                               onClick={() => setOpenCategoryMenuId(id => id === c.id ? null : c.id)}
@@ -3009,8 +3009,8 @@ export default function Dashboard() {
                             </button>
                             {openCategoryMenuId === c.id && (
                               <div className="absolute right-2 top-9 z-20 min-w-28 rounded-xl border border-[#D1FAE5]/60 bg-white p-1 shadow-lg">
-                                <button type="button" onClick={() => { setEditingCategoryId(c.id); setNewCat({ name_en: c.name_en, name_ta: c.name_ta || '' }); setOpenCategoryMenuId(null) }} className="block w-full rounded-lg px-3 py-2 text-left text-[11px] font-bold text-[#111111] hover:bg-[#F9FAFB]">Edit / Rename</button>
-                                <button type="button" onClick={() => { setOpenCategoryMenuId(null); void deleteCat(c) }} className="block w-full rounded-lg px-3 py-2 text-left text-[11px] font-bold text-red-600 hover:bg-red-50">Delete</button>
+                                <button type="button" onClick={() => { setEditingCategoryId(c.id); setNewCat({ name_en: c.name_en, name_ta: c.name_ta || '' }); setOpenCategoryMenuId(null) }} className="block w-full rounded-lg px-3 py-2 text-left text-sm font-bold text-[#111111] hover:bg-[#F9FAFB]">Edit / Rename</button>
+                                <button type="button" onClick={() => { setOpenCategoryMenuId(null); void deleteCat(c) }} className="block w-full rounded-lg px-3 py-2 text-left text-sm font-bold text-red-600 hover:bg-red-50">Delete</button>
                               </div>
                             )}
                           </div>
@@ -3023,27 +3023,27 @@ export default function Dashboard() {
                 {/* Predefined Options (weight/volume only) */}
                 {(prodForm.unitType === 'weight' || prodForm.unitType === 'volume') && (
                   <div>
-                    <label className="block text-[11px] font-black uppercase text-[#6B7280] tracking-wider mb-1">
+                    <label className="block text-sm font-black uppercase text-[#6B7280] tracking-wider mb-1">
                       Size Options (comma-separated)
                     </label>
-                    <input className="w-full px-4 py-2.5 bg-[#FAFAFA] border border-[#F3F4F6] focus:border-maroon-dark rounded-xl text-[13px] font-bold outline-none transition-colors"
+                    <input className="w-full px-4 py-2.5 bg-[#FAFAFA] border border-[#F3F4F6] focus:border-maroon-dark rounded-xl text-base font-bold outline-none transition-colors"
                       placeholder={prodForm.unitType === 'weight' ? '100g, 250g, 500g, 1kg' : '250ml, 500ml, 1L'}
                       value={prodForm.predefinedOptionsText}
                       onChange={e => setProdForm(f => ({...f, predefinedOptionsText: e.target.value}))} />
-                    <p className="text-[11px] text-[#6B7280] mt-1">{l('These become the selectable size buttons on the product card.', 'இவை பொருள் அட்டையில் அளவு பொத்தான்களாக காட்டப்படும்.')}</p>
+                    <p className="text-sm text-[#6B7280] mt-1">{l('These become the selectable size buttons on the product card.', 'இவை பொருள் அட்டையில் அளவு பொத்தான்களாக காட்டப்படும்.')}</p>
                   </div>
                 )}
 
                 <div>
-                  <label className="block text-[11px] font-black uppercase text-[#6B7280] tracking-wider mb-1">{l('Description', 'விளக்கம்')}</label>
-                  <textarea rows={2} className="w-full px-4 py-2.5 bg-[#FAFAFA] border border-[#F3F4F6] focus:border-maroon-dark rounded-xl text-[13px] font-bold outline-none transition-colors resize-none"
+                  <label className="block text-sm font-black uppercase text-[#6B7280] tracking-wider mb-1">{l('Description', 'விளக்கம்')}</label>
+                  <textarea rows={2} className="w-full px-4 py-2.5 bg-[#FAFAFA] border border-[#F3F4F6] focus:border-maroon-dark rounded-xl text-base font-bold outline-none transition-colors resize-none"
                     placeholder="Short product description..." value={prodForm.description}
                     onChange={e => setProdForm(f => ({...f, description: e.target.value}))} />
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-black uppercase text-[#6B7280] tracking-wider mb-1">{l('Benefits / Health Tags', 'நன்மைகள்')}</label>
-                  <input className="w-full px-4 py-2.5 bg-[#FAFAFA] border border-[#F3F4F6] focus:border-maroon-dark rounded-xl text-[13px] font-bold outline-none transition-colors"
+                  <label className="block text-sm font-black uppercase text-[#6B7280] tracking-wider mb-1">{l('Benefits / Health Tags', 'நன்மைகள்')}</label>
+                  <input className="w-full px-4 py-2.5 bg-[#FAFAFA] border border-[#F3F4F6] focus:border-maroon-dark rounded-xl text-base font-bold outline-none transition-colors"
                     placeholder="Immunity, Digestion (comma-separated)"
                     value={prodForm.benefits}
                     onChange={e => setProdForm(f => ({...f, benefits: e.target.value}))} />
@@ -3051,14 +3051,14 @@ export default function Dashboard() {
 
                 {/* Image */}
                 <div className="space-y-3">
-                  <label className="block text-[11px] font-black uppercase text-[#6B7280] tracking-wider">{l('Product Image', 'படம்')}</label>
-                  <input className="w-full px-4 py-2.5 bg-[#FAFAFA] border border-[#F3F4F6] focus:border-maroon-dark rounded-xl text-[13px] font-bold outline-none transition-colors"
+                  <label className="block text-sm font-black uppercase text-[#6B7280] tracking-wider">{l('Product Image', 'படம்')}</label>
+                  <input className="w-full px-4 py-2.5 bg-[#FAFAFA] border border-[#F3F4F6] focus:border-maroon-dark rounded-xl text-base font-bold outline-none transition-colors"
                     placeholder="https://... (image URL)"
                     value={prodForm.image} onChange={e => setProdForm(f => ({...f, image: e.target.value}))} />
                   <input type="file" accept="image/*"
-                    className="w-full px-4 py-2 bg-[#FAFAFA] border border-[#F3F4F6] rounded-xl text-[12px] text-[#6B7280]"
+                    className="w-full px-4 py-2 bg-[#FAFAFA] border border-[#F3F4F6] rounded-xl text-sm text-[#6B7280]"
                     onChange={e => void handleUploadImage(e.target.files?.[0])} />
-                  {imageUploading && <p className="text-[12px] text-maroon-dark font-bold">{l('Uploading image...', 'படம் பதிவேற்றுகிறது...')}</p>}
+                  {imageUploading && <p className="text-sm text-maroon-dark font-bold">{l('Uploading image...', 'படம் பதிவேற்றுகிறது...')}</p>}
                   {prodForm.image && (
                     <div className="w-20 h-20 rounded-xl overflow-hidden bg-[#FAFAFA] border border-borderLight shadow-sm">
                       <img src={prodForm.image} alt="preview" className="w-full h-full object-cover" />
@@ -3071,7 +3071,7 @@ export default function Dashboard() {
                     onChange={e => setProdForm(f => ({...f, isActive: e.target.checked}))}
                     className="w-4 h-4 text-maroon-dark rounded focus:ring-maroon-dark accent-maroon-dark"
                   />
-                  <label htmlFor="isActive" className="text-[14px] font-bold text-[#111111]">{l('Active (visible in store)', 'கடையில் காட்டு')}</label>
+                  <label htmlFor="isActive" className="text-base font-bold text-[#111111]">{l('Active (visible in store)', 'கடையில் காட்டு')}</label>
                 </div>
                 <div className="flex items-center gap-3">
                   <input type="checkbox" id="hasVariants"
@@ -3079,18 +3079,18 @@ export default function Dashboard() {
                     onChange={e => setProdForm(f => ({...f, hasVariants: e.target.checked} as typeof f))}
                     className="w-4 h-4 text-maroon-dark rounded focus:ring-maroon-dark accent-maroon-dark"
                   />
-                  <label htmlFor="hasVariants" className="text-[14px] font-bold text-[#111111]">
+                  <label htmlFor="hasVariants" className="text-base font-bold text-[#111111]">
                     {l('Has Variants (brands/sizes)', 'வகைகள் உள்ளன')}
                   </label>
                 </div>
 
                 <div className="flex gap-3 pt-3 border-t border-borderLight">
                   <button type="submit" disabled={loading}
-                    className="flex-grow py-3 bg-maroon-dark hover:bg-[#721528] text-white font-black rounded-xl disabled:opacity-60 transition-colors shadow-sm text-[13px]">
+                    className="flex-grow py-3 bg-maroon-dark hover:bg-[#721528] text-white font-black rounded-xl disabled:opacity-60 transition-colors shadow-sm text-base">
                     {loading ? l('Saving...','சேமிக்கிறது...') : editingProd ? l('Update Product','புதுப்பி') : l('Add Product','சேர்க்கவும்')}
                   </button>
                   <button type="button" onClick={() => { setEditingProd(null); setProdForm(emptyForm); setProductNotice('') }}
-                    className="px-6 py-3 bg-[#F3F4F6] text-[#111111] font-bold rounded-xl hover:bg-[#E5E7EB] transition-colors text-[13px]">
+                    className="px-6 py-3 bg-[#F3F4F6] text-[#111111] font-bold rounded-xl hover:bg-[#E5E7EB] transition-colors text-base">
                     Reset
                   </button>
                 </div>
@@ -3102,7 +3102,7 @@ export default function Dashboard() {
               <div className="bg-white rounded-2xl border border-borderLight shadow-sm overflow-hidden flex flex-col h-full">
                 <div className="px-6 py-5 border-b border-borderLight flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white">
                   <div>
-                    <h3 className="text-[18px] font-black text-[#111111]">{l('Products', 'பொருட்கள்')} <span className="text-[#6B7280] font-medium text-[16px]">({products.length})</span></h3>
+                    <h3 className="text-xl font-black text-[#111111]">{l('Products', 'பொருட்கள்')} <span className="text-[#6B7280] font-medium text-lg">({products.length})</span></h3>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="relative">
@@ -3112,14 +3112,14 @@ export default function Dashboard() {
                         placeholder={l('Search items...', 'பொருட்களை தேட...')}
                         value={inventorySearch}
                         onChange={e => setInventorySearch(e.target.value)}
-                        className="pl-10 pr-4 py-2 rounded-xl border border-[#F3F4F6] text-[13px] bg-[#FAFAFA] focus:bg-white outline-none focus:border-maroon-dark w-[180px] lg:w-[240px] transition-colors shadow-sm"
+                        className="pl-10 pr-4 py-2 rounded-xl border border-[#F3F4F6] text-base bg-[#FAFAFA] focus:bg-white outline-none focus:border-maroon-dark w-[180px] lg:w-[240px] transition-colors shadow-sm"
                       />
                     </div>
                   </div>
                 </div>
                 <div className="overflow-x-auto flex-1 bg-white">
                   <table className="w-full min-w-[640px] text-left border-collapse">
-                    <thead className="bg-[#FAFAFA] text-[11px] uppercase tracking-wider text-[#6B7280] border-b border-borderLight">
+                    <thead className="bg-[#FAFAFA] text-sm uppercase tracking-wider text-[#6B7280] border-b border-borderLight">
                       <tr>
                         <th className="px-6 py-4 font-black">{l('Product Name', 'பொருள்')}</th>
                         <th className="px-4 py-4 font-black">{l('Type', 'வகை')}</th>
@@ -3128,7 +3128,7 @@ export default function Dashboard() {
                         <th className="px-6 py-4 font-black text-right">{l('Actions', 'நடவடிக்கை')}</th>
                       </tr>
                     </thead>
-                    <tbody className="text-[14px] divide-y divide-[#F3F4F6] bg-white">
+                    <tbody className="text-base divide-y divide-[#F3F4F6] bg-white">
                       {products.filter(p => !inventorySearch || p.name.toLowerCase().includes(inventorySearch.toLowerCase()) || p.tamilName?.toLowerCase().includes(inventorySearch.toLowerCase()) || p.category?.toLowerCase().includes(inventorySearch.toLowerCase())).map(p => (
                         <tr key={p.id} className={`hover:bg-[#FAFAFA] transition-colors cursor-pointer ${!p.isActive ? 'opacity-60' : ''}`}>
                           <td className="px-6 py-4" onClick={() => handleEdit(p)}>
@@ -3141,12 +3141,12 @@ export default function Dashboard() {
                               </div>
                               <div className="min-w-0">
                                 <p className="font-bold text-[#111111] truncate max-w-[200px]">{p.name}</p>
-                                <p className="text-[12px] text-[#6B7280] mt-0.5">{p.category}</p>
+                                <p className="text-sm text-[#6B7280] mt-0.5">{p.category}</p>
                               </div>
                             </div>
                           </td>
                           <td className="px-4 py-4">
-                            <span className={`px-2.5 py-1 rounded-md text-[11px] font-bold uppercase tracking-wider ${
+                            <span className={`px-2.5 py-1 rounded-md text-sm font-bold uppercase tracking-wider ${
                               p.unitType === 'weight' ? 'bg-[#E0F2FE] text-[#0369A1]' :
                               p.unitType === 'volume' ? 'bg-[#F3E8FF] text-[#7E22CE]' :
                               p.unitType === 'bundle' ? 'bg-[#FFEDD5] text-[#C2410C]' :
@@ -3184,16 +3184,16 @@ export default function Dashboard() {
             {editingProd && (
               <div className="xl:col-span-5 bg-white rounded-2xl border border-borderLight p-6 shadow-sm">
                 <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-[18px] font-black text-[#111111]">
+                  <h3 className="text-xl font-black text-[#111111]">
                     {l('Variants', 'வகைகள்')} - <span className="text-[#6B7280]">{editingProd.name}</span>
                     {!editingProd.hasVariants && (
-                      <span className="ml-3 text-[12px] font-bold text-amber-700 bg-amber-50 px-3 py-1 rounded-full">
+                      <span className="ml-3 text-sm font-bold text-amber-700 bg-amber-50 px-3 py-1 rounded-full">
                         {l('Enable "Has Variants" above to manage variants', '"வகைகள் உள்ளன" இயக்கவும்')}
                       </span>
                     )}
                   </h3>
                   {variantNotice && (
-                    <span className={`text-[13px] font-bold px-3 py-1.5 rounded-xl ${variantNotice.toLowerCase().includes('error') || variantNotice.toLowerCase().includes('required') ? 'bg-red-50 text-red-700' : 'bg-green-50 text-green-700'}`}>
+                    <span className={`text-base font-bold px-3 py-1.5 rounded-xl ${variantNotice.toLowerCase().includes('error') || variantNotice.toLowerCase().includes('required') ? 'bg-red-50 text-red-700' : 'bg-green-50 text-green-700'}`}>
                       {variantNotice}
                     </span>
                   )}
@@ -3202,85 +3202,85 @@ export default function Dashboard() {
                 <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
                   {/* Add / Edit variant form */}
                   <form onSubmit={handleSaveVariant} className="space-y-4 bg-[#FAFAFA] rounded-2xl p-5 border border-[#F3F4F6]">
-                    <h4 className="text-[13px] font-black uppercase tracking-wider text-[#111111]">
+                    <h4 className="text-base font-black uppercase tracking-wider text-[#111111]">
                       {editingVariantId ? l('Edit Variant', 'வகை திருத்து') : l('Add Variant', 'வகை சேர்')}
                     </h4>
 
                     <div className="grid grid-cols-2 gap-4">
                       <div className="col-span-2">
-                        <label className="block text-[11px] font-black uppercase tracking-wider text-[#6B7280] mb-1">{l('Variant Name *', 'வகை பெயர் *')}</label>
+                        <label className="block text-sm font-black uppercase tracking-wider text-[#6B7280] mb-1">{l('Variant Name *', 'வகை பெயர் *')}</label>
                         <input required
-                          className="w-full px-4 py-2.5 bg-white rounded-xl border border-[#D1D5DB] text-[13px] font-bold outline-none focus:border-maroon-dark transition-colors shadow-sm"
+                          className="w-full px-4 py-2.5 bg-white rounded-xl border border-[#D1D5DB] text-base font-bold outline-none focus:border-maroon-dark transition-colors shadow-sm"
                           placeholder={l('e.g. Cycle Brand / 25g', 'e.g. Cycle Brand / 25g')}
                           value={variantForm.name}
                           onChange={e => setVariantForm(f => ({...f, name: e.target.value}))} />
                       </div>
                       <div>
-                        <label className="block text-[11px] font-black uppercase tracking-wider text-[#6B7280] mb-1">{l('Size Label', 'அளவு பட்டை')}</label>
+                        <label className="block text-sm font-black uppercase tracking-wider text-[#6B7280] mb-1">{l('Size Label', 'அளவு பட்டை')}</label>
                         <input
-                          className="w-full px-4 py-2.5 bg-white rounded-xl border border-[#D1D5DB] text-[13px] font-bold outline-none focus:border-maroon-dark transition-colors shadow-sm"
+                          className="w-full px-4 py-2.5 bg-white rounded-xl border border-[#D1D5DB] text-base font-bold outline-none focus:border-maroon-dark transition-colors shadow-sm"
                           placeholder="25g / 250ml / 1 pack"
                           value={variantForm.sizeLabel}
                           onChange={e => setVariantForm(f => ({...f, sizeLabel: e.target.value}))} />
                       </div>
                       <div>
-                        <label className="block text-[11px] font-black uppercase tracking-wider text-[#6B7280] mb-1">{l('Purchase Price (₹)', 'வாங்கிய விலை')}</label>
+                        <label className="block text-sm font-black uppercase tracking-wider text-[#6B7280] mb-1">{l('Purchase Price (₹)', 'வாங்கிய விலை')}</label>
                         <input type="number" min="0" step="0.01"
-                          className="w-full px-4 py-2.5 bg-white rounded-xl border border-[#D1D5DB] text-[13px] font-bold outline-none focus:border-maroon-dark transition-colors shadow-sm"
+                          className="w-full px-4 py-2.5 bg-white rounded-xl border border-[#D1D5DB] text-base font-bold outline-none focus:border-maroon-dark transition-colors shadow-sm"
                           placeholder="30"
                           value={variantForm.purchasePrice}
                           onChange={e => setVariantForm(f => ({...f, purchasePrice: e.target.value}))} />
                       </div>
                       <div>
-                        <label className="block text-[11px] font-black uppercase tracking-wider text-[#6B7280] mb-1">{l('MRP (₹)', 'MRP (₹)')}</label>
+                        <label className="block text-sm font-black uppercase tracking-wider text-[#6B7280] mb-1">{l('MRP (₹)', 'MRP (₹)')}</label>
                         <input type="number" min="0" step="0.01"
-                          className="w-full px-4 py-2.5 bg-white rounded-xl border border-[#D1D5DB] text-[13px] font-bold outline-none focus:border-maroon-dark transition-colors shadow-sm"
+                          className="w-full px-4 py-2.5 bg-white rounded-xl border border-[#D1D5DB] text-base font-bold outline-none focus:border-maroon-dark transition-colors shadow-sm"
                           placeholder="50"
                           value={variantForm.mrp}
                           onChange={e => setVariantForm(f => ({...f, mrp: e.target.value}))} />
                       </div>
                       <div>
-                        <label className="block text-[11px] font-black uppercase tracking-wider text-[#6B7280] mb-1">{l('Selling Price (₹) *', 'விற்பனை விலை *')}</label>
+                        <label className="block text-sm font-black uppercase tracking-wider text-[#6B7280] mb-1">{l('Selling Price (₹) *', 'விற்பனை விலை *')}</label>
                         <input required type="number" min="0" step="0.01"
-                          className="w-full px-4 py-2.5 bg-white rounded-xl border border-[#D1D5DB] text-[13px] font-bold outline-none focus:border-maroon-dark transition-colors shadow-sm"
+                          className="w-full px-4 py-2.5 bg-white rounded-xl border border-[#D1D5DB] text-base font-bold outline-none focus:border-maroon-dark transition-colors shadow-sm"
                           placeholder="40"
                           value={variantForm.price}
                           onChange={e => setVariantForm(f => ({...f, price: e.target.value}))} />
                       </div>
                       <div>
-                        <label className="block text-[11px] font-black uppercase tracking-wider text-[#6B7280] mb-1">{l('SKU', 'SKU')}</label>
-                        <input className="w-full px-4 py-2.5 bg-white rounded-xl border border-[#D1D5DB] text-[13px] font-bold outline-none focus:border-maroon-dark transition-colors shadow-sm"
+                        <label className="block text-sm font-black uppercase tracking-wider text-[#6B7280] mb-1">{l('SKU', 'SKU')}</label>
+                        <input className="w-full px-4 py-2.5 bg-white rounded-xl border border-[#D1D5DB] text-base font-bold outline-none focus:border-maroon-dark transition-colors shadow-sm"
                           placeholder="SKU-123"
                           value={variantForm.sku}
                           onChange={e => setVariantForm(f => ({...f, sku: e.target.value}))} />
                       </div>
                       <div>
-                        <label className="block text-[11px] font-black uppercase tracking-wider text-[#6B7280] mb-1">{l('Barcode', 'பார்கோடு')}</label>
-                        <input className="w-full px-4 py-2.5 bg-white rounded-xl border border-[#D1D5DB] text-[13px] font-bold outline-none focus:border-maroon-dark transition-colors shadow-sm"
+                        <label className="block text-sm font-black uppercase tracking-wider text-[#6B7280] mb-1">{l('Barcode', 'பார்கோடு')}</label>
+                        <input className="w-full px-4 py-2.5 bg-white rounded-xl border border-[#D1D5DB] text-base font-bold outline-none focus:border-maroon-dark transition-colors shadow-sm"
                           placeholder="890..."
                           value={variantForm.barcode}
                           onChange={e => setVariantForm(f => ({...f, barcode: e.target.value}))} />
                       </div>
                       <div>
-                        <label className="block text-[11px] font-black uppercase tracking-wider text-[#6B7280] mb-1">{l('Stock *', 'இருப்பு *')}</label>
+                        <label className="block text-sm font-black uppercase tracking-wider text-[#6B7280] mb-1">{l('Stock *', 'இருப்பு *')}</label>
                         <input required type="number" min="0"
-                          className="w-full px-4 py-2.5 bg-white rounded-xl border border-[#D1D5DB] text-[13px] font-bold outline-none focus:border-maroon-dark transition-colors shadow-sm"
+                          className="w-full px-4 py-2.5 bg-white rounded-xl border border-[#D1D5DB] text-base font-bold outline-none focus:border-maroon-dark transition-colors shadow-sm"
                           placeholder="50"
                           value={variantForm.stock}
                           onChange={e => setVariantForm(f => ({...f, stock: e.target.value}))} />
                       </div>
                       <div>
-                        <label className="block text-[11px] font-black uppercase tracking-wider text-[#6B7280] mb-1">{l('Weight/Vol Value', 'எடை மதிப்பு')}</label>
+                        <label className="block text-sm font-black uppercase tracking-wider text-[#6B7280] mb-1">{l('Weight/Vol Value', 'எடை மதிப்பு')}</label>
                         <input type="number" min="0" step="0.001"
-                          className="w-full px-4 py-2.5 bg-white rounded-xl border border-[#D1D5DB] text-[13px] font-bold outline-none focus:border-maroon-dark transition-colors shadow-sm"
+                          className="w-full px-4 py-2.5 bg-white rounded-xl border border-[#D1D5DB] text-base font-bold outline-none focus:border-maroon-dark transition-colors shadow-sm"
                           placeholder="250"
                           value={variantForm.weightValue}
                           onChange={e => setVariantForm(f => ({...f, weightValue: e.target.value}))} />
                       </div>
                       <div>
-                        <label className="block text-[11px] font-black uppercase tracking-wider text-[#6B7280] mb-1">{l('Unit', 'அலகு')}</label>
+                        <label className="block text-sm font-black uppercase tracking-wider text-[#6B7280] mb-1">{l('Unit', 'அலகு')}</label>
                         <select
-                          className="w-full px-4 py-2.5 bg-white rounded-xl border border-[#D1D5DB] text-[13px] font-bold outline-none focus:border-maroon-dark transition-colors shadow-sm appearance-none"
+                          className="w-full px-4 py-2.5 bg-white rounded-xl border border-[#D1D5DB] text-base font-bold outline-none focus:border-maroon-dark transition-colors shadow-sm appearance-none"
                           value={variantForm.weightUnit}
                           onChange={e => setVariantForm(f => ({...f, weightUnit: e.target.value}))}>
                           <option value="">-</option>
@@ -3297,18 +3297,18 @@ export default function Dashboard() {
                         onChange={e => setVariantForm(f => ({...f, isDefault: e.target.checked}))}
                         className="w-4 h-4 text-maroon-dark rounded focus:ring-maroon-dark accent-maroon-dark"
                       />
-                      <label htmlFor="varIsDefault" className="text-[13px] font-bold text-[#111111]">{l('Default variant (shown first)', 'முதல் வகை (முதலில் காட்டு)')}</label>
+                      <label htmlFor="varIsDefault" className="text-base font-bold text-[#111111]">{l('Default variant (shown first)', 'முதல் வகை (முதலில் காட்டு)')}</label>
                     </div>
 
                     <div className="flex gap-3 pt-2">
                       <button type="submit" disabled={variantLoading}
-                        className="flex-grow py-3 bg-[#111111] hover:bg-[#333333] text-white font-black text-[13px] rounded-xl disabled:opacity-60 transition-colors shadow-sm">
+                        className="flex-grow py-3 bg-[#111111] hover:bg-[#333333] text-white font-black text-base rounded-xl disabled:opacity-60 transition-colors shadow-sm">
                         {variantLoading ? l('Saving...', 'சேமிக்கிறது...') : editingVariantId ? l('Update Variant', 'புதுப்பி') : l('Add Variant', 'சேர்')}
                       </button>
                       {editingVariantId && (
                         <button type="button"
                           onClick={() => { setEditingVariantId(null); setVariantForm({ name: '', sizeLabel: '', price: '', purchasePrice: '', mrp: '', sku: '', barcode: '', stock: '50', weightValue: '', weightUnit: '', isDefault: false }); setVariantNotice('') }}
-                          className="px-6 py-3 bg-white border border-[#D1D5DB] text-[#111111] font-bold text-[13px] rounded-xl hover:bg-[#F3F4F6] transition-colors shadow-sm">
+                          className="px-6 py-3 bg-white border border-[#D1D5DB] text-[#111111] font-bold text-base rounded-xl hover:bg-[#F3F4F6] transition-colors shadow-sm">
                           {l('Cancel', 'ரத்து')}
                         </button>
                       )}
@@ -3317,11 +3317,11 @@ export default function Dashboard() {
 
                   {/* Current variants list */}
                   <div className="bg-[#FAFAFA] rounded-2xl p-5 border border-[#F3F4F6]">
-                    <h4 className="text-[13px] font-black uppercase tracking-wider text-[#111111] mb-4">
+                    <h4 className="text-base font-black uppercase tracking-wider text-[#111111] mb-4">
                       {l('Current Variants', 'தற்போதைய வகைகள்')} <span className="text-[#6B7280]">({getVariants(String(editingProd.id)).length})</span>
                     </h4>
                     {getVariants(String(editingProd.id)).length === 0 ? (
-                      <p className="text-[13px] text-[#6B7280] text-center py-8 bg-white border border-[#F3F4F6] rounded-xl">
+                      <p className="text-base text-[#6B7280] text-center py-8 bg-white border border-[#F3F4F6] rounded-xl">
                         {l('No variants yet - add one using the form.', 'வகைகள் இல்லை - படிவத்தில் சேர்க்கவும்.')}
                       </p>
                     ) : (
@@ -3331,11 +3331,11 @@ export default function Dashboard() {
                             className={`flex items-center justify-between gap-3 p-4 rounded-xl border transition-colors bg-white shadow-sm ${editingVariantId === v.id ? 'border-maroon-dark ring-1 ring-maroon-dark/20' : 'border-[#F3F4F6] hover:border-[#D1D5DB]'}`}>
                             <div className="flex items-center gap-3 min-w-0">
                               {v.isDefault && (
-                                <span className="w-5 h-5 rounded-full bg-maroon-dark text-white text-[10px] font-black flex items-center justify-center shrink-0">★</span>
+                                <span className="w-5 h-5 rounded-full bg-maroon-dark text-white text-xs font-black flex items-center justify-center shrink-0">★</span>
                               )}
                               <div className="min-w-0">
-                                <p className="text-[14px] font-bold text-[#111111] truncate">{v.variantName}</p>
-                                <p className="text-[12px] text-[#6B7280] mt-0.5">
+                                <p className="text-base font-bold text-[#111111] truncate">{v.variantName}</p>
+                                <p className="text-sm text-[#6B7280] mt-0.5">
                                   <span className="font-bold text-[#111111]">{formatCurrency(v.price)}</span>{v.sizeLabel ? ` · ${v.sizeLabel}` : ''} · {l('Stock', 'இருப்பு')}: <span className="font-bold">{v.stock}</span>
                                 </p>
                               </div>
@@ -3343,7 +3343,7 @@ export default function Dashboard() {
                             <div className="flex items-center gap-2 shrink-0">
                               {!v.isDefault && (
                                 <button onClick={() => void handleSetDefault(v.id)}
-                                  className="px-2 py-1.5 text-[#6B7280] hover:text-maroon-dark hover:bg-maroon-dark/5 rounded-lg text-[10px] font-black uppercase transition-colors">
+                                  className="px-2 py-1.5 text-[#6B7280] hover:text-maroon-dark hover:bg-maroon-dark/5 rounded-lg text-xs font-black uppercase transition-colors">
                                   {l('Set Default', 'முதல்')}
                                 </button>
                               )}
@@ -3371,31 +3371,31 @@ export default function Dashboard() {
         {tab === 'categories' && (
           <div className="w-full max-w-3xl space-y-6">
             <div className="bg-white rounded-2xl border border-borderLight p-4 sm:p-6 shadow-sm">
-              <h3 className="text-[18px] font-black text-[#111111] mb-5">{l('Product Categories', 'பொருள் வகைகள்')}</h3>
+              <h3 className="text-xl font-black text-[#111111] mb-5">{l('Product Categories', 'பொருள் வகைகள்')}</h3>
               {categoryNotice && (
-                <div className={`mb-4 rounded-xl px-3 py-2.5 text-[12px] font-bold ${categoryNotice.type === 'success' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
+                <div className={`mb-4 rounded-xl px-3 py-2.5 text-sm font-bold ${categoryNotice.type === 'success' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
                   {categoryNotice.text}
                 </div>
               )}
               <form onSubmit={onAddCat} className="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-[minmax(0,1fr)_minmax(120px,0.45fr)_auto]">
-                <input className="min-w-0 w-full px-4 py-3 bg-[#FAFAFA] border border-[#F3F4F6] focus:border-maroon-dark outline-none rounded-xl text-[13px] font-bold transition-colors shadow-sm"
+                <input className="min-w-0 w-full px-4 py-3 bg-[#FAFAFA] border border-[#F3F4F6] focus:border-maroon-dark outline-none rounded-xl text-base font-bold transition-colors shadow-sm"
                   placeholder={l('Category name (English)', 'வகை பெயர் (English)')} value={newCat.name_en}
                   onChange={e => setNewCat(c => ({...c, name_en: e.target.value}))} />
-                <input className="min-w-0 w-full px-4 py-3 bg-[#FAFAFA] border border-[#F3F4F6] focus:border-maroon-dark outline-none rounded-xl text-[13px] font-bold transition-colors shadow-sm"
+                <input className="min-w-0 w-full px-4 py-3 bg-[#FAFAFA] border border-[#F3F4F6] focus:border-maroon-dark outline-none rounded-xl text-base font-bold transition-colors shadow-sm"
                   placeholder={l('Tamil', 'தமிழ்')} value={newCat.name_ta}
                   onChange={e => setNewCat(c => ({...c, name_ta: e.target.value}))} />
-                <button type="submit" className="px-5 py-3 bg-[#111111] hover:bg-[#333333] transition-colors shadow-sm text-white font-black rounded-xl text-[13px]">{editingCategoryId === null ? l('Add', 'சேர்') : 'Save'}</button>
+                <button type="submit" className="px-5 py-3 bg-[#111111] hover:bg-[#333333] transition-colors shadow-sm text-white font-black rounded-xl text-base">{editingCategoryId === null ? l('Add', 'சேர்') : 'Save'}</button>
                 {editingCategoryId !== null && (
-                  <button type="button" onClick={() => { setEditingCategoryId(null); setNewCat({ name_en: '', name_ta: '' }) }} className="px-3 py-3 text-[#6B7280] font-black rounded-xl text-[12px] hover:bg-[#F3F4F6]">Cancel</button>
+                  <button type="button" onClick={() => { setEditingCategoryId(null); setNewCat({ name_en: '', name_ta: '' }) }} className="px-3 py-3 text-[#6B7280] font-black rounded-xl text-sm hover:bg-[#F3F4F6]">Cancel</button>
                 )}
               </form>
               <div className="space-y-3">
                 {cats.map(c => (
                   <div key={c.id} className="flex flex-col gap-3 p-4 bg-white border border-[#F3F4F6] shadow-sm rounded-xl transition-colors hover:border-[#D1D5DB] sm:flex-row sm:items-center sm:justify-between">
                     <div className="min-w-0">
-                      <p className="text-[14px] font-bold text-[#111111]">{c.name_en}</p>
-                      <p className="text-[12px] text-[#6B7280]">{c.name_ta}</p>
-                      <span className={`text-[10px] font-black uppercase tracking-wider ${c.is_active ? 'text-green-600' : 'text-red-500'}`}>
+                      <p className="text-base font-bold text-[#111111]">{c.name_en}</p>
+                      <p className="text-sm text-[#6B7280]">{c.name_ta}</p>
+                      <span className={`text-xs font-black uppercase tracking-wider ${c.is_active ? 'text-green-600' : 'text-red-500'}`}>
                         {c.is_active ? 'Active' : l('Inactive', 'நிறுத்தம்')}
                       </span>
                     </div>
@@ -3420,14 +3420,14 @@ export default function Dashboard() {
             <div className="flex flex-col gap-3">
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div className="space-y-1">
-                  <h2 className="text-[22px] lg:text-[24px] leading-none font-black text-[#111111]">{l('Coupon Management', 'கூப்பன் மேலாண்மை')}</h2>
-                  <p className="max-w-2xl text-[12px] lg:text-[12px] font-medium text-[#6C665C]">
+                  <h2 className="text-2xl lg:text-2xl leading-none font-black text-[#111111]">{l('Coupon Management', 'கூப்பன் மேலாண்மை')}</h2>
+                  <p className="max-w-2xl text-sm lg:text-sm font-medium text-[#6C665C]">
                     {l('Create and manage discount codes. Applies to product subtotal only.', 'பொருட்களின் subtotal-க்கு மட்டும் கூப்பன் தள்ளுபடி பொருந்தும்.')}
                   </p>
                 </div>
                 <button
                   onClick={() => void loadCoupons()}
-                  className="inline-flex items-center gap-2 rounded-full border border-[#D1FAE5] bg-[#FBFAF6] px-3 py-2 text-[11px] font-black text-[#047857] shadow-sm transition-colors hover:bg-[#F7F1E7]"
+                  className="inline-flex items-center gap-2 rounded-full border border-[#D1FAE5] bg-[#FBFAF6] px-3 py-2 text-sm font-black text-[#047857] shadow-sm transition-colors hover:bg-[#F7F1E7]"
                 >
                   <RefreshCw size={12} />
                   Refresh
@@ -3436,20 +3436,20 @@ export default function Dashboard() {
 
               <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
                 <div className="rounded-xl border border-[#D1FAE5] bg-[#FBFAF6] px-3 py-3 shadow-sm">
-                  <p className="text-[10px] font-black uppercase tracking-[0.15em] text-[#047857]">Total Coupons</p>
-                  <p className="mt-1 text-[20px] font-black text-[#111111]">{coupons.length}</p>
+                  <p className="text-xs font-black uppercase tracking-[0.15em] text-[#047857]">Total Coupons</p>
+                  <p className="mt-1 text-2xl font-black text-[#111111]">{coupons.length}</p>
                 </div>
                 <div className="rounded-xl border border-[#D1FAE5] bg-[#FBFAF6] px-3 py-3 shadow-sm">
-                  <p className="text-[10px] font-black uppercase tracking-[0.15em] text-[#047857]">Active</p>
-                  <p className="mt-1 text-[20px] font-black text-[#047857]">{coupons.filter(c => c.is_active).length}</p>
+                  <p className="text-xs font-black uppercase tracking-[0.15em] text-[#047857]">Active</p>
+                  <p className="mt-1 text-2xl font-black text-[#047857]">{coupons.filter(c => c.is_active).length}</p>
                 </div>
                 <div className="rounded-xl border border-[#D1FAE5] bg-[#FBFAF6] px-3 py-3 shadow-sm">
-                  <p className="text-[10px] font-black uppercase tracking-[0.15em] text-[#047857]">Used</p>
-                  <p className="mt-1 text-[20px] font-black text-[#111111]">{coupons.reduce((acc, c) => acc + (c.usage_count || 0), 0)}</p>
+                  <p className="text-xs font-black uppercase tracking-[0.15em] text-[#047857]">Used</p>
+                  <p className="mt-1 text-2xl font-black text-[#111111]">{coupons.reduce((acc, c) => acc + (c.usage_count || 0), 0)}</p>
                 </div>
               </div>
 
-              <div className="rounded-xl border border-[#E7CFAA] bg-[#FFF6E7] px-3 py-2 text-[11px] font-bold text-[#047857] shadow-sm">
+              <div className="rounded-xl border border-[#E7CFAA] bg-[#FFF6E7] px-3 py-2 text-sm font-bold text-[#047857] shadow-sm">
                 {l('Coupon discount applies to product subtotal only - not delivery charge.', 'கூப்பன் தள்ளுபடி பொருட்களின் subtotal-க்கு மட்டும் பொருந்தும்.')}
               </div>
             </div>
@@ -3458,8 +3458,8 @@ export default function Dashboard() {
               <form onSubmit={saveCoupon} className="rounded-2xl border border-[#D1FAE5] bg-[#FFFCF6] p-4 shadow-sm space-y-4">
                 <div className="flex items-start justify-between gap-3">
                   <div>
-                    <p className="text-[10px] font-black uppercase tracking-[0.15em] text-[#047857]">{editingCouponId !== null ? 'Edit mode' : 'New coupon'}</p>
-                    <h3 className="mt-1 text-[17px] font-black text-[#111111]">
+                    <p className="text-xs font-black uppercase tracking-[0.15em] text-[#047857]">{editingCouponId !== null ? 'Edit mode' : 'New coupon'}</p>
+                    <h3 className="mt-1 text-xl font-black text-[#111111]">
                       {editingCouponId !== null ? l('Edit Coupon', 'கூப்பனை திருத்து') : l('Create Coupon', 'புதிய கூப்பன்')}
                     </h3>
                   </div>
@@ -3467,7 +3467,7 @@ export default function Dashboard() {
                     <button
                       type="button"
                       onClick={cancelEditCoupon}
-                      className="rounded-full border border-[#E7CFAA] bg-[#FFF6E7] px-2.5 py-1 text-[11px] font-black text-[#047857] transition-colors hover:bg-[#FBEBD3]"
+                      className="rounded-full border border-[#E7CFAA] bg-[#FFF6E7] px-2.5 py-1 text-sm font-black text-[#047857] transition-colors hover:bg-[#FBEBD3]"
                     >
                       Cancel
                     </button>
@@ -3475,21 +3475,21 @@ export default function Dashboard() {
                 </div>
 
                 {couponSaveError && (
-                  <div className="rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-[12px] font-bold text-red-700">
+                  <div className="rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm font-bold text-red-700">
                     {couponSaveError}
                   </div>
                 )}
                 {couponSaveSuccess && (
-                  <div className="rounded-xl border border-green-200 bg-green-50 px-3 py-2 text-[12px] font-bold text-green-700">
+                  <div className="rounded-xl border border-green-200 bg-green-50 px-3 py-2 text-sm font-bold text-green-700">
                     {couponSaveSuccess}
                   </div>
                 )}
 
                 <div className="space-y-1.5">
-                  <label className="block text-[10px] font-black uppercase tracking-[0.15em] text-[#6B7280]">{l('Coupon Code', 'கூப்பன் குறியீடு')} *</label>
+                  <label className="block text-xs font-black uppercase tracking-[0.15em] text-[#6B7280]">{l('Coupon Code', 'கூப்பன் குறியீடு')} *</label>
                   <div className="flex gap-2">
                     <input
-                      className="flex-1 rounded-xl border border-[#A7F3D0] bg-white px-3 py-2.5 text-[12px] font-black uppercase tracking-[0.12em] text-[#111111] outline-none transition-colors focus:border-[#047857]"
+                      className="flex-1 rounded-xl border border-[#A7F3D0] bg-white px-3 py-2.5 text-sm font-black uppercase tracking-[0.12em] text-[#111111] outline-none transition-colors focus:border-[#047857]"
                       placeholder="WELCOME10"
                       value={couponForm.code}
                       disabled={editingCouponId !== null}
@@ -3499,36 +3499,36 @@ export default function Dashboard() {
                       <button
                         type="button"
                         onClick={generateCouponCode}
-                        className="shrink-0 rounded-xl border border-[#047857] bg-[#047857] px-3 py-2.5 text-[11px] font-black text-white transition-colors hover:bg-[#741D2A]"
+                        className="shrink-0 rounded-xl border border-[#047857] bg-[#047857] px-3 py-2.5 text-sm font-black text-white transition-colors hover:bg-[#741D2A]"
                       >
                         Generate
                       </button>
                     )}
                   </div>
                   {editingCouponId !== null && (
-                    <p className="text-[10px] font-medium text-[#6B7280]">{l('Code cannot be changed when editing', 'திருத்தும்போது குறியீட்டை மாற்ற முடியாது')}</p>
+                    <p className="text-xs font-medium text-[#6B7280]">{l('Code cannot be changed when editing', 'திருத்தும்போது குறியீட்டை மாற்ற முடியாது')}</p>
                   )}
                 </div>
 
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                   <div className="space-y-1.5">
-                    <label className="block text-[10px] font-black uppercase tracking-[0.15em] text-[#6B7280]">{l('Discount %', 'தள்ளுபடி %')} *</label>
+                    <label className="block text-xs font-black uppercase tracking-[0.15em] text-[#6B7280]">{l('Discount %', 'தள்ளுபடி %')} *</label>
                     <input
                       type="number"
                       min="1"
                       max="100"
-                      className="w-full rounded-xl border border-[#A7F3D0] bg-white px-3 py-2.5 text-[12px] font-bold text-[#111111] outline-none transition-colors focus:border-[#047857]"
+                      className="w-full rounded-xl border border-[#A7F3D0] bg-white px-3 py-2.5 text-sm font-bold text-[#111111] outline-none transition-colors focus:border-[#047857]"
                       placeholder="10"
                       value={couponForm.percentage}
                       onChange={e => setCouponForm(f => ({ ...f, percentage: Number(e.target.value) }))}
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="block text-[10px] font-black uppercase tracking-[0.15em] text-[#6B7280]">{l('Min Order (₹)', 'குறைந்த ஆர்டர் (₹)')}</label>
+                    <label className="block text-xs font-black uppercase tracking-[0.15em] text-[#6B7280]">{l('Min Order (₹)', 'குறைந்த ஆர்டர் (₹)')}</label>
                     <input
                       type="number"
                       min="0"
-                      className="w-full rounded-xl border border-[#A7F3D0] bg-white px-3 py-2.5 text-[12px] font-bold text-[#111111] outline-none transition-colors focus:border-[#047857]"
+                      className="w-full rounded-xl border border-[#A7F3D0] bg-white px-3 py-2.5 text-sm font-bold text-[#111111] outline-none transition-colors focus:border-[#047857]"
                       placeholder="0 = no minimum"
                       value={couponForm.min_order_value}
                       onChange={e => setCouponForm(f => ({ ...f, min_order_value: e.target.value }))}
@@ -3538,20 +3538,20 @@ export default function Dashboard() {
 
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                   <div className="space-y-1.5">
-                    <label className="block text-[10px] font-black uppercase tracking-[0.15em] text-[#6B7280]">{l('Expiry Date', 'காலாவதி தேதி')}</label>
+                    <label className="block text-xs font-black uppercase tracking-[0.15em] text-[#6B7280]">{l('Expiry Date', 'காலாவதி தேதி')}</label>
                     <input
                       type="date"
-                      className="w-full rounded-xl border border-[#A7F3D0] bg-white px-3 py-2.5 text-[12px] font-bold text-[#111111] outline-none transition-colors focus:border-[#047857]"
+                      className="w-full rounded-xl border border-[#A7F3D0] bg-white px-3 py-2.5 text-sm font-bold text-[#111111] outline-none transition-colors focus:border-[#047857]"
                       value={couponForm.expiry_date}
                       onChange={e => setCouponForm(f => ({ ...f, expiry_date: e.target.value }))}
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="block text-[10px] font-black uppercase tracking-[0.15em] text-[#6B7280]">{l('Usage Limit', 'பயன்பாட்டு வரம்பு')}</label>
+                    <label className="block text-xs font-black uppercase tracking-[0.15em] text-[#6B7280]">{l('Usage Limit', 'பயன்பாட்டு வரம்பு')}</label>
                     <input
                       type="number"
                       min="1"
-                      className="w-full rounded-xl border border-[#A7F3D0] bg-white px-3 py-2.5 text-[12px] font-bold text-[#111111] outline-none transition-colors focus:border-[#047857]"
+                      className="w-full rounded-xl border border-[#A7F3D0] bg-white px-3 py-2.5 text-sm font-bold text-[#111111] outline-none transition-colors focus:border-[#047857]"
                       placeholder="Unlimited"
                       value={couponForm.usage_limit}
                       onChange={e => setCouponForm(f => ({ ...f, usage_limit: e.target.value }))}
@@ -3561,7 +3561,7 @@ export default function Dashboard() {
 
                 <button
                   type="submit"
-                  className="w-full rounded-xl bg-[#047857] py-3 text-[13px] font-black text-white shadow-sm transition-colors hover:bg-[#741D2A]"
+                  className="w-full rounded-xl bg-[#047857] py-3 text-base font-black text-white shadow-sm transition-colors hover:bg-[#741D2A]"
                 >
                   {editingCouponId !== null ? l('Update Coupon', 'கூப்பனை புதுப்பி') : l('Create Coupon', 'கூப்பனை உருவாக்கு')}
                 </button>
@@ -3570,12 +3570,12 @@ export default function Dashboard() {
               <div className="rounded-2xl border border-[#D1FAE5] bg-[#FFFCF6] p-4 shadow-sm">
                 <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
                   <div>
-                    <p className="text-[10px] font-black uppercase tracking-[0.15em] text-[#6B7280]">{l('Coupon List', 'கூப்பன் பட்டியல்')}</p>
-                    <h3 className="mt-1 text-[17px] font-black text-[#111111]">
+                    <p className="text-xs font-black uppercase tracking-[0.15em] text-[#6B7280]">{l('Coupon List', 'கூப்பன் பட்டியல்')}</p>
+                    <h3 className="mt-1 text-xl font-black text-[#111111]">
                       {l('All Coupons', 'அனைத்து கூப்பன்கள்')} <span className="text-[#6B7280]">({coupons.length})</span>
                     </h3>
                   </div>
-                  <span className="rounded-full border border-[#E7CFAA] bg-[#FFF6E7] px-2.5 py-0.5 text-[10px] font-black uppercase tracking-[0.15em] text-[#047857]">
+                  <span className="rounded-full border border-[#E7CFAA] bg-[#FFF6E7] px-2.5 py-0.5 text-xs font-black uppercase tracking-[0.15em] text-[#047857]">
                     {l('Admin only', 'அட்மின் மட்டும்')}
                   </span>
                 </div>
@@ -3597,28 +3597,28 @@ export default function Dashboard() {
                         <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
                           <div className="min-w-0 space-y-1.5">
                             <div className="flex flex-wrap items-center gap-1.5">
-                              <p className="truncate text-[15px] font-black uppercase tracking-[0.14em] text-[#111111]">{coupon.code}</p>
-                              <span className={`rounded-full px-2 py-0.5 text-[9px] font-black uppercase tracking-[0.14em] ${coupon.is_active ? 'bg-[#FCE7EA] text-[#047857]' : 'bg-[#F8EDD9] text-[#9A6700]'}`}>
+                              <p className="truncate text-lg font-black uppercase tracking-[0.14em] text-[#111111]">{coupon.code}</p>
+                              <span className={`rounded-full px-2 py-0.5 text-xs font-black uppercase tracking-[0.14em] ${coupon.is_active ? 'bg-[#FCE7EA] text-[#047857]' : 'bg-[#F8EDD9] text-[#9A6700]'}`}>
                                 {coupon.is_active ? l('Active', 'செயலில்') : l('Inactive', 'செயலற்ற')}
                               </span>
                               {isExpired && (
-                                <span className="rounded-full bg-red-100 px-2 py-0.5 text-[9px] font-black uppercase tracking-[0.14em] text-red-700">
+                                <span className="rounded-full bg-red-100 px-2 py-0.5 text-xs font-black uppercase tracking-[0.14em] text-red-700">
                                   Expired
                                 </span>
                               )}
                               {!isExpired && isExhausted && (
-                                <span className="rounded-full bg-orange-100 px-2 py-0.5 text-[9px] font-black uppercase tracking-[0.14em] text-orange-700">
+                                <span className="rounded-full bg-orange-100 px-2 py-0.5 text-xs font-black uppercase tracking-[0.14em] text-orange-700">
                                   Limit reached
                                 </span>
                               )}
                             </div>
 
-                            <p className="text-[12px] font-semibold text-[#047857]">
+                            <p className="text-sm font-semibold text-[#047857]">
                               {coupon.percentage}% off
                               {coupon.min_order_value > 0 && ` • min ₹${coupon.min_order_value}`}
                             </p>
 
-                            <p className="text-[11px] text-[#6C665C]">
+                            <p className="text-sm text-[#6C665C]">
                               Used {coupon.usage_count}{coupon.usage_limit ? `/${coupon.usage_limit}` : ''} times
                               {coupon.expiry_date ? ` • expires ${new Date(coupon.expiry_date).toLocaleDateString('en-IN')}` : ''}
                             </p>
@@ -3627,7 +3627,7 @@ export default function Dashboard() {
                           <div className="flex shrink-0 items-center gap-1.5">
                             <button
                               onClick={() => void toggleCoupon(coupon)}
-                              className={`rounded-full px-2.5 py-1.5 text-[10px] font-black uppercase tracking-[0.14em] transition-colors ${
+                              className={`rounded-full px-2.5 py-1.5 text-xs font-black uppercase tracking-[0.14em] transition-colors ${
                                 coupon.is_active ? 'bg-[#FCE7EA] text-[#047857] hover:bg-[#F8D7DD]' : 'bg-[#F8EDD9] text-[#9A6700] hover:bg-[#F2E0B9]'
                               }`}
                             >
@@ -3652,7 +3652,7 @@ export default function Dashboard() {
                   })}
 
                   {coupons.length === 0 && (
-                    <div className="rounded-[22px] border border-dashed border-[#E7CFAA] bg-[#FFF8F3] py-12 text-center text-[14px] font-bold text-[#047857]">
+                    <div className="rounded-[22px] border border-dashed border-[#E7CFAA] bg-[#FFF8F3] py-12 text-center text-base font-bold text-[#047857]">
                       {l('No coupons yet. Create your first coupon!', 'இன்னும் கூப்பன் இல்லை. முதல் கூப்பனை உருவாக்குங்கள்!')}
                     </div>
                   )}
@@ -3663,9 +3663,9 @@ export default function Dashboard() {
         )}        {tab === 'users' && (
           <div className="space-y-6">
             <div className="flex flex-wrap items-center justify-between gap-3">
-              <h2 className="text-[20px] font-black text-[#111111]">{l('User Management', 'பயனர் மேலாண்மை')}</h2>
+              <h2 className="text-2xl font-black text-[#111111]">{l('User Management', 'பயனர் மேலாண்மை')}</h2>
               <button onClick={() => void loadUsers()}
-                className="flex items-center gap-2 px-4 py-2 bg-white border border-[#F3F4F6] rounded-xl text-[13px] font-bold text-[#111111] hover:bg-[#FAFAFA] transition-colors shadow-sm">
+                className="flex items-center gap-2 px-4 py-2 bg-white border border-[#F3F4F6] rounded-xl text-base font-bold text-[#111111] hover:bg-[#FAFAFA] transition-colors shadow-sm">
                 <RefreshCw size={14} /> Refresh
               </button>
             </div>
@@ -3674,7 +3674,7 @@ export default function Dashboard() {
             <div className="relative max-w-sm">
               <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#6B7280]" />
               <input
-                className="w-full pl-11 pr-4 py-3 bg-white border border-[#D1D5DB] rounded-xl text-[13px] font-bold text-[#111111] placeholder-[#6B7280] focus:outline-none focus:border-maroon-dark transition-colors shadow-sm"
+                className="w-full pl-11 pr-4 py-3 bg-white border border-[#D1D5DB] rounded-xl text-base font-bold text-[#111111] placeholder-[#6B7280] focus:outline-none focus:border-maroon-dark transition-colors shadow-sm"
                 placeholder={l('Search by name or email...', 'பெயர் அல்லது மின்னஞ்சலால் தேடுக...')}
                 value={userSearch}
                 onChange={e => setUserSearch(e.target.value)}
@@ -3682,19 +3682,19 @@ export default function Dashboard() {
             </div>
 
             {usersError && (
-              <div className="flex items-center gap-2 p-4 bg-red-50 border border-red-200 rounded-xl text-[13px] text-red-700 font-bold shadow-sm">
+              <div className="flex items-center gap-2 p-4 bg-red-50 border border-red-200 rounded-xl text-base text-red-700 font-bold shadow-sm">
                 <AlertCircle size={15} /> {usersError}
               </div>
             )}
 
             <div className="bg-white rounded-2xl border border-borderLight shadow-sm overflow-hidden">
               {usersLoading ? (
-                <div className="p-10 text-center text-[13px] font-bold text-[#6B7280]">{l('Loading users...', 'பயனர்கள் ஏற்றுகிறது...')}</div>
+                <div className="p-10 text-center text-base font-bold text-[#6B7280]">{l('Loading users...', 'பயனர்கள் ஏற்றுகிறது...')}</div>
               ) : (
                 <div className="overflow-x-auto">
-                  <table className="w-full text-[14px]">
+                  <table className="w-full text-base">
                     <thead>
-                      <tr className="bg-[#FAFAFA] border-b border-borderLight uppercase tracking-wider text-[11px] text-[#6B7280]">
+                      <tr className="bg-[#FAFAFA] border-b border-borderLight uppercase tracking-wider text-sm text-[#6B7280]">
                         <th className="text-left px-6 py-4 font-black">{l('Name', 'பெயர்')}</th>
                         <th className="text-left px-6 py-4 font-black">{l('Email', 'மின்னஞ்சல்')}</th>
                         <th className="text-left px-6 py-4 font-black">{l('Mobile', 'மொபைல்')}</th>
@@ -3715,11 +3715,11 @@ export default function Dashboard() {
                             <td className="px-6 py-4 font-bold text-[#111111]">{u.name || '-'}</td>
                             <td className="px-6 py-4 text-[#6B7280]">{u.email || '-'}</td>
                             <td className="px-6 py-4 text-[#6B7280]">{u.mobile || '-'}</td>
-                            <td className="px-6 py-4 text-[#6B7280] text-[12px]">
+                            <td className="px-6 py-4 text-[#6B7280] text-sm">
                               {u.created_at ? new Date(u.created_at).toLocaleDateString('en-IN') : '-'}
                             </td>
                             <td className="px-6 py-4 text-center">
-                              <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider ${
+                              <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-black uppercase tracking-wider ${
                                 u.role === 'admin'
                                   ? 'bg-green-100 text-green-700'
                                   : 'bg-[#F3F4F6] text-[#4B5563]'
@@ -3730,12 +3730,12 @@ export default function Dashboard() {
                             </td>
                             <td className="px-6 py-4 text-center">
                               {u.id === user?.id ? (
-                                <span className="text-[12px] text-[#6B7280] font-bold uppercase tracking-wider">{l('You', 'நீங்கள்')}</span>
+                                <span className="text-sm text-[#6B7280] font-bold uppercase tracking-wider">{l('You', 'நீங்கள்')}</span>
                               ) : (
                                 <button
                                   onClick={() => void toggleUserRole(u)}
                                   disabled={roleUpdating === u.id}
-                                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[11px] font-black uppercase tracking-wider transition-colors disabled:opacity-50 ${
+                                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-sm font-black uppercase tracking-wider transition-colors disabled:opacity-50 ${
                                     u.role === 'admin'
                                       ? 'bg-red-50 text-red-600 hover:bg-red-100 border border-red-200'
                                       : 'bg-green-50 text-green-700 hover:bg-green-100 border border-green-200'
@@ -3750,20 +3750,20 @@ export default function Dashboard() {
                     </tbody>
                   </table>
                   {allUsers.length === 0 && !usersLoading && (
-                    <p className="p-10 text-center text-[14px] font-bold text-[#6B7280] bg-[#FAFAFA]">{l('No users found.', 'பயனர் இல்லை.')}</p>
+                    <p className="p-10 text-center text-base font-bold text-[#6B7280] bg-[#FAFAFA]">{l('No users found.', 'பயனர் இல்லை.')}</p>
                   )}
                 </div>
               )}
             </div>
 
-            <p className="text-[12px] text-[#6B7280] font-bold">
+            <p className="text-sm text-[#6B7280] font-bold">
               - {l('Role changes take effect upon next login.', 'பங்கு மாற்றம் அடுத்த முறை உள்நுழைந்தால் நடைமுறைக்கு வரும்.')}
             </p>
           </div>
         )}
         </div>
         {/* Footer */}
-        <div className="shrink-0 border-t border-gray-100 bg-white/80 py-2 text-center text-[12px] font-semibold text-[#7A8A78] tracking-wide print:hidden">
+        <div className="shrink-0 border-t border-gray-100 bg-white/80 py-2 text-center text-sm font-semibold text-[#7A8A78] tracking-wide print:hidden">
           Powered by Cenexa Systems © 2026
         </div>
       </main>

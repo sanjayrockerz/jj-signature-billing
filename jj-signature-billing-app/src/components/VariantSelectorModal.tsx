@@ -137,21 +137,21 @@ export default function VariantSelectorModal({
               </div>
 
               <div className="flex-1 min-w-0">
-                <h3 className="text-[14px] font-black text-[#111111] leading-tight line-clamp-1">
+                <h3 className="text-base font-black text-[#111111] leading-tight line-clamp-1">
                   {product.name}
                 </h3>
                 {selected && (
                   <div className="mt-0.5 flex items-baseline gap-1.5">
-                    <span className="text-[15px] font-black text-[#111111] tabular-nums">
+                    <span className="text-lg font-black text-[#111111] tabular-nums">
                       {formatCurrency(selected.price)}
                     </span>
                     {selected.sizeLabel && (
-                      <span className="text-[11px] text-[#374151]">{selected.sizeLabel}</span>
+                      <span className="text-sm text-[#374151]">{selected.sizeLabel}</span>
                     )}
                   </div>
                 )}
                 {selected && selected.stock <= 0 && (
-                  <span className="mt-1 inline-block rounded-full bg-red-50 px-2 py-0.5 text-[10px] font-black text-red-500">
+                  <span className="mt-1 inline-block rounded-full bg-red-50 px-2 py-0.5 text-xs font-black text-red-500">
                     {l('Out of stock', 'இருப்பு இல்லை')}
                   </span>
                 )}
@@ -169,7 +169,7 @@ export default function VariantSelectorModal({
 
             {/* Variant radio list — scrollable */}
             <div className="flex-1 overflow-y-auto overscroll-contain px-4 py-3">
-              <p className="mb-2.5 text-[10px] font-black uppercase tracking-wider text-[#374151]">
+              <p className="mb-2.5 text-xs font-black uppercase tracking-wider text-[#374151]">
                 {l('Select Variant', 'வகை தேர்வு')}
               </p>
 
@@ -213,17 +213,17 @@ export default function VariantSelectorModal({
                       {/* Labels */}
                       <div className="flex-1 min-w-0">
                         <p
-                          className={`text-[13px] font-semibold leading-tight ${
+                          className={`text-base font-semibold leading-tight ${
                             isSelected ? 'text-[#111111]' : 'text-[#333]'
                           }`}
                         >
                           {v.variantName}
                         </p>
                         {v.sizeLabel && v.sizeLabel !== v.variantName && (
-                          <p className="text-[11px] text-[#374151] mt-0.5">{v.sizeLabel}</p>
+                          <p className="text-sm text-[#374151] mt-0.5">{v.sizeLabel}</p>
                         )}
                         {outOfStock && (
-                          <p className="text-[10px] font-bold text-red-500 mt-0.5">
+                          <p className="text-xs font-bold text-red-500 mt-0.5">
                             {l('Out of stock', 'இருப்பு இல்லை')}
                           </p>
                         )}
@@ -231,7 +231,7 @@ export default function VariantSelectorModal({
 
                       {/* Price — right aligned */}
                       <span
-                        className={`text-[14px] font-black shrink-0 tabular-nums ${
+                        className={`text-base font-black shrink-0 tabular-nums ${
                           isSelected ? 'text-[#111111]' : 'text-[#444]'
                         }`}
                       >
@@ -260,7 +260,7 @@ export default function VariantSelectorModal({
                   >
                     <Minus size={14} />
                   </button>
-                  <span className="w-10 text-center text-[15px] font-black text-[#111111] tabular-nums">
+                  <span className="w-10 text-center text-lg font-black text-[#111111] tabular-nums">
                     {qty}
                   </span>
                   <button
@@ -281,7 +281,7 @@ export default function VariantSelectorModal({
                   disabled={!selected || !hasStock || added}
                   whileTap={!added && hasStock ? { scale: 0.97 } : undefined}
                   className={[
-                    'flex h-11 flex-1 items-center justify-center gap-2 rounded-xl text-[13px] font-black transition-all',
+                    'flex h-11 flex-1 items-center justify-center gap-2 rounded-xl text-base font-black transition-all',
                     added
                       ? 'bg-emerald-500 text-white'
                       : !hasStock

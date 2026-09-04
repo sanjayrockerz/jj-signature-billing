@@ -309,7 +309,7 @@ export default function Profile() {
                   </h2>
                   {isSupabaseConfigured && !editing && (
                     <button onClick={startEdit}
-                      className="flex items-center gap-1.5 text-[12px] font-bold text-sageDark hover:text-sageDeep transition-colors">
+                      className="flex items-center gap-1.5 text-sm font-bold text-sageDark hover:text-sageDeep transition-colors">
                       <Edit2 size={13} /> Edit
                     </button>
                   )}
@@ -326,13 +326,13 @@ export default function Profile() {
                     ].map(item => (
                       <div key={item.label} className="flex items-start gap-4 p-4 bg-bgMain rounded-xl">
                         <div>
-                          <p className="text-[10px] font-bold text-textMuted uppercase tracking-wide">{item.label}</p>
+                          <p className="text-xs font-bold text-textMuted uppercase tracking-wide">{item.label}</p>
                           <p className="font-bold text-textMain mt-0.5">{item.value}</p>
                         </div>
                       </div>
                     ))}
                     {!user.mobile && (
-                      <p className="text-[12px] text-amber-700 bg-amber-50 border border-amber-200 px-4 py-3 rounded-xl">
+                      <p className="text-sm text-amber-700 bg-amber-50 border border-amber-200 px-4 py-3 rounded-xl">
                         📱 Add your mobile number so we can reach you about orders.
                         <button onClick={startEdit} className="ml-1.5 font-bold underline">Add now →</button>
                       </p>
@@ -344,13 +344,13 @@ export default function Profile() {
                 {editing && (
                   <div className="space-y-4">
                     <div>
-                      <label className="block text-[11px] font-bold text-textMuted uppercase tracking-wide mb-1.5">
+                      <label className="block text-sm font-bold text-textMuted uppercase tracking-wide mb-1.5">
                         Full Name *
                       </label>
                       <input
                         type="text"
                         autoFocus
-                        className="w-full px-4 py-3 rounded-xl border-2 border-sand focus:border-sageDark outline-none text-[13px]"
+                        className="w-full px-4 py-3 rounded-xl border-2 border-sand focus:border-sageDark outline-none text-base"
                         value={editName}
                         onChange={e => { setEditName(e.target.value); setSaveErr('') }}
                         placeholder="Your full name"
@@ -358,18 +358,18 @@ export default function Profile() {
                     </div>
 
                     <div>
-                      <label className="block text-[11px] font-bold text-textMuted uppercase tracking-wide mb-1.5">
+                      <label className="block text-sm font-bold text-textMuted uppercase tracking-wide mb-1.5">
                         Mobile Number
-                        <span className="ml-1 font-normal normal-case text-[10px] text-gray-400">10-digit Indian mobile</span>
+                        <span className="ml-1 font-normal normal-case text-xs text-gray-400">10-digit Indian mobile</span>
                       </label>
                       <div className="flex gap-2">
-                        <span className="flex items-center px-3 py-3 bg-[#F9FAFB] border-2 border-sand rounded-xl text-[13px] font-bold text-textMuted shrink-0 select-none">
+                        <span className="flex items-center px-3 py-3 bg-[#F9FAFB] border-2 border-sand rounded-xl text-base font-bold text-textMuted shrink-0 select-none">
                           🇮🇳 +91
                         </span>
                         <input
                           type="tel"
                           maxLength={10}
-                          className="flex-1 px-4 py-3 rounded-xl border-2 border-sand focus:border-sageDark outline-none text-[13px]"
+                          className="flex-1 px-4 py-3 rounded-xl border-2 border-sand focus:border-sageDark outline-none text-base"
                           value={editPhone}
                           onChange={e => { setEditPhone(e.target.value.replace(/\D/g, '')); setSaveErr('') }}
                           placeholder="0123456789"
@@ -377,25 +377,25 @@ export default function Profile() {
                       </div>
                     </div>
 
-                    <div className="p-3 bg-[#F9FAFB] rounded-xl text-[12px] text-textMuted">
+                    <div className="p-3 bg-[#F9FAFB] rounded-xl text-sm text-textMuted">
                       <strong>Email:</strong> {user.email || '—'}
-                      <span className="ml-2 text-[11px] text-gray-400">(cannot be changed here)</span>
+                      <span className="ml-2 text-sm text-gray-400">(cannot be changed here)</span>
                     </div>
 
                     {saveErr && (
-                      <p className="text-[12px] text-red-500 font-medium">⚠ {saveErr}</p>
+                      <p className="text-sm text-red-500 font-medium">⚠ {saveErr}</p>
                     )}
 
                     <div className="flex gap-3 pt-1">
                       <button onClick={handleSaveProfile} disabled={saving}
-                        className="flex items-center gap-1.5 px-5 py-2.5 bg-sageDark hover:bg-sageDeep text-white font-bold rounded-xl text-[13px] disabled:opacity-60 transition-colors">
+                        className="flex items-center gap-1.5 px-5 py-2.5 bg-sageDark hover:bg-sageDeep text-white font-bold rounded-xl text-base disabled:opacity-60 transition-colors">
                         {saving
                           ? <><span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Saving…</>
                           : <><Check size={14} /> Save Changes</>
                         }
                       </button>
                       <button onClick={cancelEdit} disabled={saving}
-                        className="flex items-center gap-1.5 px-5 py-2.5 border-2 border-sand text-textMuted font-bold rounded-xl text-[13px] hover:bg-bgMain transition-colors">
+                        className="flex items-center gap-1.5 px-5 py-2.5 border-2 border-sand text-textMuted font-bold rounded-xl text-base hover:bg-bgMain transition-colors">
                         <X size={14} /> Cancel
                       </button>
                     </div>
@@ -498,7 +498,7 @@ export default function Profile() {
 
                               <div className="mt-3 space-y-1">
                                 {(o.items || []).map((item, i: number) => (
-                                  <p key={`meta-${i}`} className="text-[11px] text-textMuted">
+                                  <p key={`meta-${i}`} className="text-sm text-textMuted">
                                     {(lang === 'ta' && item.tamil_name ? item.tamil_name : item.name)}: {item.unit} • {formatCurrency(item.base_price)}
                                   </p>
                                 ))}

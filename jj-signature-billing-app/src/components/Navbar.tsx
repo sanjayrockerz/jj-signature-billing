@@ -32,11 +32,11 @@ export default function Navbar() {
 
   return (
     <>
-      <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-0.5 bg-forestDark/95 px-3 py-2 text-center text-[11px] sm:text-xs font-medium tracking-wide text-sage shadow-soft">
+      <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-0.5 bg-forestDark/95 px-3 py-2 text-center text-sm sm:text-xs font-medium tracking-wide text-sage shadow-soft">
         <span className="leading-snug">
           🌿 {t('nav.free_shipping')} &nbsp;·&nbsp; <span className="whitespace-nowrap">WhatsApp: {BRAND_WHATSAPP}</span>
         </span>
-        <button onClick={() => setLang(lang === 'en' ? 'ta' : 'en')} className="hidden sm:inline-flex items-center rounded-full bg-white/8 p-0.5 text-[10px] font-bold text-white transition-colors shadow-soft">
+        <button onClick={() => setLang(lang === 'en' ? 'ta' : 'en')} className="hidden sm:inline-flex items-center rounded-full bg-white/8 p-0.5 text-xs font-bold text-white transition-colors shadow-soft">
           <span className={`px-2 py-0.5 rounded-full transition-colors ${lang === 'en' ? 'bg-white text-forestDark' : 'text-white/70'}`}>EN</span>
           <span className={`px-2 py-0.5 rounded-full transition-colors ${lang === 'ta' ? 'bg-white text-forestDark' : 'text-white/70'}`}>தமிழ்</span>
         </button>
@@ -46,11 +46,11 @@ export default function Navbar() {
         <nav className="mx-auto flex max-w-7xl items-center justify-between gap-2 sm:gap-3 px-3 py-2.5 sm:px-4 sm:py-3 lg:gap-4">
           <Link to="/" className="group flex min-w-0 items-center gap-2 sm:gap-2.5">
             <div className="w-10 h-10 sm:w-11 sm:h-11 bg-white rounded-full flex items-center justify-center overflow-hidden shadow-sm shrink-0 border border-sand/40 group-hover:opacity-90 transition-opacity">
-              <span className="text-[10px] font-black tracking-[0.24em] text-[#111111]">AT</span>
+              <span className="text-xs font-black tracking-[0.24em] text-[#111111]">AT</span>
             </div>
             <div className="flex min-w-0 flex-col leading-none">
-              <p className="truncate text-[12px] sm:text-[13px] font-bold leading-tight tracking-tight text-textMain md:text-[15px] font-headline">{BRAND_EN}</p>
-              <p className="hidden text-[9px] font-bold uppercase tracking-[0.15em] text-sageDark md:block">{BRAND_SUBTITLE}</p>
+              <p className="truncate text-sm sm:text-base font-bold leading-tight tracking-tight text-textMain md:text-lg font-headline">{BRAND_EN}</p>
+              <p className="hidden text-xs font-bold uppercase tracking-[0.15em] text-sageDark md:block">{BRAND_SUBTITLE}</p>
             </div>
           </Link>
 
@@ -91,18 +91,18 @@ export default function Navbar() {
             <button
               onClick={() => setLang(lang === 'en' ? 'ta' : 'en')}
               title="Switch language / மொழி மாற்று"
-              className="flex items-center rounded-full bg-[#F9FAFB] border border-sand/60 px-1 py-0.5 text-[10px] font-black text-[#111111] shrink-0 mr-0.5"
+              className="flex items-center rounded-full bg-[#F9FAFB] border border-sand/60 px-1 py-0.5 text-xs font-black text-[#111111] shrink-0 mr-0.5"
             >
               <span className={`px-1.5 py-0.5 rounded-full transition-colors ${lang === 'en' ? 'bg-[#111111] text-white' : 'text-[#374151]'}`}>EN</span>
               <span className={`px-1.5 py-0.5 rounded-full transition-colors ${lang === 'ta' ? 'bg-[#111111] text-white' : 'text-[#374151]'}`}>த</span>
             </button>
             <motion.button whileTap={{ scale: 0.88 }} onClick={() => setShowFav(true)} className="relative rounded-full hover:bg-sage/20 transition-colors touch-target">
               <Heart size={18} className="text-textMuted sm:size-[20px]" />
-              {favCount > 0 && <span className="absolute -top-0.5 -right-0.5 bg-rose-500 text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">{favCount}</span>}
+              {favCount > 0 && <span className="absolute -top-0.5 -right-0.5 bg-rose-500 text-white text-xs font-bold w-4 h-4 rounded-full flex items-center justify-center">{favCount}</span>}
             </motion.button>
             <motion.button whileTap={{ scale: 0.88 }} onClick={() => setShowCart(true)} className="relative rounded-full hover:bg-sage/20 transition-colors touch-target">
               <ShoppingCart size={18} className="text-textMuted sm:size-[20px]" />
-              {count > 0 && <span className="absolute -top-0.5 -right-0.5 bg-sageDark text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">{count}</span>}
+              {count > 0 && <span className="absolute -top-0.5 -right-0.5 bg-sageDark text-white text-xs font-bold w-4 h-4 rounded-full flex items-center justify-center">{count}</span>}
             </motion.button>
             <button onClick={() => setMobileOpen(!mobileOpen)} className="lg:hidden rounded-full hover:bg-sage/20 transition-colors ml-1 touch-target">
               {mobileOpen ? <X size={18} className="text-textMain sm:size-[20px]" /> : <Menu size={18} className="text-textMuted sm:size-[20px]" />}

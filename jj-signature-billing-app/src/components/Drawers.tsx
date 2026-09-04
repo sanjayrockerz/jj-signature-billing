@@ -54,7 +54,7 @@ export function CartDrawer({ open, onClose }: { open: boolean; onClose: () => vo
                           {lang === 'ta' && item.nameTa ? item.nameTa : item.name}
                         </h4>
                         <p className="text-xs text-gray-400 mb-2">{t('cat.' + item.category)}</p>
-                        <p className="text-[11px] text-sageDark font-bold mb-2">{item.unitLabel} • {formatCurrency(item.basePrice)}</p>
+                        <p className="text-sm text-sageDark font-bold mb-2">{item.unitLabel} • {formatCurrency(item.basePrice)}</p>
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-0.5 border border-sand rounded-lg bg-white overflow-hidden">
                             <button onClick={() => updateQty(item.id, item.qty - getStep(item))} className="w-7 h-7 flex items-center justify-center hover:bg-gray-50 text-gray-500"><Minus size={11} /></button>

@@ -63,7 +63,7 @@ export default function Cart() {
                         {lang === 'ta' && item.nameTa ? item.nameTa : item.name}
                       </h3>
                       <p className="text-xs text-sageDark font-bold">{t('cat.' + item.category)}</p>
-                      <p className="text-[11px] text-gray-400">{item.unitLabel} • {formatCurrency(item.basePrice)}</p>
+                      <p className="text-sm text-gray-400">{item.unitLabel} • {formatCurrency(item.basePrice)}</p>
                     </div>
                     <div className="flex items-center gap-3 sm:gap-4 flex-wrap w-full sm:w-auto">
                       <div className="flex items-center gap-0 border-2 border-sand rounded-lg overflow-hidden bg-white">
@@ -86,7 +86,7 @@ export default function Cart() {
           <div className="lg:hidden fixed inset-x-0 bottom-0 z-20 mobile-cta-bar px-4 py-3">
             <div className="mx-auto flex max-w-7xl items-center gap-3">
               <div className="min-w-0">
-                <p className="text-[11px] font-bold text-textMuted">Cart Total</p>
+                <p className="text-sm font-bold text-textMuted">Cart Total</p>
                 <p className="text-lg font-black text-textMain leading-tight">{formatCurrency(orderTotal)}</p>
               </div>
               <Link to="/checkout"

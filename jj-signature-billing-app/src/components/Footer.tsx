@@ -73,7 +73,7 @@ export default function Footer() {
             <div className="w-9 h-9 bg-sageDark rounded-xl flex items-center justify-center"><Leaf size={18} className="text-white" /></div>
             <div>
               <p className="font-bold text-white text-base sm:text-lg font-headline leading-tight">{BRAND_EN}</p>
-              <p className="text-[10px] uppercase tracking-[0.2em] text-sage font-bold">{BRAND_SUBTITLE}</p>
+              <p className="text-xs uppercase tracking-[0.2em] text-sage font-bold">{BRAND_SUBTITLE}</p>
             </div>
           </div>
           <p className="text-sm text-gray-400 leading-relaxed mb-4">{t('footer.desc')}</p>
@@ -102,14 +102,14 @@ export default function Footer() {
               <MapPin size={15} className="text-sage mt-0.5 shrink-0" />
               <div className="flex flex-col gap-1">
                 <a href={BRAND_LOCATION_LINK} target="_blank" rel="noreferrer" className="hover:text-white transition-colors">Google Maps</a>
-                <span className="text-[11px] leading-relaxed text-gray-500 max-w-[260px]">{BRAND_ADDRESS}</span>
+                <span className="text-sm leading-relaxed text-gray-500 max-w-[260px]">{BRAND_ADDRESS}</span>
               </div>
             </li>
             {contactNumbers.map((contact) => (
               <li key={contact.label} className="flex items-start gap-3">
                 <Phone size={15} className="text-sage mt-0.5 shrink-0" />
                 <div className="flex flex-col gap-0.5">
-                  <span className="text-[11px] uppercase tracking-[0.18em] text-gray-500">{contact.label}</span>
+                  <span className="text-sm uppercase tracking-[0.18em] text-gray-500">{contact.label}</span>
                   <a href={contact.href} className="hover:text-white transition-colors">{contact.display}</a>
                 </div>
               </li>

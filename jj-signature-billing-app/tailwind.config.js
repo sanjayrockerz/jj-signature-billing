@@ -21,6 +21,23 @@ export default {
         sans:      ['Inter', 'sans-serif'],
         headline:  ['Inter', 'sans-serif'],
       },
+      // Shared application type scale. Keep page-level typography on these
+      // tokens so responsive screens do not drift through one-off pixel sizes.
+      fontSize: {
+        xs:  ['0.625rem', { lineHeight: '1.35' }],
+        sm:  ['0.75rem', { lineHeight: '1.4' }],
+        base:['0.875rem', { lineHeight: '1.5' }],
+        lg:  ['1rem', { lineHeight: '1.45' }],
+        xl:  ['1.125rem', { lineHeight: '1.35' }],
+        '2xl': ['1.375rem', { lineHeight: '1.2' }],
+        '3xl': ['1.75rem', { lineHeight: '1.15' }],
+        '4xl': ['2.25rem', { lineHeight: '1.1' }],
+      },
+      spacing: {
+        control: '0.75rem',
+        card: '1rem',
+        section: '1.25rem',
+      },
       boxShadow: {
         soft:   '0 1px 3px rgba(0,0,0,0.05)',
       },

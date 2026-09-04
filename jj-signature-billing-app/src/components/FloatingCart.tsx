@@ -32,7 +32,7 @@ export default function FloatingCart() {
               <div className="flex h-7 w-7 items-center justify-center rounded-full bg-white/12 sm:h-8 sm:w-8">
                 <ShoppingCart size={14} className="text-white sm:size-[16px]" />
               </div>
-              <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#10B981] text-[9px] font-black text-white">
+              <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#10B981] text-xs font-black text-white">
                 {itemCount}
               </span>
             </div>
@@ -46,7 +46,7 @@ export default function FloatingCart() {
             <span className="h-4 w-px bg-white/15" />
 
             {/* CTA */}
-            <span className="flex items-center gap-1.5 text-[11px] font-black uppercase tracking-[0.12em] text-white/70 sm:text-[12px]">
+            <span className="flex items-center gap-1.5 text-sm font-black uppercase tracking-[0.12em] text-white/70 sm:text-sm">
               {user ? 'View Cart' : 'Sign in'}
               <ArrowRight size={12} className="sm:size-[13px]" />
             </span>

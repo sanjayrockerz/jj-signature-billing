@@ -50,9 +50,9 @@ export function StatCard({
     <article className={`${outerClass} ${className}`}>
       <div className="flex min-w-0 items-start justify-between gap-3">
         <div className="min-w-0 flex-1">
-          <p className={`break-words text-[10px] font-black uppercase tracking-wider text-[#374151] ${labelClassName}`}>{label}</p>
-          {helper && <p className={`mt-2 break-words text-[11px] font-semibold text-[#7A846F] ${helperClassName}`}>{helper}</p>}
-          <p className={`mt-2 break-words text-[22px] font-black leading-tight text-[#111111] ${valueClassName}`}>{value}</p>
+          <p className={`break-words text-xs font-black uppercase tracking-wider text-[#374151] ${labelClassName}`}>{label}</p>
+          {helper && <p className={`mt-2 break-words text-sm font-semibold text-[#7A846F] ${helperClassName}`}>{helper}</p>}
+          <p className={`mt-2 break-words text-2xl font-black leading-tight text-[#111111] ${valueClassName}`}>{value}</p>
         </div>
         {icon && <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-xl ${bg} ${color} ${iconClassName}`}>{icon}</div>}
       </div>

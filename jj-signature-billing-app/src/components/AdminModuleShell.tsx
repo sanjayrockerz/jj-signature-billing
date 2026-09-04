@@ -29,17 +29,17 @@ export function AdminModuleShell({ title, subtitle, children }: { title: string;
       <aside className="hidden w-[260px] shrink-0 flex-col border-r border-maroon-dark bg-maroon-dark text-white lg:flex lg:sticky lg:top-0 lg:h-screen">
         <Link to="/dashboard" className="flex items-center gap-3 border-b border-white/10 px-5 py-5">
           <span className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-emerald-900/40 bg-white p-1 shadow-sm"><img src={BRAND_LOGO} alt={`${BRAND_EN} logo`} className="h-full w-full object-contain" /></span>
-          <span className="truncate text-[20px] font-black tracking-tight text-white">{BRAND_EN}</span>
+          <span className="truncate text-2xl font-black tracking-tight text-white">{BRAND_EN}</span>
         </Link>
         <nav className="flex flex-1 flex-col gap-2 px-4 py-3">
           {navLinks.map(({ href, label, icon: Icon }) => {
             const [path, search = ''] = href.split('?')
             const active = location.pathname === path
               && (search ? location.search === `?${search}` : true)
-            return <Link key={href} to={href} className={`flex h-12 items-center gap-3 rounded-xl px-4 text-[14px] font-medium transition-all ${active ? 'sidebar-nav-active bg-white text-maroon-dark shadow-sm' : 'sidebar-nav-inactive text-white/70 hover:bg-white/10 hover:text-white'}`}><Icon size={18} />{label}</Link>
+            return <Link key={href} to={href} className={`flex h-12 items-center gap-3 rounded-xl px-4 text-base font-medium transition-all ${active ? 'sidebar-nav-active bg-white text-maroon-dark shadow-sm' : 'sidebar-nav-inactive text-white/70 hover:bg-white/10 hover:text-white'}`}><Icon size={18} />{label}</Link>
           })}
         </nav>
-        <button onClick={() => { logout(); navigate('/admin-login', { replace: true }) }} className="mb-4 mx-4 flex h-12 items-center gap-3 rounded-xl px-4 text-[14px] font-medium text-white/70 hover:bg-white/10 hover:text-white"><LogOut size={18} />Logout</button>
+        <button onClick={() => { logout(); navigate('/admin-login', { replace: true }) }} className="mb-4 mx-4 flex h-12 items-center gap-3 rounded-xl px-4 text-base font-medium text-white/70 hover:bg-white/10 hover:text-white"><LogOut size={18} />Logout</button>
       </aside>
       <main className="min-w-0 flex-1">
         <div className="border-b border-borderLight bg-cardBg px-4 py-4 sm:px-8 sm:py-5">

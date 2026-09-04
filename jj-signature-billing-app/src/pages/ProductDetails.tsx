@@ -171,14 +171,14 @@ export default function ProductDetails() {
         <div className="mx-auto flex max-w-3xl items-center justify-between gap-3">
           <Link
             to="/products"
-            className="inline-flex items-center gap-2 rounded-full border border-[#ead7b7]/60 bg-white px-3 py-2 text-[11px] font-black text-[#2c392a] shadow-sm"
+            className="inline-flex items-center gap-2 rounded-full border border-[#ead7b7]/60 bg-white px-3 py-2 text-sm font-black text-[#2c392a] shadow-sm"
           >
             <ArrowLeft size={14} /> Products
           </Link>
           <button
             type="button"
             onClick={() => void toggle(product)}
-            className={`inline-flex items-center gap-2 rounded-full border px-3 py-2 text-[11px] font-black shadow-sm ${
+            className={`inline-flex items-center gap-2 rounded-full border px-3 py-2 text-sm font-black shadow-sm ${
               favorite ? 'border-rose-200 bg-rose-50 text-rose-600' : 'border-[#ead7b7]/60 bg-white text-[#5f6d59]'
             }`}
             aria-label={favorite ? 'Remove from favourites' : 'Add to favourites'}
@@ -192,7 +192,7 @@ export default function ProductDetails() {
       <div className="lg:hidden mx-auto flex max-w-3xl flex-col gap-0 px-0 sm:px-6 lg:px-8">
         <section className="px-4 pt-4 sm:px-0 sm:pt-6">
           <div className="relative overflow-hidden rounded-[30px] border border-white/70 bg-gradient-to-b from-[#f2ede2] via-white to-[#edf3ea] shadow-[0_20px_50px_rgba(45,60,35,0.14)]">
-            <div className="absolute left-3 top-3 z-10 rounded-full bg-white/80 px-3 py-1 text-[10px] font-black uppercase tracking-[0.22em] text-[#5f6d59] shadow-sm backdrop-blur">
+            <div className="absolute left-3 top-3 z-10 rounded-full bg-white/80 px-3 py-1 text-xs font-black uppercase tracking-[0.22em] text-[#5f6d59] shadow-sm backdrop-blur">
               Premium focus
             </div>
             <div className="relative aspect-[4/3] min-h-[24svh] max-h-[34svh] sm:aspect-[16/11] sm:min-h-[22rem] sm:max-h-[24rem]">
@@ -211,20 +211,20 @@ export default function ProductDetails() {
 
         <section className="px-4 pt-4 sm:px-0 sm:pt-5">
           <div className="space-y-2">
-            <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[#7daa8f]">{t('cat.' + product.category)}</p>
-            <h1 className="text-[1.55rem] leading-tight font-black text-[#2c392a] sm:text-4xl">{displayName}</h1>
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-[#7daa8f]">{t('cat.' + product.category)}</p>
+            <h1 className="text-2xl leading-tight font-black text-[#2c392a] sm:text-4xl">{displayName}</h1>
             {product.nameTa && <p className="text-base font-bold text-[#5f6d59] ta-text sm:text-lg">{product.nameTa}</p>}
 
             <div className="flex flex-wrap items-center gap-2 pt-1">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-[11px] font-black text-[#2c392a] shadow-sm ring-1 ring-[#ead7b7]/50">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-sm font-black text-[#2c392a] shadow-sm ring-1 ring-[#ead7b7]/50">
                 <Star size={12} className="fill-amber-400 text-amber-400" />
                 {(product.rating || 4.7).toFixed(1)}
               </span>
-              <span className="inline-flex items-center gap-2 rounded-full bg-[#f7f4ed] px-3 py-1.5 text-[11px] font-black text-[#5f6d59] shadow-sm ring-1 ring-[#ead7b7]/45">
+              <span className="inline-flex items-center gap-2 rounded-full bg-[#f7f4ed] px-3 py-1.5 text-sm font-black text-[#5f6d59] shadow-sm ring-1 ring-[#ead7b7]/45">
                 <span className="text-[#7daa8f]">{formatCurrency(basePrice)}</span>
                 {hasDiscount && <span className="text-[#b0a89a] line-through">{formatCurrency(product.price)}</span>}
               </span>
-              {discount > 0 && <span className="rounded-full bg-[#2c392a] px-3 py-1.5 text-[11px] font-black text-white">{discount}% OFF</span>}
+              {discount > 0 && <span className="rounded-full bg-[#2c392a] px-3 py-1.5 text-sm font-black text-white">{discount}% OFF</span>}
             </div>
           </div>
         </section>
@@ -262,7 +262,7 @@ export default function ProductDetails() {
                           key={option.label}
                           type="button"
                           onClick={() => handleMobilePackChange(option)}
-                          className={`shrink-0 rounded-full border px-3 py-2 text-[11px] font-black transition-colors ${
+                          className={`shrink-0 rounded-full border px-3 py-2 text-sm font-black transition-colors ${
                             mobilePack?.label === option.label
                               ? 'border-[#2c392a] bg-[#2c392a] text-white'
                               : 'border-[#ead7b7]/70 bg-[#f7f4ed] text-[#5f6d59]'
@@ -282,7 +282,7 @@ export default function ProductDetails() {
                     >
                       <Minus size={13} />
                     </button>
-                    <span className="min-w-[2rem] text-center text-[14px] font-black text-[#2c392a]">{mobileQty}</span>
+                    <span className="min-w-[2rem] text-center text-base font-black text-[#2c392a]">{mobileQty}</span>
                     <button
                       type="button"
                       onClick={() => handleMobileChangeQty(mobileQty + 1)}
@@ -301,7 +301,7 @@ export default function ProductDetails() {
       <div className="hidden lg:block mx-auto flex max-w-3xl flex-col gap-0 px-0 sm:px-6 lg:px-8">
         <section className="px-4 pt-4 sm:px-0 sm:pt-6">
           <div className="relative overflow-hidden rounded-[34px] border border-white/70 bg-gradient-to-b from-[#f2ede2] via-white to-[#edf3ea] shadow-[0_24px_60px_rgba(45,60,35,0.14)]">
-            <div className="absolute left-3 top-3 z-10 rounded-full bg-white/80 px-3 py-1 text-[10px] font-black uppercase tracking-[0.22em] text-[#5f6d59] shadow-sm backdrop-blur">
+            <div className="absolute left-3 top-3 z-10 rounded-full bg-white/80 px-3 py-1 text-xs font-black uppercase tracking-[0.22em] text-[#5f6d59] shadow-sm backdrop-blur">
               Premium focus
             </div>
             <div className="relative aspect-[4/5] min-h-[64svh] sm:aspect-[16/13] sm:min-h-[54svh]">
@@ -320,20 +320,20 @@ export default function ProductDetails() {
 
         <section className="px-4 pt-4 sm:px-0 sm:pt-5">
           <div className="space-y-2">
-            <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[#7daa8f]">{t('cat.' + product.category)}</p>
-            <h1 className="text-[1.8rem] leading-tight font-black text-[#2c392a] sm:text-4xl">{displayName}</h1>
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-[#7daa8f]">{t('cat.' + product.category)}</p>
+            <h1 className="text-3xl leading-tight font-black text-[#2c392a] sm:text-4xl">{displayName}</h1>
             {product.nameTa && <p className="text-base font-bold text-[#5f6d59] ta-text sm:text-lg">{product.nameTa}</p>}
 
             <div className="flex flex-wrap items-center gap-2 pt-1">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-[11px] font-black text-[#2c392a] shadow-sm ring-1 ring-[#ead7b7]/50">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-sm font-black text-[#2c392a] shadow-sm ring-1 ring-[#ead7b7]/50">
                 <Star size={12} className="fill-amber-400 text-amber-400" />
                 {(product.rating || 4.7).toFixed(1)}
               </span>
-              <span className="inline-flex items-center gap-2 rounded-full bg-[#f7f4ed] px-3 py-1.5 text-[11px] font-black text-[#5f6d59] shadow-sm ring-1 ring-[#ead7b7]/45">
+              <span className="inline-flex items-center gap-2 rounded-full bg-[#f7f4ed] px-3 py-1.5 text-sm font-black text-[#5f6d59] shadow-sm ring-1 ring-[#ead7b7]/45">
                 <span className="text-[#7daa8f]">{formatCurrency(basePrice)}</span>
                 {hasDiscount && <span className="text-[#b0a89a] line-through">{formatCurrency(product.price)}</span>}
               </span>
-              {discount > 0 && <span className="rounded-full bg-[#2c392a] px-3 py-1.5 text-[11px] font-black text-white">{discount}% OFF</span>}
+              {discount > 0 && <span className="rounded-full bg-[#2c392a] px-3 py-1.5 text-sm font-black text-white">{discount}% OFF</span>}
             </div>
           </div>
         </section>
@@ -342,11 +342,11 @@ export default function ProductDetails() {
           <div className="rounded-[24px] bg-white/95 p-3.5 shadow-sm ring-1 ring-[#ead7b7]/55 sm:p-4">
             <div className="flex items-start justify-between gap-3">
               <div>
-                <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[#7daa8f]">Pack size</p>
-                <p className="mt-1 text-[11px] font-bold text-[#95a28f]">{selectedPackOption?.label ?? product.unitLabel}</p>
+                <p className="text-xs font-black uppercase tracking-[0.22em] text-[#7daa8f]">Pack size</p>
+                <p className="mt-1 text-sm font-bold text-[#95a28f]">{selectedPackOption?.label ?? product.unitLabel}</p>
               </div>
               <div className="text-right">
-                <p className="text-[10px] font-bold text-[#7daa8f]">Price</p>
+                <p className="text-xs font-bold text-[#7daa8f]">Price</p>
                 <p className="text-lg font-black text-[#2c392a]">{formatCurrency(lineTotal)}</p>
               </div>
             </div>
@@ -358,7 +358,7 @@ export default function ProductDetails() {
                     key={option.label}
                     type="button"
                     onClick={() => setSelectedPackOption(option)}
-                    className={`shrink-0 rounded-full border px-3 py-2 text-[11px] font-black transition-colors ${
+                    className={`shrink-0 rounded-full border px-3 py-2 text-sm font-black transition-colors ${
                       selectedPackOption?.label === option.label
                         ? 'border-[#2c392a] bg-[#2c392a] text-white'
                         : 'border-[#ead7b7]/70 bg-[#f7f4ed] text-[#5f6d59]'
@@ -370,7 +370,7 @@ export default function ProductDetails() {
               </div>
             ) : null}
 
-            <div className="mt-3 text-[11px] font-bold text-[#7daa8f]">
+            <div className="mt-3 text-sm font-bold text-[#7daa8f]">
               {selectedPackOption?.label ?? product.unitLabel} • {formatCurrency(basePrice)}
             </div>
           </div>
@@ -401,8 +401,8 @@ export default function ProductDetails() {
 
         <section className="px-4 pt-4 sm:px-0">
           <div className="flex items-center justify-between gap-3">
-            <h3 className="text-[11px] font-black uppercase tracking-[0.24em] text-[#7daa8f]">Related products</h3>
-            <span className="text-[11px] font-bold text-[#9aa893]">Swipe for more</span>
+            <h3 className="text-sm font-black uppercase tracking-[0.24em] text-[#7daa8f]">Related products</h3>
+            <span className="text-sm font-bold text-[#9aa893]">Swipe for more</span>
           </div>
           <div className="mt-3 flex gap-3 overflow-x-auto pb-2 hide-scrollbar">
             {relatedProducts.length === 0 && <div className="text-sm text-[#7a8672]">No related items yet.</div>}
@@ -424,8 +424,8 @@ export default function ProductDetails() {
                   />
                 </div>
                 <div className="space-y-1.5 p-2.5">
-                  <p className="line-clamp-2 text-[11px] font-bold leading-snug text-[#2c392a]">{item.name}</p>
-                  <p className="text-[10px] font-black text-[#7daa8f]">{formatCurrency(item.offerPrice || item.price)}</p>
+                  <p className="line-clamp-2 text-sm font-bold leading-snug text-[#2c392a]">{item.name}</p>
+                  <p className="text-xs font-black text-[#7daa8f]">{formatCurrency(item.offerPrice || item.price)}</p>
                 </div>
               </button>
             ))}
@@ -436,7 +436,7 @@ export default function ProductDetails() {
       <div className="fixed inset-x-0 bottom-0 z-30 border-t border-[#ead7b7]/50 bg-white/95 px-4 py-3 backdrop-blur pb-[calc(env(safe-area-inset-bottom)+0.75rem)]">
         <div className="mx-auto flex max-w-3xl items-center gap-3">
           <div className="min-w-0">
-            <p className="text-[11px] font-bold text-[#7daa8f]">Total</p>
+            <p className="text-sm font-bold text-[#7daa8f]">Total</p>
             <p className="text-base font-black leading-tight text-[#2c392a]">{formatCurrency(lineTotal)}</p>
           </div>
           <button

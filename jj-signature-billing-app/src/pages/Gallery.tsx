@@ -72,7 +72,7 @@ function Lightbox({
 
       {/* Counter */}
       <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20
-        text-[12px] font-bold text-white/60 tracking-widest select-none">
+        text-sm font-bold text-white/60 tracking-widest select-none">
         {current + 1} / {images.length}
       </div>
 
@@ -122,8 +122,8 @@ function Lightbox({
 
       {/* Caption */}
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 text-center px-4 select-none">
-        <p className="text-[14px] font-bold text-white/90">{img.title}</p>
-        <p className="text-[12px] text-white/50 mt-1">{img.description}</p>
+        <p className="text-base font-bold text-white/90">{img.title}</p>
+        <p className="text-sm text-white/50 mt-1">{img.description}</p>
       </div>
 
       {/* Dot navigation */}
@@ -169,16 +169,16 @@ export default function Gallery() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
         >
-          <p className="text-[10px] font-black uppercase tracking-[0.26em] text-[#10B981] mb-4">
+          <p className="text-xs font-black uppercase tracking-[0.26em] text-[#10B981] mb-4">
             J.J Signature
           </p>
-          <h1 className="text-[2.8rem] sm:text-[3.6rem] font-black text-[#111111] tracking-tight leading-[1.02] mb-4">
+          <h1 className="text-4xl sm:text-4xl font-black text-[#111111] tracking-tight leading-[1.02] mb-4">
             Inside Our Store
           </h1>
-          <p className="text-[16px] sm:text-[18px] font-black text-[#10B981] mb-4">
+          <p className="text-lg sm:text-xl font-black text-[#10B981] mb-4">
             Serving Chennai Since 1945
           </p>
-          <p className="text-[15px] text-[#374151] font-medium leading-[1.7] max-w-lg mx-auto">
+          <p className="text-lg text-[#374151] font-medium leading-[1.7] max-w-lg mx-auto">
             Explore our traditional herbal and pooja store through real photographs
             from our shop. Every shelf tells a story of heritage and trust.
           </p>
@@ -197,8 +197,8 @@ export default function Gallery() {
             { value: '100%', label: 'Authentic & Natural' },
           ].map((stat) => (
             <div key={stat.label} className="text-center">
-              <p className="text-[2rem] sm:text-[2.5rem] font-black text-[#111111] leading-none">{stat.value}</p>
-              <p className="text-[11px] font-bold text-[#374151] mt-1 uppercase tracking-[0.15em]">{stat.label}</p>
+              <p className="text-3xl sm:text-4xl font-black text-[#111111] leading-none">{stat.value}</p>
+              <p className="text-sm font-bold text-[#374151] mt-1 uppercase tracking-[0.15em]">{stat.label}</p>
             </div>
           ))}
         </div>
@@ -232,13 +232,13 @@ export default function Gallery() {
                   <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300
                     flex flex-col items-center gap-2 text-white">
                     <ZoomIn size={28} strokeWidth={1.5} />
-                    <span className="text-[12px] font-bold tracking-wide">{img.title}</span>
+                    <span className="text-sm font-bold tracking-wide">{img.title}</span>
                   </div>
                 </div>
                 {/* Heritage badge on first image */}
                 {idx === 0 && (
                   <div className="absolute top-3 left-3 bg-[#111111] text-white
-                    text-[9px] font-black uppercase tracking-[0.2em]
+                    text-xs font-black uppercase tracking-[0.2em]
                     px-2.5 py-1 rounded-full">
                     Since 1945
                   </div>

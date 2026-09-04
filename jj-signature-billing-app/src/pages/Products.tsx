@@ -32,7 +32,7 @@ function FilterSideBlock({
       <div>
         <div className="flex items-center gap-2 mb-4">
            <div className="w-1 h-4 bg-sageDark rounded-full"></div>
-           <h3 className="text-[13px] font-black text-textMain uppercase tracking-wider">
+           <h3 className="text-base font-black text-textMain uppercase tracking-wider">
               {t('cat.title')}
            </h3>
         </div>
@@ -53,7 +53,7 @@ function FilterSideBlock({
       <div>
         <div className="flex items-center gap-2 mb-4">
            <div className="w-1 h-4 bg-sageDark rounded-full"></div>
-           <h3 className="text-[13px] font-black text-textMain uppercase tracking-wider">
+           <h3 className="text-base font-black text-textMain uppercase tracking-wider">
               {t('remedy.title')}
            </h3>
         </div>
@@ -66,7 +66,7 @@ function FilterSideBlock({
                 onChange={() => toggle(activeRem, setActiveRem, rem)}
                 className="w-4 h-4 rounded border-gray-300 text-sageDark focus:ring-sage"
               />
-              <span className={`text-[13px] font-bold transition-colors ${activeRem.includes(rem) ? 'text-sageDark' : 'text-gray-500'}`}>
+              <span className={`text-base font-bold transition-colors ${activeRem.includes(rem) ? 'text-sageDark' : 'text-gray-500'}`}>
                 {t('remedy.' + rem)}
               </span>
             </label>

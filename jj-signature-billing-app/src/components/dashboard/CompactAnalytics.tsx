@@ -45,7 +45,7 @@ function TooltipCard({ active, payload, label, currency = false }: {
 
   return (
     <div className="rounded-xl border border-[#E7DED0] bg-white/95 px-3 py-2 shadow-[0_12px_30px_rgba(34,49,38,0.12)] backdrop-blur-sm">
-      <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[#7A846F]">{String(label || '')}</p>
+      <p className="text-xs font-black uppercase tracking-[0.22em] text-[#7A846F]">{String(label || '')}</p>
       <p className="mt-1 text-sm font-black text-[#223126]">{value}</p>
     </div>
   )
@@ -62,10 +62,10 @@ export default function CompactAnalytics({ analytics }: CompactAnalyticsProps) {
         <div className="rounded-2xl border border-[#E7DED0] bg-white/90 backdrop-blur-sm p-4 shadow-[0_10px_24px_rgba(34,49,38,0.05)]">
           <div className="mb-3 flex items-center justify-between gap-3">
             <div>
-              <h3 className="text-[15px] font-black text-[#223126]">Revenue Trend</h3>
-              <p className="text-[11px] text-[#7A846F] mt-1">Completed revenue only</p>
+              <h3 className="text-lg font-black text-[#223126]">Revenue Trend</h3>
+              <p className="text-sm text-[#7A846F] mt-1">Completed revenue only</p>
             </div>
-            <div className="inline-flex items-center gap-1 rounded-full bg-[#F7F8F4] px-3 py-1 text-[10px] font-black uppercase tracking-[0.22em] text-[#6B7661]">
+            <div className="inline-flex items-center gap-1 rounded-full bg-[#F7F8F4] px-3 py-1 text-xs font-black uppercase tracking-[0.22em] text-[#6B7661]">
               <Sparkles size={12} className="text-[#10B981]" /> Premium
             </div>
           </div>
@@ -85,8 +85,8 @@ export default function CompactAnalytics({ analytics }: CompactAnalyticsProps) {
         <div className="rounded-2xl border border-[#E7DED0] bg-white/90 backdrop-blur-sm p-4 shadow-[0_10px_24px_rgba(34,49,38,0.05)]">
           <div className="mb-3 flex items-center justify-between gap-3">
             <div>
-              <h3 className="text-[15px] font-black text-[#223126]">Online vs Offline</h3>
-              <p className="text-[11px] text-[#7A846F] mt-1">Order mix by completed revenue</p>
+              <h3 className="text-lg font-black text-[#223126]">Online vs Offline</h3>
+              <p className="text-sm text-[#7A846F] mt-1">Order mix by completed revenue</p>
             </div>
           </div>
           <div className="h-52 sm:h-56">
@@ -99,7 +99,7 @@ export default function CompactAnalytics({ analytics }: CompactAnalyticsProps) {
               </PieChart>
             </ResponsiveContainer>
           </div>
-          <div className="mt-2 grid grid-cols-2 gap-2 text-[12px] font-bold">
+          <div className="mt-2 grid grid-cols-2 gap-2 text-sm font-bold">
             {analytics.channelDistribution.map((entry) => (
               <div key={entry.name} className="flex items-center gap-2 rounded-xl bg-[#F7F8F4] px-3 py-2 text-[#223126]">
                 <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: entry.color }} />
@@ -111,15 +111,15 @@ export default function CompactAnalytics({ analytics }: CompactAnalyticsProps) {
       </div>
 
       <details open={moreOpen} onToggle={(event) => setMoreOpen(event.currentTarget.open)} className="group rounded-2xl border border-[#E7DED0] bg-white/80 backdrop-blur-sm px-4 py-3 shadow-[0_10px_24px_rgba(34,49,38,0.04)]">
-        <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-[14px] font-black text-[#223126]">
+        <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-base font-black text-[#223126]">
           <span>More insights</span>
-          <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-[0.22em] text-[#6B7661] group-open:text-[#111111]">
+          <span className="inline-flex items-center gap-1 text-xs font-black uppercase tracking-[0.22em] text-[#6B7661] group-open:text-[#111111]">
             Expand <ChevronDown size={12} className="transition-transform group-open:rotate-180" />
           </span>
         </summary>
         {moreOpen && <div className="mt-3 grid grid-cols-1 xl:grid-cols-2 gap-4">
           <div className="rounded-2xl border border-[#E7DED0] bg-[#FBFCF9] p-4">
-            <h4 className="text-[13px] font-black text-[#223126] mb-3">Top Categories</h4>
+            <h4 className="text-base font-black text-[#223126] mb-3">Top Categories</h4>
             <div className="h-48 sm:h-52">
               <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
                 <BarChart data={analytics.topCategories} layout="vertical" margin={{ left: 8, right: 8 }}>
@@ -134,7 +134,7 @@ export default function CompactAnalytics({ analytics }: CompactAnalyticsProps) {
           </div>
 
           <div className="rounded-2xl border border-[#E7DED0] bg-[#FBFCF9] p-4">
-            <h4 className="text-[13px] font-black text-[#223126] mb-3">Weekly Sales</h4>
+            <h4 className="text-base font-black text-[#223126] mb-3">Weekly Sales</h4>
             <div className="h-48 sm:h-52">
               <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
                 <BarChart data={analytics.weeklySales}>

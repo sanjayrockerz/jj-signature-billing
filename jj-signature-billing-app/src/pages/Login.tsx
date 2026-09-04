@@ -42,24 +42,24 @@ export default function Login() {
             <img src={BRAND_LOGO} alt={`${BRAND_EN} logo`} className="h-12 w-auto max-w-[150px] rounded-xl object-contain" />
           </div>
           <h1 className="text-xl font-bold font-headline text-textMain text-center">{BRAND_EN}</h1>
-          <p className="text-[12px] text-textMuted mt-0.5 text-center">{BRAND_TA}</p>
-          <p className="mt-3 inline-flex items-center gap-2 rounded-full border border-sand bg-[#F8F3E8] px-3 py-1.5 text-[11px] font-black uppercase tracking-wider text-textMain">
+          <p className="text-sm text-textMuted mt-0.5 text-center">{BRAND_TA}</p>
+          <p className="mt-3 inline-flex items-center gap-2 rounded-full border border-sand bg-[#F8F3E8] px-3 py-1.5 text-sm font-black uppercase tracking-wider text-textMain">
             <ShieldCheck size={13} /> {l('Customer Login', 'வாடிக்கையாளர் உள்நுழைவு')}
           </p>
         </div>
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-xl text-[12px] mb-4 flex items-center gap-2">
+          <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-xl text-sm mb-4 flex items-center gap-2">
             <AlertCircle size={14} /> {error}
           </div>
         )}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="mb-1.5 block text-[11px] font-bold text-textMuted uppercase tracking-wide">Username</label>
-            <input type="text" autoComplete="username" placeholder={LOGIN_ID} value={loginId} onChange={(event) => setLoginId(event.target.value)} className="w-full px-4 py-3 rounded-xl border-2 border-sand focus:border-sageDark outline-none text-[13px]" required />
+            <label className="mb-1.5 block text-sm font-bold text-textMuted uppercase tracking-wide">Username</label>
+            <input type="text" autoComplete="username" placeholder={LOGIN_ID} value={loginId} onChange={(event) => setLoginId(event.target.value)} className="w-full px-4 py-3 rounded-xl border-2 border-sand focus:border-sageDark outline-none text-base" required />
           </div>
           <div>
-            <label className="mb-1.5 block text-[11px] font-bold text-textMuted uppercase tracking-wide">Password</label>
-            <input type="password" autoComplete="current-password" placeholder="Enter password" value={password} onChange={(event) => setPassword(event.target.value)} className="w-full px-4 py-3 rounded-xl border-2 border-sand focus:border-sageDark outline-none text-[13px]" required />
+            <label className="mb-1.5 block text-sm font-bold text-textMuted uppercase tracking-wide">Password</label>
+            <input type="password" autoComplete="current-password" placeholder="Enter password" value={password} onChange={(event) => setPassword(event.target.value)} className="w-full px-4 py-3 rounded-xl border-2 border-sand focus:border-sageDark outline-none text-base" required />
           </div>
           <button type="submit" disabled={loading} className="w-full bg-sageDark hover:bg-sageDeep text-white font-bold py-3.5 rounded-xl transition-colors disabled:opacity-60 flex items-center justify-center gap-2">
             <Lock size={15} /> {loading ? 'Signing in...' : 'Sign In'}

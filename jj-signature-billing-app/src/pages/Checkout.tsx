@@ -321,7 +321,7 @@ export default function Checkout() {
                   WhatsApp Number *
                 </label>
                 <div className="flex gap-2">
-                  <span className="flex items-center px-3 py-3 bg-[#F9FAFB] border-2 border-sand rounded-xl text-[13px] font-bold text-textMuted shrink-0">
+                  <span className="flex items-center px-3 py-3 bg-[#F9FAFB] border-2 border-sand rounded-xl text-base font-bold text-textMuted shrink-0">
                     🇮🇳 +91
                   </span>
                   <input
@@ -467,10 +467,10 @@ export default function Checkout() {
           <div className="lg:hidden fixed inset-x-0 bottom-0 z-20 mobile-cta-bar px-4 py-3">
             <div className="mx-auto flex max-w-4xl items-center gap-3">
               <div className="min-w-0">
-                <p className="text-[11px] font-bold text-textMuted">Payable</p>
+                <p className="text-sm font-bold text-textMuted">Payable</p>
                 <p className="text-lg font-black text-textMain leading-tight">{formatCurrency(finalTotal)}</p>
                 {form.phone && (
-                  <p className="text-[10px] text-textMuted leading-none mt-0.5 truncate">
+                  <p className="text-xs text-textMuted leading-none mt-0.5 truncate">
                     📱 {form.phone}
                   </p>
                 )}

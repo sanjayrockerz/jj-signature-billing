@@ -334,7 +334,7 @@ export default function ImageMappingTool() {
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h2 className="text-xl font-black text-[#111111]">Image Mapping</h2>
-          <p className="text-[11px] text-[#374151] font-bold mt-0.5">
+          <p className="text-sm text-[#374151] font-bold mt-0.5">
             Map product photos → Upload to Storage → Update database
           </p>
         </div>
@@ -344,7 +344,7 @@ export default function ImageMappingTool() {
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
-            className="flex items-center gap-1.5 px-3 py-2 bg-white border border-[#D1FAE5]/50 rounded-xl text-[12px] font-bold text-[#374151] hover:bg-[#F9FAFB] transition-colors"
+            className="flex items-center gap-1.5 px-3 py-2 bg-white border border-[#D1FAE5]/50 rounded-xl text-sm font-bold text-[#374151] hover:bg-[#F9FAFB] transition-colors"
           >
             <FileJson size={13} /> Import JSON
           </button>
@@ -355,7 +355,7 @@ export default function ImageMappingTool() {
             type="button"
             onClick={handleExport}
             disabled={Object.keys(mappings).length === 0}
-            className="flex items-center gap-1.5 px-3 py-2 bg-white border border-[#D1FAE5]/50 rounded-xl text-[12px] font-bold text-[#374151] hover:bg-[#F9FAFB] transition-colors disabled:opacity-40"
+            className="flex items-center gap-1.5 px-3 py-2 bg-white border border-[#D1FAE5]/50 rounded-xl text-sm font-bold text-[#374151] hover:bg-[#F9FAFB] transition-colors disabled:opacity-40"
           >
             <Download size={13} /> Export JSON
           </button>
@@ -365,7 +365,7 @@ export default function ImageMappingTool() {
             <button
               type="button"
               onClick={handleClearAll}
-              className="flex items-center gap-1.5 px-3 py-2 bg-red-50 border border-red-200 rounded-xl text-[12px] font-bold text-red-600 hover:bg-red-100 transition-colors"
+              className="flex items-center gap-1.5 px-3 py-2 bg-red-50 border border-red-200 rounded-xl text-sm font-bold text-red-600 hover:bg-red-100 transition-colors"
             >
               <Trash2 size={13} /> Clear All
             </button>
@@ -376,7 +376,7 @@ export default function ImageMappingTool() {
             type="button"
             disabled={Object.keys(mappings).length === 0 || uploading}
             onClick={() => setConfirmUpload(true)}
-            className="flex items-center gap-1.5 px-4 py-2 bg-[#111111] text-white rounded-xl text-[12px] font-black hover:bg-[#1e2817] transition-colors disabled:opacity-40"
+            className="flex items-center gap-1.5 px-4 py-2 bg-[#111111] text-white rounded-xl text-sm font-black hover:bg-[#1e2817] transition-colors disabled:opacity-40"
           >
             <Upload size={13} />
             {uploading ? 'Uploading…' : 'Upload & Apply'}
@@ -386,7 +386,7 @@ export default function ImageMappingTool() {
 
       {/* Toast notice */}
       {notice && (
-        <div className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-[12px] font-bold ${
+        <div className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold ${
           notice.type === 'ok' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-red-50 text-red-700 border border-red-200'
         }`}>
           {notice.type === 'ok' ? <CheckCircle2 size={14} /> : <XCircle size={14} />}
@@ -405,8 +405,8 @@ export default function ImageMappingTool() {
           { label: 'Products Missing', value: stats.productsMissingImages, color: stats.productsMissingImages > 0 ? 'text-amber-600' : 'text-emerald-600' },
         ].map(s => (
           <div key={s.label} className="bg-white rounded-xl border border-[#D1FAE5]/30 px-3 py-3 shadow-sm">
-            <p className="text-[10px] font-bold uppercase tracking-wider text-[#374151]">{s.label}</p>
-            <p className={`text-[22px] font-black leading-tight ${s.color}`}>{s.value}</p>
+            <p className="text-xs font-bold uppercase tracking-wider text-[#374151]">{s.label}</p>
+            <p className={`text-2xl font-black leading-tight ${s.color}`}>{s.value}</p>
           </div>
         ))}
       </div>
@@ -418,7 +418,7 @@ export default function ImageMappingTool() {
             key={v}
             type="button"
             onClick={() => setView(v)}
-            className={`px-4 py-2 rounded-lg text-[12px] font-black transition-colors ${
+            className={`px-4 py-2 rounded-lg text-sm font-black transition-colors ${
               view === v ? 'bg-white text-[#111111] shadow-sm' : 'text-[#374151]'
             }`}
           >
@@ -433,7 +433,7 @@ export default function ImageMappingTool() {
           {/* LEFT: Image gallery */}
           <div className="bg-white rounded-2xl border border-[#D1FAE5]/30 shadow-sm flex flex-col">
             <div className="flex items-center justify-between gap-2 p-4 border-b border-[#D1FAE5]/20">
-              <h3 className="text-[13px] font-black text-[#111111]">
+              <h3 className="text-base font-black text-[#111111]">
                 Images_V2 <span className="text-[#374151] font-bold">({filteredImages.length})</span>
               </h3>
               <div className="flex gap-1 bg-[#F9FAFB] p-0.5 rounded-lg">
@@ -442,7 +442,7 @@ export default function ImageMappingTool() {
                     key={f}
                     type="button"
                     onClick={() => setImageFilter(f)}
-                    className={`px-2.5 py-1 rounded-md text-[10px] font-black transition-colors capitalize ${
+                    className={`px-2.5 py-1 rounded-md text-xs font-black transition-colors capitalize ${
                       imageFilter === f ? 'bg-white text-[#111111] shadow-sm' : 'text-[#374151]'
                     }`}
                   >
@@ -493,16 +493,16 @@ export default function ImageMappingTool() {
 
                       {/* Status badge */}
                       <div className="p-1.5">
-                        <p className="text-[9px] font-bold text-[#374151] leading-tight truncate" title={filename}>
+                        <p className="text-xs font-bold text-[#374151] leading-tight truncate" title={filename}>
                           {filename.replace('WhatsApp Image ', '').replace(' PM', '').replace(' AM', '')}
                         </p>
                         {isMapped && mappedTo && (
-                          <p className="text-[8px] font-black text-emerald-600 truncate mt-0.5">
+                          <p className="text-xs font-black text-emerald-600 truncate mt-0.5">
                             → {labelForKey(mappedTo)}
                           </p>
                         )}
                         {isDup && (
-                          <p className="text-[8px] font-black text-red-500 mt-0.5">⚠ duplicate</p>
+                          <p className="text-xs font-black text-red-500 mt-0.5">⚠ duplicate</p>
                         )}
                       </div>
 
@@ -525,7 +525,7 @@ export default function ImageMappingTool() {
               {filteredImages.length === 0 && (
                 <div className="flex flex-col items-center justify-center py-12 text-center">
                   <ImageIcon size={36} className="text-gray-200 mb-2" />
-                  <p className="text-[13px] font-bold text-[#9BAB9A]">No images in this filter</p>
+                  <p className="text-base font-bold text-[#9BAB9A]">No images in this filter</p>
                 </div>
               )}
             </div>
@@ -546,24 +546,24 @@ export default function ImageMappingTool() {
                       />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-[11px] font-black text-[#111111] leading-tight break-all">
+                      <p className="text-sm font-black text-[#111111] leading-tight break-all">
                         {selectedImage}
                       </p>
                       {mappedFiles.has(selectedImage) ? (
                         <div className="mt-1.5 flex items-center gap-1.5">
-                          <span className="text-[10px] font-black text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">
+                          <span className="text-xs font-black text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">
                             ✓ Mapped to {labelForKey(fileToKey[selectedImage])}
                           </span>
                           <button
                             type="button"
                             onClick={() => handleClearImageMapping(selectedImage)}
-                            className="text-[10px] font-bold text-red-500 hover:underline"
+                            className="text-xs font-bold text-red-500 hover:underline"
                           >
                             Remove
                           </button>
                         </div>
                       ) : (
-                        <p className="mt-1 text-[10px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full w-fit">
+                        <p className="mt-1 text-xs font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full w-fit">
                           Unmapped
                         </p>
                       )}
@@ -574,7 +574,7 @@ export default function ImageMappingTool() {
                 {/* Product search + select */}
                 <div className="flex-1 overflow-y-auto p-4 space-y-4">
                   <div>
-                    <label className="block text-[10px] font-black uppercase tracking-wider text-[#374151] mb-1.5">
+                    <label className="block text-xs font-black uppercase tracking-wider text-[#374151] mb-1.5">
                       Search Product
                     </label>
                     <div className="relative">
@@ -584,13 +584,13 @@ export default function ImageMappingTool() {
                         placeholder="Type product name…"
                         value={productSearch}
                         onChange={e => setProductSearch(e.target.value)}
-                        className="w-full pl-8 pr-3 py-2.5 bg-[#F9FAFB] rounded-xl text-[13px] font-bold border border-[#D1FAE5]/40 outline-none focus:border-[#10B981] transition-colors"
+                        className="w-full pl-8 pr-3 py-2.5 bg-[#F9FAFB] rounded-xl text-base font-bold border border-[#D1FAE5]/40 outline-none focus:border-[#10B981] transition-colors"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-[10px] font-black uppercase tracking-wider text-[#374151] mb-1.5">
+                    <label className="block text-xs font-black uppercase tracking-wider text-[#374151] mb-1.5">
                       Select Product <span className="text-red-400">*</span>
                     </label>
                     <div className="relative">
@@ -600,7 +600,7 @@ export default function ImageMappingTool() {
                           setSelectedProductId(e.target.value)
                           setSelectedVariantId('')
                         }}
-                        className="w-full appearance-none px-3 py-2.5 bg-[#F9FAFB] rounded-xl text-[13px] font-bold border border-[#D1FAE5]/40 outline-none focus:border-[#10B981] transition-colors pr-8"
+                        className="w-full appearance-none px-3 py-2.5 bg-[#F9FAFB] rounded-xl text-base font-bold border border-[#D1FAE5]/40 outline-none focus:border-[#10B981] transition-colors pr-8"
                       >
                         <option value="">— Select product —</option>
                         {filteredProducts.map(p => (
@@ -616,14 +616,14 @@ export default function ImageMappingTool() {
                   {/* Variant selector — only when product has variants */}
                   {selectedProductVariants.length > 0 && (
                     <div>
-                      <label className="block text-[10px] font-black uppercase tracking-wider text-[#374151] mb-1.5">
+                      <label className="block text-xs font-black uppercase tracking-wider text-[#374151] mb-1.5">
                         Select Variant <span className="text-[#9BAB9A]">(optional — leave blank to map to product)</span>
                       </label>
                       <div className="relative">
                         <select
                           value={selectedVariantId}
                           onChange={e => setSelectedVariantId(e.target.value)}
-                          className="w-full appearance-none px-3 py-2.5 bg-[#F9FAFB] rounded-xl text-[13px] font-bold border border-[#D1FAE5]/40 outline-none focus:border-[#10B981] transition-colors pr-8"
+                          className="w-full appearance-none px-3 py-2.5 bg-[#F9FAFB] rounded-xl text-base font-bold border border-[#D1FAE5]/40 outline-none focus:border-[#10B981] transition-colors pr-8"
                         >
                           <option value="">— Map to product (all variants) —</option>
                           {selectedProductVariants.map(v => (
@@ -645,10 +645,10 @@ export default function ImageMappingTool() {
                       <div className="rounded-xl bg-[#F7F8F5] border border-[#D1FAE5]/40 p-3 flex items-center gap-3">
                         <Tag size={15} className="text-[#10B981] shrink-0" />
                         <div className="min-w-0">
-                          <p className="text-[13px] font-black text-[#111111] truncate">{prod.name}</p>
-                          <p className="text-[11px] text-[#374151]">{prod.category} · ₹{prod.price}</p>
+                          <p className="text-base font-black text-[#111111] truncate">{prod.name}</p>
+                          <p className="text-sm text-[#374151]">{prod.category} · ₹{prod.price}</p>
                           {prod.hasVariants && (
-                            <p className="text-[10px] font-bold text-[#10B981]">
+                            <p className="text-xs font-bold text-[#10B981]">
                               {selectedProductVariants.length} variant{selectedProductVariants.length !== 1 ? 's' : ''}
                             </p>
                           )}
@@ -664,7 +664,7 @@ export default function ImageMappingTool() {
                     type="button"
                     disabled={!selectedProductId}
                     onClick={handleSaveMapping}
-                    className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-[#111111] text-white text-[13px] font-black hover:bg-[#1e2817] disabled:opacity-40 transition-colors"
+                    className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-[#111111] text-white text-base font-black hover:bg-[#1e2817] disabled:opacity-40 transition-colors"
                   >
                     <Check size={15} strokeWidth={3} />
                     {mappedFiles.has(selectedImage) ? 'Update Mapping' : 'Save Mapping'}
@@ -685,8 +685,8 @@ export default function ImageMappingTool() {
                 <div className="h-16 w-16 rounded-2xl bg-[#F0F2EE] flex items-center justify-center mb-4">
                   <ImageIcon size={28} className="text-[#B2C7A5]" />
                 </div>
-                <h3 className="text-[14px] font-black text-[#111111] mb-1">Select an image</h3>
-                <p className="text-[12px] text-[#9BAB9A] font-bold">
+                <h3 className="text-base font-black text-[#111111] mb-1">Select an image</h3>
+                <p className="text-sm text-[#9BAB9A] font-bold">
                   Click any image on the left to assign it to a product
                 </p>
               </div>
@@ -701,13 +701,13 @@ export default function ImageMappingTool() {
           {/* Mapped */}
           <div className="bg-white rounded-2xl border border-[#D1FAE5]/30 shadow-sm">
             <div className="flex items-center justify-between px-4 py-3 border-b border-[#D1FAE5]/20">
-              <h3 className="text-[13px] font-black text-[#111111]">
+              <h3 className="text-base font-black text-[#111111]">
                 ✓ Mapped ({Object.keys(mappings).length})
               </h3>
             </div>
             <div className="divide-y divide-[#D1FAE5]/20 max-h-[400px] overflow-y-auto">
               {Object.entries(mappings).length === 0 ? (
-                <p className="p-6 text-center text-[12px] text-[#9BAB9A] font-bold">No mappings yet</p>
+                <p className="p-6 text-center text-sm text-[#9BAB9A] font-bold">No mappings yet</p>
               ) : (
                 Object.entries(mappings).map(([key, filename]) => (
                   <div key={key} className="flex items-center gap-3 px-4 py-2.5">
@@ -715,10 +715,10 @@ export default function ImageMappingTool() {
                       <img src={imgUrl(filename)} alt="" className="w-full h-full object-cover" loading="lazy" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-[12px] font-black text-[#111111] truncate">{labelForKey(key)}</p>
-                      <p className="text-[10px] text-[#374151] truncate">{filename}</p>
+                      <p className="text-sm font-black text-[#111111] truncate">{labelForKey(key)}</p>
+                      <p className="text-xs text-[#374151] truncate">{filename}</p>
                       {duplicateFiles.has(filename) && (
-                        <p className="text-[10px] font-black text-red-500">⚠ duplicate image</p>
+                        <p className="text-xs font-black text-red-500">⚠ duplicate image</p>
                       )}
                     </div>
                     <button
@@ -739,24 +739,24 @@ export default function ImageMappingTool() {
             {/* Unmapped images */}
             <div className="bg-white rounded-2xl border border-[#D1FAE5]/30 shadow-sm">
               <div className="px-4 py-3 border-b border-[#D1FAE5]/20">
-                <h3 className="text-[13px] font-black text-[#111111]">
+                <h3 className="text-base font-black text-[#111111]">
                   ⚠ Unmapped Images ({images.filter(f => !mappedFiles.has(f)).length})
                 </h3>
               </div>
               <div className="max-h-[200px] overflow-y-auto divide-y divide-[#D1FAE5]/20">
                 {images.filter(f => !mappedFiles.has(f)).length === 0 ? (
-                  <p className="p-4 text-center text-[12px] font-bold text-emerald-600">All images mapped ✓</p>
+                  <p className="p-4 text-center text-sm font-bold text-emerald-600">All images mapped ✓</p>
                 ) : (
                   images.filter(f => !mappedFiles.has(f)).map(f => (
                     <div key={f} className="flex items-center gap-3 px-4 py-2">
                       <div className="h-8 w-8 shrink-0 rounded-lg overflow-hidden bg-[#F0F2EE]">
                         <img src={imgUrl(f)} alt="" className="w-full h-full object-cover" loading="lazy" />
                       </div>
-                      <p className="text-[11px] text-[#374151] truncate flex-1">{f}</p>
+                      <p className="text-sm text-[#374151] truncate flex-1">{f}</p>
                       <button
                         type="button"
                         onClick={() => { setSelectedImage(f); setView('map') }}
-                        className="text-[10px] font-bold text-[#10B981] hover:underline shrink-0"
+                        className="text-xs font-bold text-[#10B981] hover:underline shrink-0"
                       >
                         Map →
                       </button>
@@ -770,16 +770,16 @@ export default function ImageMappingTool() {
             {duplicateFiles.size > 0 && (
               <div className="bg-red-50 rounded-2xl border border-red-200 shadow-sm">
                 <div className="px-4 py-3 border-b border-red-200">
-                  <h3 className="text-[13px] font-black text-red-700">
+                  <h3 className="text-base font-black text-red-700">
                     ⚠ Duplicate Mappings ({duplicateFiles.size})
                   </h3>
-                  <p className="text-[10px] text-red-600 mt-0.5">Same image mapped to multiple products</p>
+                  <p className="text-xs text-red-600 mt-0.5">Same image mapped to multiple products</p>
                 </div>
                 <div className="max-h-[160px] overflow-y-auto px-4 py-2 space-y-1.5">
                   {[...duplicateFiles].map(f => (
                     <div key={f} className="flex items-center gap-2">
                       <AlertTriangle size={11} className="text-red-500 shrink-0" />
-                      <p className="text-[11px] text-red-700 truncate">{f}</p>
+                      <p className="text-sm text-red-700 truncate">{f}</p>
                     </div>
                   ))}
                 </div>
@@ -789,19 +789,19 @@ export default function ImageMappingTool() {
             {/* Products missing images */}
             <div className="bg-white rounded-2xl border border-[#D1FAE5]/30 shadow-sm">
               <div className="px-4 py-3 border-b border-[#D1FAE5]/20">
-                <h3 className="text-[13px] font-black text-[#111111]">
+                <h3 className="text-base font-black text-[#111111]">
                   Products Missing Images ({unmappedProducts.length})
                 </h3>
               </div>
               <div className="max-h-[200px] overflow-y-auto divide-y divide-[#D1FAE5]/20">
                 {unmappedProducts.length === 0 ? (
-                  <p className="p-4 text-center text-[12px] font-bold text-emerald-600">All products have images ✓</p>
+                  <p className="p-4 text-center text-sm font-bold text-emerald-600">All products have images ✓</p>
                 ) : (
                   unmappedProducts.slice(0, 40).map(p => (
                     <div key={p.id} className="flex items-center justify-between px-4 py-2">
                       <div className="min-w-0">
-                        <p className="text-[12px] font-bold text-[#111111] truncate">{p.name}</p>
-                        <p className="text-[10px] text-[#374151]">{p.category}</p>
+                        <p className="text-sm font-bold text-[#111111] truncate">{p.name}</p>
+                        <p className="text-xs text-[#374151]">{p.category}</p>
                       </div>
                       <button
                         type="button"
@@ -809,7 +809,7 @@ export default function ImageMappingTool() {
                           setSelectedProductId(String(p.id))
                           setView('map')
                         }}
-                        className="text-[10px] font-bold text-[#10B981] hover:underline ml-3 shrink-0"
+                        className="text-xs font-bold text-[#10B981] hover:underline ml-3 shrink-0"
                       >
                         Map →
                       </button>
@@ -827,7 +827,7 @@ export default function ImageMappingTool() {
         <div className="bg-white rounded-2xl border border-[#D1FAE5]/30 p-5 shadow-sm space-y-3">
           <div className="flex items-center gap-2">
             <RefreshCw size={15} className="text-[#10B981] animate-spin" />
-            <span className="text-[13px] font-black text-[#111111]">Uploading images…</span>
+            <span className="text-base font-black text-[#111111]">Uploading images…</span>
           </div>
           <div className="h-2 bg-[#F0F2EE] rounded-full overflow-hidden">
             <div
@@ -835,7 +835,7 @@ export default function ImageMappingTool() {
               style={{ width: `${uploadProgress.total > 0 ? (uploadProgress.done / uploadProgress.total) * 100 : 0}%` }}
             />
           </div>
-          <p className="text-[11px] text-[#374151] font-bold">
+          <p className="text-sm text-[#374151] font-bold">
             {uploadProgress.done} / {uploadProgress.total} — {uploadProgress.current}
           </p>
         </div>
@@ -845,8 +845,8 @@ export default function ImageMappingTool() {
       {uploadResults.length > 0 && !uploading && (
         <div className="bg-white rounded-2xl border border-[#D1FAE5]/30 shadow-sm">
           <div className="px-4 py-3 border-b border-[#D1FAE5]/20 flex items-center justify-between">
-            <h3 className="text-[13px] font-black text-[#111111]">Upload Results</h3>
-            <div className="flex gap-3 text-[11px] font-black">
+            <h3 className="text-base font-black text-[#111111]">Upload Results</h3>
+            <div className="flex gap-3 text-sm font-black">
               <span className="text-emerald-600">✓ {uploadResults.filter(r => r.status === 'ok').length} success</span>
               {uploadResults.some(r => r.status === 'error') && (
                 <span className="text-red-500">✗ {uploadResults.filter(r => r.status === 'error').length} failed</span>
@@ -861,13 +861,13 @@ export default function ImageMappingTool() {
                   : <XCircle size={14} className="text-red-500 shrink-0 mt-0.5" />
                 }
                 <div className="min-w-0 flex-1">
-                  <p className="text-[12px] font-bold text-[#111111] truncate">{r.productName}</p>
-                  <p className="text-[10px] text-[#374151] truncate">{r.file}</p>
+                  <p className="text-sm font-bold text-[#111111] truncate">{r.productName}</p>
+                  <p className="text-xs text-[#374151] truncate">{r.file}</p>
                   {r.status === 'error' && (
-                    <p className="text-[10px] text-red-500 mt-0.5">{r.message}</p>
+                    <p className="text-xs text-red-500 mt-0.5">{r.message}</p>
                   )}
                   {r.url && (
-                    <p className="text-[10px] text-emerald-600 truncate">{r.url}</p>
+                    <p className="text-xs text-emerald-600 truncate">{r.url}</p>
                   )}
                 </div>
               </div>
@@ -886,15 +886,15 @@ export default function ImageMappingTool() {
                 <AlertTriangle size={20} className="text-amber-500" />
               </div>
               <div>
-                <h3 className="text-[15px] font-black text-[#111111]">Confirm Upload & Apply</h3>
-                <p className="text-[12px] text-[#374151] mt-1">
+                <h3 className="text-lg font-black text-[#111111]">Confirm Upload & Apply</h3>
+                <p className="text-sm text-[#374151] mt-1">
                   This will upload <strong>{Object.keys(mappings).length} images</strong> to Supabase Storage
                   and update <strong>products.image_url</strong> in the database.
                 </p>
               </div>
             </div>
 
-            <div className="bg-[#F7F8F5] rounded-xl p-3 space-y-1 text-[11px] font-bold text-[#374151] max-h-[200px] overflow-y-auto">
+            <div className="bg-[#F7F8F5] rounded-xl p-3 space-y-1 text-sm font-bold text-[#374151] max-h-[200px] overflow-y-auto">
               {Object.entries(mappings).map(([key, file]) => (
                 <div key={key} className="flex items-center gap-2">
                   <span className="text-[#10B981]">→</span>
@@ -907,13 +907,13 @@ export default function ImageMappingTool() {
             {duplicateFiles.size > 0 && (
               <div className="flex items-center gap-2 px-3 py-2 bg-red-50 rounded-xl border border-red-200">
                 <AlertTriangle size={13} className="text-red-500 shrink-0" />
-                <p className="text-[11px] font-bold text-red-700">
+                <p className="text-sm font-bold text-red-700">
                   {duplicateFiles.size} duplicate image{duplicateFiles.size > 1 ? 's' : ''} — last mapping wins
                 </p>
               </div>
             )}
 
-            <p className="text-[11px] text-[#9BAB9A] font-bold">
+            <p className="text-sm text-[#9BAB9A] font-bold">
               ⚠ This action cannot be automatically undone. Existing image URLs will be overwritten.
             </p>
 
@@ -921,14 +921,14 @@ export default function ImageMappingTool() {
               <button
                 type="button"
                 onClick={() => setConfirmUpload(false)}
-                className="flex-1 py-2.5 rounded-xl border border-[#D1FAE5]/60 text-[13px] font-black text-[#374151] hover:bg-[#F9FAFB] transition-colors"
+                className="flex-1 py-2.5 rounded-xl border border-[#D1FAE5]/60 text-base font-black text-[#374151] hover:bg-[#F9FAFB] transition-colors"
               >
                 Cancel
               </button>
               <button
                 type="button"
                 onClick={() => void handleUpload()}
-                className="flex-1 py-2.5 rounded-xl bg-[#111111] text-white text-[13px] font-black hover:bg-[#1e2817] transition-colors"
+                className="flex-1 py-2.5 rounded-xl bg-[#111111] text-white text-base font-black hover:bg-[#1e2817] transition-colors"
               >
                 Upload & Apply
               </button>

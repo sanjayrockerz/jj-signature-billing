@@ -100,7 +100,7 @@ export default function ProductCard({ product }: { product: Product }) {
       </motion.button>
 
       {discount > 0 && (
-        <div className="absolute left-2 top-2 z-10 rounded-full bg-emerald-500 px-1.5 py-0.5 text-[10px] font-black text-white">
+        <div className="absolute left-2 top-2 z-10 rounded-full bg-emerald-500 px-1.5 py-0.5 text-xs font-black text-white">
           {discount}% OFF
         </div>
       )}
@@ -133,23 +133,23 @@ export default function ProductCard({ product }: { product: Product }) {
             onClick={openModal}
             className="text-left w-full focus:outline-none"
           >
-            <h3 className="line-clamp-2 min-h-[2.4rem] text-[12px] font-semibold leading-[1.4] text-[#111111] ta-text hover:text-[#1e2817]">
+            <h3 className="line-clamp-2 min-h-[2.4rem] text-sm font-semibold leading-[1.4] text-[#111111] ta-text hover:text-[#1e2817]">
               {displayName}
             </h3>
           </button>
 
           {/* Variant/unit label */}
-          <p className="mt-0.5 min-h-[1rem] text-[10px] leading-none text-[#7A846F]">
+          <p className="mt-0.5 min-h-[1rem] text-xs leading-none text-[#7A846F]">
             {variantLabel ?? product.unitLabel}
           </p>
 
           {/* Price */}
           <div className="mt-1 flex items-baseline gap-1">
-            <span className="text-[13px] font-black text-[#111111] tabular-nums">
+            <span className="text-base font-black text-[#111111] tabular-nums">
               {formatCurrency(displayPrice)}
             </span>
             {discount > 0 && !product.hasVariants && (
-              <span className="ml-0.5 text-[10px] text-slate-400 line-through tabular-nums">
+              <span className="ml-0.5 text-xs text-slate-400 line-through tabular-nums">
                 {formatCurrency(product.price)}
               </span>
             )}
@@ -169,7 +169,7 @@ export default function ProductCard({ product }: { product: Product }) {
                     transition={{ duration: 0.14 }}
                     type="button"
                     onClick={openModal}
-                    className="flex w-full items-center justify-between rounded-xl bg-[#111111]/8 px-3 py-2 text-[11px] font-black text-[#111111] ring-1 ring-[#111111]/20 active:bg-[#111111]/12"
+                    className="flex w-full items-center justify-between rounded-xl bg-[#111111]/8 px-3 py-2 text-sm font-black text-[#111111] ring-1 ring-[#111111]/20 active:bg-[#111111]/12"
                   >
                     <span>{l('In Cart', 'கூடையில்')}</span>
                     <ChevronRight size={12} className="text-[#374151]" />
@@ -185,7 +185,7 @@ export default function ProductCard({ product }: { product: Product }) {
                     whileTap={{ scale: 0.97 }}
                     type="button"
                     onClick={handleAdd}
-                    className="flex w-full items-center justify-center gap-1 rounded-xl border-2 border-[#111111] px-3 py-2 text-[12px] font-black text-[#111111] transition-colors active:bg-[#111111] active:text-white"
+                    className="flex w-full items-center justify-center gap-1 rounded-xl border-2 border-[#111111] px-3 py-2 text-sm font-black text-[#111111] transition-colors active:bg-[#111111] active:text-white"
                   >
                     {l('ADD', 'சேர்')}
                     <ChevronRight size={11} />
@@ -209,7 +209,7 @@ export default function ProductCard({ product }: { product: Product }) {
                   >
                     <Minus size={12} strokeWidth={3} />
                   </button>
-                  <span className="min-w-[1.5rem] text-center text-[13px] font-black text-white tabular-nums">
+                  <span className="min-w-[1.5rem] text-center text-base font-black text-white tabular-nums">
                     {packQty}
                   </span>
                   <button
@@ -232,7 +232,7 @@ export default function ProductCard({ product }: { product: Product }) {
                   whileTap={{ scale: 0.97 }}
                   type="button"
                   onClick={handleAdd}
-                  className="flex w-full items-center justify-center rounded-xl border-2 border-[#111111] px-3 py-2 text-[12px] font-black text-[#111111] transition-colors active:bg-[#111111] active:text-white"
+                  className="flex w-full items-center justify-center rounded-xl border-2 border-[#111111] px-3 py-2 text-sm font-black text-[#111111] transition-colors active:bg-[#111111] active:text-white"
                 >
                   {l('ADD', 'சேர்')}
                 </motion.button>
