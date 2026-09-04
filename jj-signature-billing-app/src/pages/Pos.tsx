@@ -780,7 +780,7 @@ export default function Pos(props: PosProps = {}) {
 
   // ══ MAIN POS SCREEN ══════════════════════════════════════════════════
   return (
-    <div data-embedded={embeddedMode} data-panel={mobilePanelView} className="pos-billing-shell flex min-h-screen h-auto flex-col bg-bgMain print:hidden overflow-x-hidden">
+    <div data-embedded={embeddedMode} data-panel={mobilePanelView} className="pos-billing-shell flex min-h-screen h-auto w-full min-w-0 max-w-full flex-col bg-bgMain print:hidden overflow-x-hidden">
       {/* Header */}
       <div className="px-4 pt-4 pb-3 md:px-6 md:pt-6 md:pb-4 shrink-0 flex flex-col gap-4 min-[480px]:flex-row min-[480px]:items-start min-[480px]:justify-between">
         <div className="flex min-w-0 items-start gap-2">
@@ -828,7 +828,7 @@ export default function Pos(props: PosProps = {}) {
       </div>
 
       {/* Main Content Split */}
-      <div className="flex flex-col lg:flex-row gap-5 md:gap-6 px-4 md:px-6 pb-6 lg:h-[calc(100vh-120px)] lg:overflow-hidden">
+      <div className="flex w-full min-w-0 max-w-full flex-col gap-5 px-4 pb-6 md:gap-6 md:px-6 lg:h-[calc(100vh-120px)] lg:flex-row lg:overflow-hidden">
 
         <div className="grid grid-cols-2 gap-2 lg:hidden">
           <button type="button" onClick={() => setMobilePanelView('catalogue')} className={`min-h-11 rounded-xl px-3 py-2 text-xs font-black uppercase tracking-wide ${mobilePanelView === 'catalogue' ? 'bg-[#CBB89D] text-[#111111]' : 'border border-borderLight bg-cardBg text-textMuted'}`}>Catalogue</button>
@@ -844,7 +844,7 @@ export default function Pos(props: PosProps = {}) {
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-[#111111]"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
               Customer Details
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
               <div>
                 <label className="block text-base md:text-xs font-black text-[#374151] tracking-wider uppercase mb-1.5">Customer Name</label>
                 <input
@@ -906,28 +906,28 @@ export default function Pos(props: PosProps = {}) {
                 <Receipt size={16} className="text-[#047857]" />
                 Order Items
               </h3>
-              <div className="grid grid-cols-2 md:flex md:items-stretch gap-2">
+              <div className="grid grid-cols-2 gap-2 xl:flex xl:items-stretch">
                 <button
                   onClick={clearAll}
-                  className="min-h-[44px] w-full md:w-auto px-3 py-2 rounded-lg border border-[#CBB89D] bg-[#FFFDF8] text-[#111111] hover:bg-[#EDE4D4] transition-colors flex items-center justify-center gap-1.5 text-center md:flex-1 text-sm md:text-sm font-black"
+                  className="min-h-[44px] w-full px-3 py-2 rounded-lg border border-[#CBB89D] bg-[#FFFDF8] text-[#111111] hover:bg-[#EDE4D4] transition-colors flex items-center justify-center gap-1.5 text-center xl:flex-1 text-sm font-black"
                 >
                   <Trash2 size={12} /> CLEAR ORDER
                 </button>
                 <button
                   onClick={() => setCatalogOpen(true)}
-                  className="min-h-[44px] w-full md:w-auto px-3 py-2 rounded-lg bg-[#CBB89D] text-[#111111] hover:bg-[#B8A384] transition-colors flex items-center justify-center gap-1.5 text-center md:flex-1 text-sm md:text-sm font-black shadow-sm"
+                  className="min-h-[44px] w-full px-3 py-2 rounded-lg bg-[#CBB89D] text-[#111111] hover:bg-[#B8A384] transition-colors flex items-center justify-center gap-1.5 text-center xl:flex-1 text-sm font-black shadow-sm"
                 >
                   <Search size={12} /> SEARCH CATALOG
                 </button>
                 <button
                   onClick={() => setAddProductOpen(true)}
-                  className="min-h-[44px] w-full md:w-auto px-3 py-2 rounded-lg border border-[#CBB89D] bg-[#FFFDF8] text-[#111111] text-sm md:text-sm font-black hover:bg-[#EDE4D4] transition-colors flex items-center justify-center gap-1.5 text-center md:flex-1"
+                  className="min-h-[44px] w-full px-3 py-2 rounded-lg border border-[#CBB89D] bg-[#FFFDF8] text-[#111111] text-sm font-black hover:bg-[#EDE4D4] transition-colors flex items-center justify-center gap-1.5 text-center xl:flex-1"
                 >
                   <Plus size={12} /> ADD TO CATALOG
                 </button>
                 <button
                   onClick={() => setCustomItemOpen(open => !open)}
-                  className="min-h-[44px] w-full md:w-auto px-3 py-2 rounded-lg border border-[#CBB89D] bg-[#FFFDF8] text-[#111111] text-sm md:text-sm font-black hover:bg-[#EDE4D4] transition-colors flex items-center justify-center gap-1.5 text-center md:flex-1"
+                  className="min-h-[44px] w-full px-3 py-2 rounded-lg border border-[#CBB89D] bg-[#FFFDF8] text-[#111111] text-sm font-black hover:bg-[#EDE4D4] transition-colors flex items-center justify-center gap-1.5 text-center xl:flex-1"
                 >
                   + ADD CUSTOM ITEM
                 </button>

@@ -2618,7 +2618,7 @@ export default function Dashboard() {
 
         {/* ── BILLING PANEL ── */}
         {tab === 'billing' && (
-          <div className="-m-4 sm:-m-6 lg:-m-8">
+          <div className="-m-4 w-[calc(100%+2rem)] min-w-0 max-w-none sm:-m-6 sm:w-[calc(100%+3rem)] lg:-m-8 lg:w-[calc(100%+4rem)]">
             <Pos isEmbedded onOrderCreated={() => void loadData()} />
           </div>
         )}
