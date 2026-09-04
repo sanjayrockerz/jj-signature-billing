@@ -499,6 +499,7 @@
   .admin-shell textarea,
   .pos-billing-shell textarea,
   [role="dialog"] textarea { height: auto; min-height: 5.5rem; line-height: 1.4; }
+  .admin-shell main input.inventory-search-input:not([type="checkbox"]):not([type="radio"]) { padding-left: 2.75rem !important; }
   .admin-shell label, .pos-billing-shell label { font-size: 0.75rem; line-height: 1.25; }
 
   /* Shared card density. */
