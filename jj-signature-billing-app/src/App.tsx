@@ -5,6 +5,7 @@ import { useAuthStore, useProductStore, useVariantStore, useAdminAuthStore } fro
 import { BRAND_EN } from './lib/brand'
 import { clearLocalOrders } from './lib/ordersFallback'
 import { isSupabaseConfigured, supabase } from './lib/supabase'
+import { AdminModuleShell } from './components/AdminModuleShell'
 
 const Dashboard = lazy(() => import('./pages/Dashboard'))
 const Pos = lazy(() => import('./pages/Pos'))
@@ -145,7 +146,12 @@ function AppShell() {
             element={
               <PosGuard>
                 <Suspense fallback={<LoadingSpinner />}>
-                  <Pos />
+                  <AdminModuleShell
+                    title="Billing Panel"
+                    subtitle="Create bills, manage customers, and complete POS checkout."
+                  >
+                    <Pos />
+                  </AdminModuleShell>
                 </Suspense>
               </PosGuard>
             }
