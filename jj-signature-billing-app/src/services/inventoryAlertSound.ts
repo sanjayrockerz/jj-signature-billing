@@ -1,5 +1,6 @@
 const STORAGE_KEY = 'jj-signature-inventory-sounds-enabled'
 let audioContext: AudioContext | null = null
+let resumePromise: Promise<void> | null = null
 let lastPlayedAt = 0
 
 export function isInventorySoundEnabled() {
@@ -16,7 +17,16 @@ export async function unlockInventoryAlertSound() {
     if (!AudioContextConstructor) return
     audioContext = new AudioContextConstructor()
   }
-  if (audioContext.state === 'suspended') await audioContext.resume()
+  if (audioContext.state === 'suspended') {
+    // Browsers reject overlapping resume/pause requests with AbortError. Keep
+    // one in-flight resume operation and treat autoplay races as harmless.
+    resumePromise ??= audioContext.resume().then(() => undefined).finally(() => { resumePromise = null })
+    try {
+      await resumePromise
+    } catch {
+      resumePromise = null
+    }
+  }
 }
 
 export async function playInventoryAlertSound(type: 'LOW_STOCK' | 'OUT_OF_STOCK') {

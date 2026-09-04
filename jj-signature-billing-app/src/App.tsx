@@ -149,6 +149,7 @@ function AppShell() {
                   <AdminModuleShell
                     title="Billing Panel"
                     subtitle="Create bills, manage customers, and complete POS checkout."
+                    mobileBrandOnly
                   >
                     <Pos />
                   </AdminModuleShell>

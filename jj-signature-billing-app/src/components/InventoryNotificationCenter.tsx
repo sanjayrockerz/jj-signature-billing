@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Bell, Check, ExternalLink, Volume2, VolumeX, X } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { isSupabaseConfigured } from '../lib/supabase'
-import { listInventoryAlerts, markAllInventoryAlertsRead, markInventoryAlertRead, type InventoryAlert } from '../services/inventoryAlertService'
+import { isInventoryAlertsTableMissing, listInventoryAlerts, markAllInventoryAlertsRead, markInventoryAlertRead, type InventoryAlert } from '../services/inventoryAlertService'
 import { isInventorySoundEnabled, playInventoryAlertSound, setInventorySoundEnabled, unlockInventoryAlertSound } from '../services/inventoryAlertSound'
 import { useNavigate } from 'react-router-dom'
 
@@ -25,9 +25,13 @@ export function InventoryNotificationCenter() {
   }
 
   useEffect(() => {
-    const initialRefresh = window.setTimeout(() => { void refresh() }, 0)
     if (!isSupabaseConfigured) return
-    const channel = supabase.channel('admin-inventory-alerts')
+    let channel: ReturnType<typeof supabase.channel> | null = null
+    let cancelled = false
+    const initialize = async () => {
+      await refresh()
+      if (cancelled || isInventoryAlertsTableMissing()) return
+      channel = supabase.channel('admin-inventory-alerts')
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'inventory_alerts' }, async payload => {
         const newAlert = payload.new as InventoryAlert
         if (seenIds.current.has(newAlert.id)) return
@@ -46,7 +50,9 @@ export function InventoryNotificationCenter() {
         window.setTimeout(() => setToast(current => current?.id === alert.id ? null : current), 6500)
       })
       .subscribe()
-    return () => { window.clearTimeout(initialRefresh); void supabase.removeChannel(channel) }
+    }
+    void initialize()
+    return () => { cancelled = true; if (channel) void supabase.removeChannel(channel) }
   }, [])
 
   useEffect(() => {

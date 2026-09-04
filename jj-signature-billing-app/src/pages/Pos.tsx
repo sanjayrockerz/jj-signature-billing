@@ -1,11 +1,9 @@
 import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react'
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Link, useNavigate } from 'react-router-dom'
 import {
   Search, Trash2, Plus, Receipt, Printer,
   RefreshCw, ShoppingBag, MessageCircle,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  Wifi, WifiOff, Layers, X, ChevronDown, Power
+  Wifi, WifiOff, Layers, X, ChevronDown
 } from 'lucide-react'
 import { isSupabaseConfigured, supabase } from '../lib/supabase'
 import { useProductStore, useVariantStore, useAdminAuthStore, type Product } from '../store/store'
@@ -108,8 +106,7 @@ export default function Pos(props: PosProps = {}) {
   const { getVariants, fetchVariants } = useVariantStore()
   const { lang } = useLangStore()
   const l = (en: string, ta: string) => lang === 'ta' ? ta : en
-  const navigate = useNavigate()
-  const { logout, role } = useAdminAuthStore()
+  const { role } = useAdminAuthStore()
   const embeddedMode = Boolean(props.isEmbedded)
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [billingAdjOpen, setBillingAdjOpen] = useState(false)
@@ -802,7 +799,7 @@ export default function Pos(props: PosProps = {}) {
   return (
     <div data-embedded={embeddedMode} data-panel={mobilePanelView} className="pos-billing-shell flex min-h-screen h-auto w-full min-w-0 max-w-full flex-col bg-bgMain print:hidden overflow-x-hidden">
       {/* Header */}
-      <div className="px-4 pt-4 pb-3 md:px-6 md:pt-6 md:pb-4 shrink-0 flex flex-col gap-4 min-[480px]:flex-row min-[480px]:items-start min-[480px]:justify-between">
+      <div className="shrink-0 px-4 pb-3 pt-4 md:px-6 md:pb-4 md:pt-6">
         <div className="flex min-w-0 items-start gap-2">
           <div className="mt-1 h-6 w-1.5 shrink-0 rounded-full bg-[#CBB89D]"></div>
           <div className="min-w-0">
@@ -811,52 +808,24 @@ export default function Pos(props: PosProps = {}) {
           </div>
         </div>
 
-        {/* Online/Offline Toggle & Logout */}
-        <div className="flex gap-2 w-full min-[480px]:w-auto">
-          <div className="segmented-control flex flex-1 min-[480px]:flex-none">
-            <button
-              onClick={() => setOrderMode('offline')}
-              className={`segmented-control-tab min-h-[44px] px-4 py-2 text-sm font-black tracking-wider uppercase transition-colors ${orderMode === 'offline' ? 'bg-[#CBB89D] text-[#111111] shadow-sm' : 'text-[#111111] hover:bg-[#EDE4D4]'}`}
-            >
-              Offline
-            </button>
-            <button
-              onClick={() => setOrderMode('online')}
-              className={`segmented-control-tab min-h-[44px] px-4 py-2 text-sm font-black tracking-wider uppercase transition-colors ${orderMode === 'online' ? 'bg-[#CBB89D] text-[#111111] shadow-sm' : 'text-[#111111] hover:bg-[#EDE4D4]'}`}
-            >
-              Online
-            </button>
-          </div>
-          {!embeddedMode && (
-            <>
-              <button
-                onClick={() => navigate('/dashboard')}
-                className="flex items-center justify-center min-h-[44px] px-4 rounded-xl bg-[#CBB89D] text-[#111111] hover:bg-[#B8A384] transition-colors text-sm font-black tracking-wider uppercase shadow-sm"
-              >
-                Dashboard
-              </button>
-              <button
-                onClick={() => { logout(); navigate('/admin-login', { replace: true }) }}
-                title="Logout"
-                className="flex items-center justify-center min-h-[44px] px-4 rounded-xl border border-red-200 bg-red-50 text-red-600 hover:bg-red-100 transition-colors"
-              >
-                <Power size={18} />
-              </button>
-            </>
-          )}
-        </div>
       </div>
 
       {/* Main Content Split */}
-      <div className="flex w-full min-w-0 max-w-full flex-col gap-5 px-4 pb-6 md:gap-6 md:px-6 lg:h-[calc(100vh-120px)] lg:flex-row lg:overflow-hidden">
-
-        <div className="segmented-control flex lg:hidden">
+      <div className="flex w-full min-w-0 max-w-full flex-col gap-5 px-4 pb-6 md:gap-6 md:px-6 lg:h-[calc(100vh-120px)] lg:overflow-hidden">
+        <div className="pos-mode-controls grid w-full min-w-0 gap-3 lg:grid-cols-2">
+        <div className="segmented-control grid grid-cols-2">
+          <button type="button" onClick={() => setOrderMode('offline')} className={`segmented-control-tab min-h-11 px-3 py-2 text-xs font-black uppercase tracking-wide ${orderMode === 'offline' ? 'bg-[#CBB89D] text-[#111111]' : 'bg-cardBg text-textMuted hover:bg-[#EDE4D4]'}`}>Offline</button>
+          <button type="button" onClick={() => setOrderMode('online')} className={`segmented-control-tab min-h-11 px-3 py-2 text-xs font-black uppercase tracking-wide ${orderMode === 'online' ? 'bg-[#CBB89D] text-[#111111]' : 'bg-cardBg text-textMuted hover:bg-[#EDE4D4]'}`}>Online</button>
+        </div>
+        <div className="segmented-control grid grid-cols-2">
           <button type="button" onClick={() => setMobilePanelView('catalogue')} className={`segmented-control-tab min-h-11 px-3 py-2 text-xs font-black uppercase tracking-wide ${mobilePanelView === 'catalogue' ? 'bg-[#CBB89D] text-[#111111]' : 'bg-cardBg text-textMuted hover:bg-[#EDE4D4]'}`}>Catalogue</button>
           <button type="button" onClick={() => setMobilePanelView('bill')} className={`segmented-control-tab min-h-11 px-3 py-2 text-xs font-black uppercase tracking-wide ${mobilePanelView === 'bill' ? 'bg-[#CBB89D] text-[#111111]' : 'bg-cardBg text-textMuted hover:bg-[#EDE4D4]'}`}>Current Bill{items.length > 0 ? ` (${items.length})` : ''}</button>
         </div>
+        </div>
 
+        <div className="pos-layout flex min-w-0 w-full flex-col gap-5 lg:min-h-0 lg:flex-1 lg:flex-row lg:gap-6 lg:overflow-hidden">
         {/* LEFT COLUMN (approx 68%) */}
-        <div className={`${mobilePanelView === 'bill' ? 'hidden lg:flex' : 'flex'} min-w-0 w-full flex-[2.1] flex-col gap-6 lg:overflow-y-auto lg:pb-4 hide-scrollbar`}>
+        <div className={`pos-catalogue-column ${mobilePanelView === 'bill' ? 'hidden lg:flex' : 'flex'} min-w-0 w-full flex-[2.1] flex-col gap-6 lg:overflow-y-auto lg:pb-4 hide-scrollbar`}>
 
           {/* Customer Details Card */}
           <div className="bg-cardBg rounded-2xl border border-borderLight shadow-soft p-4 md:p-5">
@@ -1134,7 +1103,7 @@ export default function Pos(props: PosProps = {}) {
         </div>
 
         {/* RIGHT COLUMN (approx 32%) */}
-        <div className={`${mobilePanelView === 'catalogue' ? 'hidden lg:flex' : 'flex'} min-w-0 w-full flex-[1] min-h-0 flex-col gap-6 h-[calc(100dvh-11rem)] max-h-[calc(100dvh-11rem)] lg:sticky lg:top-4 lg:h-[calc(100vh-140px)] lg:max-h-[calc(100vh-140px)]`}>
+        <div className={`pos-bill-column ${mobilePanelView === 'catalogue' ? 'hidden lg:flex' : 'flex'} min-w-0 w-full flex-[1] min-h-0 flex-col gap-6 h-[calc(100dvh-11rem)] max-h-[calc(100dvh-11rem)] lg:sticky lg:top-4 lg:h-[calc(100vh-140px)] lg:max-h-[calc(100vh-140px)]`}>
           <div className="flex min-h-0 h-full max-h-full flex-col overflow-hidden rounded-2xl border border-[#D1FAE5]/60 bg-[#FAF9F6] shadow-sm">
 
             {/* Header */}
@@ -1408,6 +1377,7 @@ export default function Pos(props: PosProps = {}) {
               <p className="mt-2 text-center text-xs font-bold text-[#6B7280]">Deposit orders do not count as revenue until the remaining payment is received.</p>
             </div>
           </div>
+        </div>
         </div>
 
       </div>
