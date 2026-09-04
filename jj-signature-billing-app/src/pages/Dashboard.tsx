@@ -66,7 +66,7 @@ import {
 type Category = { id: string | number; name_en: string; name_ta: string; is_active?: boolean; sort_order?: number }
 type DashboardOrder = {
   id: string; invoice_no: string; customer_name: string; phone: string; address: string
-  created_at: string; total: number; status: string; order_mode: string; order_type: string; user_id: string | null; items: unknown
+  created_at: string; recorded_at: string; total: number; status: string; order_mode: string; order_type: string; user_id: string | null; items: unknown
   coupon_code: string; discount_amount: number; manual_discount_amount: number; delivery_charge: number
   total_gst: number; payment_mode: string; payment_method?: string; invoice_pdf_url: string; remarks?: string; reference_number?: string
 }
@@ -272,7 +272,7 @@ export default function Dashboard() {
     id: String(row.id || ''), invoice_no: String(row.invoice_no || ''),
     customer_name: String(row.customer_name || ''), phone: String(row.phone || ''),
     address: String(row.address || ''),
-    created_at: String(row.created_at || ''), total: toNumber(row.total, 0),
+    created_at: String(row.created_at || ''), recorded_at: String(row.recorded_at || row.created_at || ''), total: toNumber(row.total, 0),
     status: String(row.status || 'pending'),
     order_mode: normalizeOrderMode(row.order_mode),
     order_type: normalizeOrderType(row.order_type),
@@ -660,8 +660,10 @@ export default function Dashboard() {
       const [cRes, oRes, couponRes, expenseRes] = await Promise.all([
         supabase.from('categories').select('id, name_en, name_ta, is_active, sort_order').order('sort_order'),
         supabase.from('orders')
-          .select('id, invoice_no, customer_name, phone, address, created_at, total, status, order_mode, order_type, user_id, items, coupon_code, discount_amount, manual_discount_amount, delivery_charge, total_gst, gst_amount, payment_mode, payment_method, invoice_pdf_url, remarks, reference_number')
+          .select('id, invoice_no, customer_name, phone, address, created_at, recorded_at, total, status, order_mode, order_type, user_id, items, coupon_code, discount_amount, manual_discount_amount, delivery_charge, total_gst, gst_amount, payment_mode, payment_method, invoice_pdf_url, remarks, reference_number')
+          .order('recorded_at', { ascending: false })
           .order('created_at', { ascending: false })
+          .order('id', { ascending: false })
           .limit(1000),
         supabase.from('coupons')
           .select('id, code, percentage, is_active, expiry_date, usage_limit, usage_count, min_order_value')
@@ -1023,9 +1025,11 @@ export default function Dashboard() {
     setSearchLoading(true)
     try {
       let q = supabase.from('orders')
-        .select('id, invoice_no, customer_name, phone, address, created_at, total, status, order_mode, order_type, items, coupon_code, discount_amount, delivery_charge, reference_number')
+        .select('id, invoice_no, customer_name, phone, address, created_at, recorded_at, total, status, order_mode, order_type, items, coupon_code, discount_amount, delivery_charge, reference_number')
         .neq('order_type', 'online_request')
+        .order('recorded_at', { ascending: false })
         .order('created_at', { ascending: false })
+        .order('id', { ascending: false })
         .limit(500)
       if (search.invoiceNo.trim())       q = q.ilike('invoice_no', `%${search.invoiceNo.trim()}%`)
       if (search.phone.trim())            q = q.ilike('phone', `%${search.phone.trim()}%`)
