@@ -806,7 +806,7 @@ export default function Pos(props: PosProps = {}) {
         <div className="flex min-w-0 items-start gap-2">
           <div className="mt-1 h-6 w-1.5 shrink-0 rounded-full bg-[#CBB89D]"></div>
           <div className="min-w-0">
-            <h2 className="text-2xl font-black leading-tight text-[#111111] md:text-3xl">POS Billing Panel</h2>
+            <h2 className="text-xl font-black leading-tight text-[#111111] md:text-3xl">POS Billing Panel</h2>
             <p className="mt-1 pr-2 text-sm font-medium text-gray-500 md:text-base">Quick Invoice generator & database synced checkout</p>
           </div>
         </div>
@@ -860,58 +860,58 @@ export default function Pos(props: PosProps = {}) {
 
           {/* Customer Details Card */}
           <div className="bg-cardBg rounded-2xl border border-borderLight shadow-soft p-4 md:p-5">
-            <h3 className="text-xl md:text-base font-black text-[#111111] flex items-center gap-2 mb-4">
+            <h3 className="text-lg md:text-base font-black text-[#111111] flex items-center gap-2 mb-4">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-[#111111]"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
               Customer Details
             </h3>
             <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
               <div>
-                <label className="block text-base md:text-xs font-black text-[#374151] tracking-wider uppercase mb-1.5">Customer Name</label>
+                <label className="block text-sm md:text-xs font-black text-[#374151] tracking-wider uppercase mb-1.5">Customer Name</label>
                 <input
                   type="text"
                   value={customer.name}
                   onChange={e => setCustomer({...customer, name: e.target.value})}
                   placeholder="Enter name"
-                  className="w-full h-12 px-4 bg-white border border-[#D1FAE5]/60 rounded-xl focus:outline-none focus:border-[#047857] text-lg md:text-base font-bold text-[#111111] placeholder:text-gray-400 placeholder:font-medium"
+                  className="w-full h-12 px-4 bg-white border border-[#D1FAE5]/60 rounded-xl focus:outline-none focus:border-[#047857] text-base md:text-base font-bold text-[#111111] placeholder:text-gray-400 placeholder:font-medium"
                 />
               </div>
               <div>
-                <label className="block text-base md:text-xs font-black text-[#374151] tracking-wider uppercase mb-1.5">Mobile Number (WhatsApp)</label>
+                <label className="block text-sm md:text-xs font-black text-[#374151] tracking-wider uppercase mb-1.5">Mobile Number (WhatsApp)</label>
                 <input
                   type="text"
                   value={customer.phone}
                   onChange={e => setCustomer({...customer, phone: e.target.value})}
                   placeholder="Enter WhatsApp number"
-                  className="w-full h-12 px-4 bg-white border border-[#D1FAE5]/60 rounded-xl focus:outline-none focus:border-[#047857] text-lg md:text-base font-bold text-[#111111] placeholder:text-gray-400 placeholder:font-medium"
+                  className="w-full h-12 px-4 bg-white border border-[#D1FAE5]/60 rounded-xl focus:outline-none focus:border-[#047857] text-base md:text-base font-bold text-[#111111] placeholder:text-gray-400 placeholder:font-medium"
                 />
               </div>
               <div>
-                <label className="block text-base md:text-xs font-black text-[#374151] tracking-wider uppercase mb-1.5">Remarks (Internal)</label>
+                <label className="block text-sm md:text-xs font-black text-[#374151] tracking-wider uppercase mb-1.5">Remarks (Internal)</label>
                 <input
                   type="text"
                   value={remarks}
                   onChange={e => setRemarks(e.target.value)}
                   placeholder="Optional remarks"
-                  className="w-full h-12 px-4 bg-white border border-[#D1FAE5]/60 rounded-xl focus:outline-none focus:border-[#047857] text-lg md:text-base font-bold text-[#111111] placeholder:text-gray-400 placeholder:font-medium"
+                  className="w-full h-12 px-4 bg-white border border-[#D1FAE5]/60 rounded-xl focus:outline-none focus:border-[#047857] text-base md:text-base font-bold text-[#111111] placeholder:text-gray-400 placeholder:font-medium"
                 />
               </div>
               <div>
-                <label className="block text-base md:text-xs font-black text-[#374151] tracking-wider uppercase mb-1.5">Reference Number</label>
+                <label className="block text-sm md:text-xs font-black text-[#374151] tracking-wider uppercase mb-1.5">Reference Number</label>
                 <input
                   type="text"
                   value={referenceNumber}
                   onChange={e => setReferenceNumber(e.target.value)}
                   placeholder="Optional ref no."
-                  className="w-full h-12 px-4 bg-white border border-[#D1FAE5]/60 rounded-xl focus:outline-none focus:border-[#047857] text-lg md:text-base font-bold text-[#111111] placeholder:text-gray-400 placeholder:font-medium"
+                  className="w-full h-12 px-4 bg-white border border-[#D1FAE5]/60 rounded-xl focus:outline-none focus:border-[#047857] text-base md:text-base font-bold text-[#111111] placeholder:text-gray-400 placeholder:font-medium"
                 />
               </div>
               <div>
-                <label className="block text-base md:text-xs font-black text-[#374151] tracking-wider uppercase mb-1.5">Billing Date <span className="normal-case font-semibold text-[#6B7280]">(Optional)</span></label>
+                <label className="block text-sm md:text-xs font-black text-[#374151] tracking-wider uppercase mb-1.5">Billing Date <span className="normal-case font-semibold text-[#6B7280]">(Optional)</span></label>
                 <input
                   type="date"
                   value={billingDate}
                   onChange={e => setBillingDate(e.target.value)}
-                  className="w-full h-12 px-4 bg-white border border-[#D1FAE5]/60 rounded-xl focus:outline-none focus:border-[#047857] text-lg md:text-base font-bold text-[#111111] placeholder:text-gray-400 placeholder:font-medium"
+                  className="w-full h-12 px-4 bg-white border border-[#D1FAE5]/60 rounded-xl focus:outline-none focus:border-[#047857] text-base md:text-base font-bold text-[#111111] placeholder:text-gray-400 placeholder:font-medium"
                 />
                 {!billingDate && <p className="text-xs text-[#9CA3AF] mt-1">Leave blank to use today's date &amp; time</p>}
               </div>
@@ -922,7 +922,7 @@ export default function Pos(props: PosProps = {}) {
           <div className="bg-white rounded-2xl border border-[#D1FAE5]/40 shadow-sm flex-1 flex flex-col min-h-[400px]">
             {/* Card Header */}
             <div className="flex flex-col gap-4 p-4 md:p-5 border-b border-[#D1FAE5]/40">
-              <h3 className="text-xl md:text-base font-black text-[#111111] flex items-center gap-2">
+              <h3 className="text-lg md:text-base font-black text-[#111111] flex items-center gap-2">
                 <Receipt size={16} className="text-[#047857]" />
                 Order Items
               </h3>
@@ -1005,18 +1005,18 @@ export default function Pos(props: PosProps = {}) {
                   <div className="md:hidden border border-[#D1FAE5]/30 rounded-2xl p-4 bg-[#FFFDFC] space-y-3">
                     <div className="flex items-start justify-between gap-3">
                       <div className="min-w-0 flex-1">
-                        <p className="text-base font-black uppercase tracking-wider text-[#374151] mb-1">Product Name</p>
+                        <p className="text-sm font-black uppercase tracking-wider text-[#374151] mb-1">Product Name</p>
                         {item.source === 'manual' ? (
                           <input
                             type="text"
                             value={item.name}
                             onChange={e => updateItem(item.id, 'name', e.target.value)}
                             placeholder="Item name"
-                            className="w-full h-12 px-3 bg-[#FAFAFA] border border-[#D1FAE5]/40 rounded-xl text-lg font-bold text-[#111111] focus:outline-none focus:border-[#047857]"
+                            className="w-full h-12 px-3 bg-white border border-[#D1FAE5]/40 rounded-xl text-base font-bold text-[#111111] focus:outline-none focus:border-[#047857]"
                           />
                         ) : (
                           <div className="rounded-xl border border-[#D1FAE5]/30 bg-white px-3 py-3">
-                            <p className="text-lg font-bold text-[#111111] break-words">{item.name} {item.variantName ? `- ${item.variantName}` : ''}</p>
+                            <p className="text-base font-bold text-[#111111] break-words">{item.name} {item.variantName ? `- ${item.variantName}` : ''}</p>
                           </div>
                         )}
                       </div>
@@ -1031,7 +1031,7 @@ export default function Pos(props: PosProps = {}) {
 
                     <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <p className="text-base font-black uppercase tracking-wider text-[#374151] mb-1">Price</p>
+                        <p className="text-sm font-black uppercase tracking-wider text-[#374151] mb-1">Price</p>
                         <input
                           type="number" onWheel={(e) => (e.target as HTMLInputElement).blur()}
                           value={item.basePrice === 0 ? '' : item.basePrice}
@@ -1045,7 +1045,7 @@ export default function Pos(props: PosProps = {}) {
                         />
                       </div>
                       <div>
-                        <p className="text-base font-black uppercase tracking-wider text-[#374151] mb-1">Total</p>
+                        <p className="text-sm font-black uppercase tracking-wider text-[#374151] mb-1">Total</p>
                         <div className="h-12 rounded-xl border border-[#D1FAE5]/30 bg-white px-3 flex items-center justify-end text-lg font-black text-[#047857]">
                           {formatCurrency(item.lineTotal)}
                         </div>
@@ -1053,7 +1053,7 @@ export default function Pos(props: PosProps = {}) {
                     </div>
 
                     <div>
-                      <p className="text-base font-black uppercase tracking-wider text-[#374151] mb-1">Quantity</p>
+                        <p className="text-sm font-black uppercase tracking-wider text-[#374151] mb-1">Quantity</p>
                       <div className="grid grid-cols-[48px_1fr_48px] items-center gap-2 border border-[#D1FAE5]/60 rounded-xl px-2 py-2 bg-white">
                         <button
                           onClick={() => bumpQty(item.id, -1)}
@@ -1139,7 +1139,7 @@ export default function Pos(props: PosProps = {}) {
 
             {/* Header */}
             <div className="flex items-center justify-between p-3 border-b border-[#D1FAE5]/60 bg-white shrink-0">
-              <h3 className="text-xl md:text-base font-black text-[#111111] flex items-center gap-2">
+              <h3 className="text-lg md:text-base font-black text-[#111111] flex items-center gap-2">
                 <Receipt size={16} className="text-[#047857]" />
                 Current Order
               </h3>
@@ -1329,7 +1329,7 @@ export default function Pos(props: PosProps = {}) {
                 {/* Grand Total */}
                 <div className="flex items-center justify-between pt-0.5">
                   <span className="text-sm font-black text-[#111111] uppercase tracking-wider">Grand Total</span>
-                  <span className="text-2xl font-black text-[#111111] tracking-tight">{formatCurrency(total)}</span>
+                  <span className="text-xl font-black text-[#111111] tracking-tight md:text-2xl">{formatCurrency(total)}</span>
                 </div>
               </div>
 

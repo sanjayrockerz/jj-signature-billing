@@ -35,7 +35,7 @@ export default function Login() {
   }
 
   return (
-    <div className="bg-gradient-to-br from-[#eaf2e5] to-[#F9FAFB] min-h-screen flex items-center justify-center p-4">
+    <div className="customer-login-shell bg-gradient-to-br from-[#eaf2e5] to-[#F9FAFB] min-h-screen flex items-center justify-center p-4">
       <div className="bg-white p-6 sm:p-8 rounded-3xl shadow-xl border border-sand/40 w-full max-w-md">
         <div className="flex flex-col items-center mb-8">
           <div className="mb-4 inline-flex items-center justify-center rounded-2xl bg-white border border-gray-200 p-2 shadow-md">

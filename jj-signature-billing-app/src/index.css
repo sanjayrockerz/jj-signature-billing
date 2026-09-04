@@ -442,6 +442,175 @@
   .advance-orders-content > .hidden.space-y-3 { display: block; }
 }
 
+/* -------------------------------------------------------------------------
+   J.J Signature mobile polish
+   Keep this contract below the utility compatibility layer so legacy utility
+   classes inherit the same compact mobile primitives without touching the
+   desktop/tablet composition.
+---------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+  :root {
+    --jj-mobile-page-padding: 1rem;
+    --jj-mobile-card-padding: 1rem;
+    --jj-mobile-control-height: 3rem;
+    --jj-mobile-compact-height: 2.75rem;
+    --jj-mobile-radius: 1rem;
+  }
+
+  html, body, #root { width: 100%; max-width: 100%; overflow-x: hidden; }
+  body { font-size: 0.875rem; line-height: 1.45; }
+
+  /* Shared admin header/content rhythm. */
+  .admin-shell main > div:first-child {
+    padding: 0.75rem var(--jj-mobile-page-padding) 0.875rem !important;
+  }
+  .admin-shell main > div:first-child h1 {
+    font-size: clamp(1.625rem, 7vw, 1.875rem) !important;
+    line-height: 1.1 !important;
+  }
+  .admin-shell main > div:first-child p { margin-top: 0.25rem !important; font-size: 0.8125rem !important; }
+  .admin-shell main > div:first-child .touch-target { min-width: 2.75rem; min-height: 2.75rem; }
+  .admin-shell main > div:last-child {
+    padding: 1rem var(--jj-mobile-page-padding) calc(2rem + env(safe-area-inset-bottom)) !important;
+  }
+  .admin-shell main > div:last-child > * { max-width: 100%; min-width: 0; }
+
+  /* Consistent editable-field treatment across every admin module and modal. */
+  .admin-shell input:not([type="checkbox"]):not([type="radio"]),
+  .admin-shell select,
+  .admin-shell textarea,
+  .pos-billing-shell input:not([type="checkbox"]):not([type="radio"]),
+  .pos-billing-shell select,
+  .pos-billing-shell textarea,
+  [role="dialog"] input:not([type="checkbox"]):not([type="radio"]),
+  [role="dialog"] select,
+  [role="dialog"] textarea {
+    min-width: 0;
+    min-height: var(--jj-mobile-control-height);
+    height: var(--jj-mobile-control-height);
+    padding: 0.75rem 0.875rem !important;
+    border: 1px solid var(--jj-border) !important;
+    border-radius: 0.75rem !important;
+    background: var(--jj-surface) !important;
+    color: var(--jj-text) !important;
+    font-size: 0.9375rem !important;
+    line-height: 1.2;
+  }
+  .admin-shell textarea,
+  .pos-billing-shell textarea,
+  [role="dialog"] textarea { height: auto; min-height: 5.5rem; line-height: 1.4; }
+  .admin-shell label, .pos-billing-shell label { font-size: 0.75rem; line-height: 1.25; }
+
+  /* Shared card density. */
+  .admin-shell main .rounded-2xl,
+  .admin-shell main .rounded-3xl {
+    border-radius: var(--jj-mobile-radius) !important;
+  }
+  .admin-shell main .shadow-soft { box-shadow: 0 5px 16px rgba(17, 17, 17, 0.055); }
+  .admin-shell main .p-5 { padding: var(--jj-mobile-card-padding) !important; }
+  .admin-shell main .p-6 { padding: 1.125rem !important; }
+  .admin-shell main .p-8 { padding: 1.125rem !important; }
+  .admin-shell main .gap-5, .admin-shell main .gap-6 { gap: 0.875rem !important; }
+  .admin-shell main h2 { font-size: 1.125rem; line-height: 1.2; }
+  .admin-shell main h3 { font-size: 1rem; line-height: 1.25; }
+  .admin-shell main button, .admin-shell main a { font-size: 0.8125rem; }
+  .admin-shell main button:not(.touch-target), .admin-shell main .btn-primary, .admin-shell main .btn-secondary {
+    min-height: 2.75rem;
+    border-radius: 0.75rem;
+  }
+  .admin-shell main table { font-size: 0.8125rem; }
+
+  /* The desktop sidebar is already hidden by its lg breakpoint; the drawer
+     remains an overlay and is kept inside the viewport on narrow phones. */
+  .admin-shell > [role="dialog"] > div:last-child {
+    width: min(86vw, 320px) !important;
+    min-height: 100dvh;
+    padding: 1rem !important;
+  }
+
+  /* POS header and two equivalent segmented controls. */
+  .pos-billing-shell > div:first-child {
+    gap: 0.75rem;
+    padding: 0.875rem 1rem 0.75rem !important;
+  }
+  .pos-billing-shell > div:first-child h2 { font-size: clamp(1.625rem, 7vw, 1.875rem) !important; line-height: 1.08; }
+  .pos-billing-shell > div:first-child p { font-size: 0.8125rem !important; line-height: 1.35; }
+  .pos-billing-shell > div:first-child > div:last-child { gap: 0.5rem; }
+  .pos-billing-shell > div:nth-child(2) {
+    gap: 0.875rem !important;
+    padding: 0.75rem 1rem 1.5rem !important;
+  }
+  .pos-billing-shell .segmented-control { width: 100%; min-height: 2.875rem; border-radius: 0.75rem; }
+  .pos-billing-shell .segmented-control-tab {
+    min-height: 2.875rem !important;
+    padding: 0.625rem 0.75rem !important;
+    font-size: 0.75rem !important;
+    letter-spacing: 0.06em !important;
+  }
+
+  /* POS's stable columns become an intentional single-column flow. */
+  .pos-billing-shell > div:nth-child(2) > div:nth-child(2),
+  .pos-billing-shell > div:nth-child(2) > div:nth-child(3) { width: 100%; min-width: 0; gap: 0.875rem !important; }
+  .pos-billing-shell > div:nth-child(2) > div:nth-child(3) { height: auto !important; max-height: none !important; }
+  .pos-billing-shell > div:nth-child(2) > div:nth-child(2) > div:first-child,
+  .pos-billing-shell > div:nth-child(2) > div:nth-child(2) > div:nth-child(2),
+  .pos-billing-shell > div:nth-child(2) > div:nth-child(3) > div:first-child {
+    border-radius: var(--jj-mobile-radius) !important;
+    padding: var(--jj-mobile-card-padding) !important;
+    box-shadow: 0 5px 16px rgba(17, 17, 17, 0.055) !important;
+  }
+  .pos-billing-shell > div:nth-child(2) > div:nth-child(2) > div:first-child h3,
+  .pos-billing-shell > div:nth-child(2) > div:nth-child(2) > div:nth-child(2) h3,
+  .pos-billing-shell > div:nth-child(2) > div:nth-child(3) h3 { font-size: 1.125rem !important; }
+  .pos-billing-shell > div:nth-child(2) > div:nth-child(2) > div:first-child .grid { gap: 0.75rem !important; }
+  .pos-billing-shell > div:nth-child(2) > div:nth-child(2) > div:nth-child(2) { min-height: 0 !important; }
+  .pos-billing-shell > div:nth-child(2) > div:nth-child(2) > div:nth-child(2) > div:first-child { gap: 0.75rem; padding-bottom: 0.875rem; }
+  .pos-billing-shell > div:nth-child(2) > div:nth-child(2) > div:nth-child(2) > div:first-child > div { gap: 0.5rem; }
+  .pos-billing-shell .text-sm { font-size: 0.8125rem; }
+  .pos-billing-shell .text-lg { font-size: 1rem; }
+  .pos-billing-shell .text-xl { font-size: 1.125rem; }
+  .pos-billing-shell .text-2xl { font-size: 1.375rem; }
+  .pos-billing-shell button { min-height: 2.75rem; border-radius: 0.75rem; font-size: 0.8125rem !important; }
+  .pos-billing-shell button.w-9.h-5 { min-height: 1.25rem; height: 1.25rem; }
+  .pos-billing-shell .h-8, .pos-billing-shell .h-9, .pos-billing-shell .h-10, .pos-billing-shell .h-11, .pos-billing-shell .h-12 { min-height: var(--jj-mobile-control-height); height: var(--jj-mobile-control-height); }
+  .pos-billing-shell .h-5 { min-height: 1.25rem; height: 1.25rem; }
+  .pos-billing-shell .p-4 { padding: 1rem !important; }
+  .pos-billing-shell .p-5 { padding: 1rem !important; }
+  .pos-billing-shell .gap-4, .pos-billing-shell .gap-5, .pos-billing-shell .gap-6 { gap: 0.875rem !important; }
+  .pos-billing-shell [class*="grid-cols-[48px_1fr_48px]"] { grid-template-columns: 2.75rem minmax(0, 1fr) 2.75rem; }
+  .pos-billing-shell [class*="grid-cols-[48px_1fr_48px]"] button { min-height: 2.75rem; }
+
+  /* Dialogs: viewport-safe, scrollable, and consistent with the fields. */
+  .pos-billing-shell > .fixed,
+  .admin-shell main > .fixed { padding: 0.75rem !important; align-items: center; }
+  .pos-billing-shell > .fixed > form,
+  .pos-billing-shell > .fixed > div,
+  .admin-shell main > .fixed > form {
+    width: min(100%, 32rem) !important;
+    max-width: calc(100vw - 1.5rem) !important;
+    max-height: calc(100dvh - 1.5rem) !important;
+    overflow-y: auto;
+    border-radius: 1rem !important;
+    padding: 1rem !important;
+  }
+
+  .admin-login-shell { padding: 1rem !important; align-items: flex-start; }
+  .admin-login-shell > div.relative.grid {
+    margin: 0 auto;
+    border-radius: 1rem !important;
+  }
+  .admin-login-shell > div.relative.grid > div:last-child { padding: 1.25rem !important; }
+  .admin-login-shell .mb-8 { margin-bottom: 1.25rem !important; }
+  .admin-login-shell h1 { font-size: 1.75rem !important; line-height: 1.1; }
+  .admin-login-shell form { gap: 0.875rem; }
+  .admin-login-shell label { font-size: 0.75rem; }
+  .admin-login-shell input { min-height: 3rem; height: 3rem; border-radius: 0.75rem !important; font-size: 0.9375rem !important; }
+  .admin-login-shell form > button { min-height: 2.875rem; padding-block: 0.75rem; border-radius: 0.75rem; font-size: 0.8125rem; }
+  .customer-login-shell > div { padding: 1.25rem !important; border-radius: 1rem !important; }
+  .customer-login-shell form input { min-height: 3rem; height: 3rem; font-size: 0.9375rem; }
+  .customer-login-shell form button { min-height: 2.875rem; padding-block: 0.75rem; font-size: 0.8125rem; }
+}
+
 
 /* ── PRINT STYLES — A4 invoice ─────────────────────────── */
 @media print {

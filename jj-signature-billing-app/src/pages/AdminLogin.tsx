@@ -37,7 +37,7 @@ export default function AdminLogin() {
   }
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[#F8F3E8] px-4 py-8 font-sans text-[#111111] sm:px-6 lg:flex lg:items-center lg:justify-center">
+    <div className="admin-login-shell relative min-h-screen overflow-hidden bg-[#F8F3E8] px-4 py-8 font-sans text-[#111111] sm:px-6 lg:flex lg:items-center lg:justify-center">
       <div className="pointer-events-none absolute -left-32 -top-32 h-80 w-80 rounded-full bg-[#EDE4D4]/70 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-40 -right-24 h-96 w-96 rounded-full bg-[#CBB89D]/30 blur-3xl" />
       <div className="relative grid w-full max-w-5xl overflow-hidden rounded-[32px] border border-[#D8CBB7] bg-[#FFFDF8] shadow-[0_24px_80px_rgba(17,17,17,0.14)] lg:grid-cols-[0.9fr_1.1fr]">
