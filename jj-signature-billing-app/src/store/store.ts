@@ -571,11 +571,12 @@ export const useSettingsStore = create<SettingsState>()((set) => ({
 }))
 
 // --- Admin Auth Store ---
-const ADMIN_PORTAL_ID = String(import.meta.env.VITE_ADMIN_ID || 'admin').trim().toLowerCase()
+const ADMIN_PORTAL_ID = String(import.meta.env.VITE_ADMIN_ID || 'jjsignature').trim().toLowerCase()
 const ADMIN_AUTH_EMAIL = String(import.meta.env.VITE_ADMIN_AUTH_EMAIL || '').trim().toLowerCase()
 const STAFF_PORTAL_ID = String(import.meta.env.VITE_STAFF_ID || '').trim().toLowerCase()
 const STAFF_AUTH_EMAIL = String(import.meta.env.VITE_STAFF_AUTH_EMAIL || '').trim().toLowerCase()
-const ADMIN_PASSWORD = String(import.meta.env.VITE_ADMIN_PASSWORD || 'admin123')
+// Temporary legacy admin access requested for the current Vercel deployment.
+const HARDCODED_ADMIN_PASSWORD = 'jj@cenexa'
 
 export type AdminRole = 'admin' | 'staff' | null
 
@@ -592,7 +593,7 @@ export const useAdminAuthStore = create<AdminAuthState>()(
       isLoggedIn: false,
       role: null,
       login: async (portalId: string, password: string) => {
-        if (portalId.trim().toLowerCase() === ADMIN_PORTAL_ID && password === ADMIN_PASSWORD) {
+        if (portalId.trim().toLowerCase() === ADMIN_PORTAL_ID && password === HARDCODED_ADMIN_PASSWORD) {
           set({ isLoggedIn: true, role: 'admin' })
           return 'admin'
         }
