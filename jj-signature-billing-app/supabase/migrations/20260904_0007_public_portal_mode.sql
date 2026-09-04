@@ -26,6 +26,17 @@ BEGIN
   END LOOP;
 END $$;
 
+-- PostgREST table privileges are separate from RLS policies. Explicit grants
+-- make the public portal work on projects where these tables were created
+-- after the default API grants were changed.
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE
+  public.expense_categories, public.expenses, public.stock_movements,
+  public.categories, public.products, public.product_variants, public.coupons,
+  public.orders, public.order_items, public.advance_orders,
+  public.advance_order_timeline, public.advance_order_payments,
+  public.store_settings
+TO anon, authenticated;
+
 -- Remove the database-side admin gate for this explicitly public deployment.
 -- This is intentionally insecure for private or multi-tenant deployments.
 CREATE OR REPLACE FUNCTION public.is_admin()

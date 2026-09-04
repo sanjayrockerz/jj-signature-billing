@@ -1361,7 +1361,7 @@ export default function Dashboard() {
       {/* Sidebar */}
       <aside
         className={[
-          'hidden w-full bg-maroon-dark text-white border-b lg:border-b-0 lg:border-r border-maroon-dark lg:flex flex-col shrink-0 lg:sticky lg:top-0 lg:h-screen',
+          'hidden w-full bg-maroon-dark text-white border-b lg:border-b-0 lg:border-r border-maroon-dark lg:flex flex-col shrink-0 lg:sticky lg:top-0 lg:h-dvh',
           'transition-[width] duration-300 ease-in-out',
           sidebarCollapsed ? 'lg:w-[88px]' : 'lg:w-[260px]',
         ].join(' ')}
@@ -1397,7 +1397,7 @@ export default function Dashboard() {
         </div>
         {/* Nav */}
         <nav
-          className={`flex flex-wrap lg:flex-col gap-2 px-3 py-3 lg:py-2 lg:flex-grow transition-all duration-300 ${sidebarCollapsed ? 'lg:px-2' : 'lg:px-4'}`}
+          className={`flex min-h-0 flex-wrap lg:flex-col gap-2 overflow-y-auto px-3 py-3 lg:py-2 lg:flex-grow transition-all duration-300 ${sidebarCollapsed ? 'lg:px-2' : 'lg:px-4'}`}
         >
           {navItems.map(item => (
             <button
