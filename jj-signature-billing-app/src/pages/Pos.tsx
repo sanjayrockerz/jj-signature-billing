@@ -72,7 +72,8 @@ type InvoiceSnap = {
 
 // ── Helpers ────────────────────────────────────────────────────────────────
 const toProductId = (v: string | number): string | null => {
-  const s = String(v ?? '').trim(); return s || null
+  const s = String(v ?? '').trim()
+  return /^\d+$/.test(s) ? s : null
 }
 
 const makePosItem = (p: Product, qty?: number): PosItem => {
@@ -458,7 +459,7 @@ export default function Pos(props: PosProps = {}) {
           : Math.max(0, Math.round((allocationBase > 0 ? total * item.lineTotal / allocationBase : total / items.length) * 100) / 100)
         allocated += lineTotal
         return {
-          product_id: item.parentProductId || toProductId(item.id), variant_id: item.variantId || null,
+          product_id: toProductId(item.parentProductId || item.id), variant_id: item.variantId || null,
           variant_name: item.variantName || null, name: item.name, category: item.category,
           description: item.note || '', quantity: item.qty, unit: item.selectedUnit, unit_type: item.unitType,
           base_quantity: item.baseQuantity, base_price: Number(item.basePrice) || 0, line_total: lineTotal,
@@ -503,7 +504,7 @@ export default function Pos(props: PosProps = {}) {
         phone: normalizedPhone,
         address: customer.address.trim() || 'POS Counter',
         items: items.map(item => buildStructuredOrderItem({
-          productId:    item.parentProductId ? item.parentProductId : toProductId(item.id),
+          productId:    toProductId(item.parentProductId || item.id),
           variantId:    item.variantId   ?? null,
           variantName:  item.variantName ?? null,
           name: item.name,
@@ -812,16 +813,16 @@ export default function Pos(props: PosProps = {}) {
 
         {/* Online/Offline Toggle & Logout */}
         <div className="flex gap-2 w-full min-[480px]:w-auto">
-          <div className="grid grid-cols-2 bg-white rounded-xl border border-[#D1FAE5]/60 p-1 shadow-sm flex-1 min-[480px]:flex-none">
+          <div className="segmented-control flex flex-1 min-[480px]:flex-none">
             <button
               onClick={() => setOrderMode('offline')}
-              className={`min-h-[44px] px-4 py-2 rounded-lg text-sm md:text-sm font-black tracking-wider uppercase transition-colors ${orderMode === 'offline' ? 'bg-[#CBB89D] text-[#111111] shadow-sm' : 'text-[#111111] hover:bg-[#EDE4D4]'}`}
+              className={`segmented-control-tab min-h-[44px] px-4 py-2 text-sm font-black tracking-wider uppercase transition-colors ${orderMode === 'offline' ? 'bg-[#CBB89D] text-[#111111] shadow-sm' : 'text-[#111111] hover:bg-[#EDE4D4]'}`}
             >
               Offline
             </button>
             <button
               onClick={() => setOrderMode('online')}
-              className={`min-h-[44px] px-4 py-2 rounded-lg text-sm md:text-sm font-black tracking-wider uppercase transition-colors ${orderMode === 'online' ? 'bg-[#CBB89D] text-[#111111] shadow-sm' : 'text-[#111111] hover:bg-[#EDE4D4]'}`}
+              className={`segmented-control-tab min-h-[44px] px-4 py-2 text-sm font-black tracking-wider uppercase transition-colors ${orderMode === 'online' ? 'bg-[#CBB89D] text-[#111111] shadow-sm' : 'text-[#111111] hover:bg-[#EDE4D4]'}`}
             >
               Online
             </button>
@@ -849,9 +850,9 @@ export default function Pos(props: PosProps = {}) {
       {/* Main Content Split */}
       <div className="flex w-full min-w-0 max-w-full flex-col gap-5 px-4 pb-6 md:gap-6 md:px-6 lg:h-[calc(100vh-120px)] lg:flex-row lg:overflow-hidden">
 
-        <div className="grid grid-cols-2 gap-2 lg:hidden">
-          <button type="button" onClick={() => setMobilePanelView('catalogue')} className={`min-h-11 rounded-xl px-3 py-2 text-xs font-black uppercase tracking-wide ${mobilePanelView === 'catalogue' ? 'bg-[#CBB89D] text-[#111111]' : 'border border-borderLight bg-cardBg text-textMuted'}`}>Catalogue</button>
-          <button type="button" onClick={() => setMobilePanelView('bill')} className={`min-h-11 rounded-xl px-3 py-2 text-xs font-black uppercase tracking-wide ${mobilePanelView === 'bill' ? 'bg-[#CBB89D] text-[#111111]' : 'border border-borderLight bg-cardBg text-textMuted'}`}>Current Bill{items.length > 0 ? ` (${items.length})` : ''}</button>
+        <div className="segmented-control flex lg:hidden">
+          <button type="button" onClick={() => setMobilePanelView('catalogue')} className={`segmented-control-tab min-h-11 px-3 py-2 text-xs font-black uppercase tracking-wide ${mobilePanelView === 'catalogue' ? 'bg-[#CBB89D] text-[#111111]' : 'bg-cardBg text-textMuted hover:bg-[#EDE4D4]'}`}>Catalogue</button>
+          <button type="button" onClick={() => setMobilePanelView('bill')} className={`segmented-control-tab min-h-11 px-3 py-2 text-xs font-black uppercase tracking-wide ${mobilePanelView === 'bill' ? 'bg-[#CBB89D] text-[#111111]' : 'bg-cardBg text-textMuted hover:bg-[#EDE4D4]'}`}>Current Bill{items.length > 0 ? ` (${items.length})` : ''}</button>
         </div>
 
         {/* LEFT COLUMN (approx 68%) */}

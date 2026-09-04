@@ -401,6 +401,35 @@
   [role="dialog"] { padding-bottom: env(safe-area-inset-bottom); }
 }
 
+/* One clipped boundary for every two-way POS segmented control. */
+.segmented-control {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--jj-border, #e7ded0);
+  border-radius: 0.75rem;
+  background: var(--jj-surface, #fffdf8);
+  box-sizing: border-box;
+}
+
+.segmented-control-tab {
+  min-width: 0;
+  flex: 1 1 0%;
+  border: 0;
+  border-radius: 0;
+  box-sizing: border-box;
+}
+
+.segmented-control-tab + .segmented-control-tab {
+  border-left: 1px solid var(--jj-border, #e7ded0);
+}
+
+.segmented-control-tab:focus-visible {
+  position: relative;
+  z-index: 1;
+  outline: 2px solid #111111;
+  outline-offset: -3px;
+}
+
 @media (max-width: 479px) {
   .admin-shell main > div:first-child h1 { font-size: clamp(1.35rem, 6vw, 1.75rem); }
   .admin-shell main > div:last-child { padding-left: 0.875rem; padding-right: 0.875rem; }
