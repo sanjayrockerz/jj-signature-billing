@@ -1365,7 +1365,7 @@ export default function Dashboard() {
       {/* Sidebar */}
       <aside
         className={[
-          'hidden w-full bg-maroon-dark text-white border-b lg:border-b-0 lg:border-r border-maroon-dark lg:flex flex-col shrink-0 lg:sticky lg:top-0 lg:h-dvh',
+          'hidden w-full bg-maroon-dark text-white border-b lg:border-b-0 lg:border-r border-maroon-dark lg:flex lg:h-screen lg:min-h-screen lg:self-start flex-col shrink-0 lg:sticky lg:top-0',
           'transition-[width] duration-300 ease-in-out',
           sidebarCollapsed ? 'lg:w-[88px]' : 'lg:w-[260px]',
         ].join(' ')}

@@ -26,7 +26,7 @@ export function AdminModuleShell({ title, subtitle, children }: { title: string;
   const go = (href: string) => { setMobileNavOpen(false); navigate(href) }
   return (
     <div className="admin-shell flex min-h-screen bg-bgMain text-textMain">
-      <aside className="hidden w-[260px] shrink-0 flex-col border-r border-maroon-dark bg-maroon-dark text-white lg:flex lg:sticky lg:top-0 lg:h-dvh">
+      <aside className="hidden w-[260px] shrink-0 flex-col border-r border-maroon-dark bg-maroon-dark text-white lg:flex lg:h-screen lg:min-h-screen lg:self-start lg:sticky lg:top-0">
         <Link to="/dashboard" className="flex items-center gap-3 border-b border-white/10 px-5 py-5">
           <span className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-emerald-900/40 bg-white p-1 shadow-sm"><img src={BRAND_LOGO} alt={`${BRAND_EN} logo`} className="h-full w-full object-contain" /></span>
           <span className="truncate text-2xl font-black tracking-tight text-white">{BRAND_EN}</span>
